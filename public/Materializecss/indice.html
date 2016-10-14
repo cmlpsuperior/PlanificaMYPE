@@ -12,24 +12,64 @@
     </head>
   
     <body>
+
+        <!-- Dropdown estructura para recepcion -->
+        <ul id="dropdown1" class="dropdown-content">
+          <li><a href="#!">Nuevo pedido</a></li>
+          <li><a href="#!">Confirmar pedido</a></li>
+          <li class="divider"></li>
+          <li><a href="#!">Registrar cliente</a></li>
+        </ul>
+
+        <!-- Dropdown Structure -->
+        <ul id="dropdown2" class="dropdown-content">
+          <li><a href="#!">Planificación</a></li>
+          <li><a href="#!">Asignar viajes</a></li>
+          <li><a href="#!">Control</a></li>
+        </ul>
+
+        <!-- Dropdown Structure -->
+        <ul id="dropdown3" class="dropdown-content">
+          <li><a href="#!">Pendientes</a></li>
+          <li><a href="#!">Historial</a></li>
+        </ul>
+
+        <!-- Dropdown Structure -->
+        <ul id="dropdown4" class="dropdown-content">
+          <li><a href="#!">Clientes</a></li>
+          <li><a href="#!">Vehículos</a></li>
+          <li><a href="#!">Artículos</a></li>          
+          <li><a href="#!">Zonas</a></li>          
+          <li><a href="#!">Empleados</a></li>
+        </ul>
+
+
+        <!--La barra superior principal-->
         <nav class="blue darken-1">
           <div class="nav-wrapper">
-            <a href="#" class="brand-logo hide-on-med-and-down">PlanificaMYPE</a>
-            <ul id="nav-mobile" class="right ">
-              <li><a href="badges.html"><i class="material-icons right">perm_identity</i>H. Espinoza</a></li>
+            <a href="#" class="brand-logo">PlanificaMYPE</a>            
+
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+              <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Recepción<i class="material-icons right">arrow_drop_down</i></a></li>
+              <li><a class="dropdown-button" href="#!" data-activates="dropdown2">Gestión<i class="material-icons right">arrow_drop_down</i></a></li>
+              <li><a class="dropdown-button" href="#!" data-activates="dropdown3">Viajes<i class="material-icons right">arrow_drop_down</i></a></li>
+              <li><a class="dropdown-button" href="#!" data-activates="dropdown4">Mantenimiento<i class="material-icons right">arrow_drop_down</i></a></li>
             </ul>
+           
           </div>
         </nav>
         
+        <!-- Estos linea es para las migajas-->
         <nav class="blue lighten-2">
           <div class="nav-wrapper">
             <div class="col s12">
-              <a href="#!" class="breadcrumb">Mantenimiento</a>
+              <a href="#!" class="breadcrumb">Mant.</a>
               <a href="#!" class="breadcrumb">Clientes</a>
               <a href="#!" class="breadcrumb">Registrar</a>
             </div>
           </div>
         </nav>
+
 
         <!--Contenido del cuerpo-->
         
@@ -145,7 +185,8 @@
 
       <script>
         $(document).ready(function() {
-          $('select').material_select();
+          $('select').material_select();          
+          $(".dropdown-button").dropdown();    
         });
       </script>
     </body>
