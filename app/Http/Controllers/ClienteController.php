@@ -21,7 +21,7 @@ class ClienteController extends Controller
     }
 
     public function index(Request $request){
-
+        
     	if ($request){
     		$query = trim($request->get('searchDni'));
     		$clientes = DB::table('cliente')
@@ -30,6 +30,9 @@ class ClienteController extends Controller
 
     		return view('cliente.index', ["clientes"=>$clientes, "searchDni"=>$query]);
     	}
+            
+        //esto no estoy seguro XD
+        return view('cliente.index');
 
     }
 
