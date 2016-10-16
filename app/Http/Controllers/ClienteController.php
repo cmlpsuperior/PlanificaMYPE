@@ -20,19 +20,19 @@ class ClienteController extends Controller
 
     }
 
-    public function index(Request $request){
+    public function index(Request $request){ //Request $request
         
     	if ($request){
-    		$query = trim($request->get('searchDni'));
-    		$clientes = DB::table('cliente')
-    		->where('numeroDocumento', 'LIKE', '%'.$query.'%')
-    		->orderBy('idCliente', 'desc');
-
-    		return view('cliente.index', ["clientes"=>$clientes, "searchDni"=>$query]);
-    	}
-            
-        //esto no estoy seguro XD
-        return view('cliente.index');
+    		$query = trim($request->get('searchNombre'));
+    		$clientes = DB::table('cliente') //->get();                    
+    		          ->where('nombres', 'LIKE', '%'.$query.'%')
+                      ->orWhere('apellidoPaterno', 'LIKE', '%'.$query.'%')
+                      ->orWhere('apellidoMaterno', 'LIKE', '%'.$query.'%')
+    		          ->orderBy('idcliente', 'desc')
+                      ->simplePaginate(20); // 1) cuando lleva paginate, ya no va el ->get() al final
+                                            // 2) simplePaginate es mas eficiente que paginate            
+    		return view('cliente.index', ['clientes'=>$clientes]);
+    	}            
 
     }
 

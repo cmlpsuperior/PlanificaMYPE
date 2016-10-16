@@ -17,11 +17,16 @@ class Cliente extends Model
     	'apellidoPaterno',
     	'apellidoMaterno',
     	'razonSocial',
+        'numeroDocumento',
+        'fechaNacimiento',
+        'genero',
+
     	'telefono',
     	'correo',
     	'direccion',
-    	'numeroDocumento',
-    	'habilitado',
+        'referencia',    	
+    	'credito',
+        
     	'idTipoDocumento',
     	'idZona'
     ];

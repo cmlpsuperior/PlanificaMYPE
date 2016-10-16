@@ -129,16 +129,7 @@
         </nav>
         
 
-        <!-- Estos linea es para las migajas-->
-        <nav class="cyan lighten-1">
-          <div class="nav-wrapper container">
-            <div class="col s12">
-              <a href="#!" class="breadcrumb">Mant.</a>
-              <a href="#!" class="breadcrumb">Clientes</a>
-              <a href="#!" class="breadcrumb">Registrar</a>
-            </div>
-          </div>
-        </nav>
+        
 
 
 
