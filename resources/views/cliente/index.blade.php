@@ -2,7 +2,7 @@
 @section ('contenido')
 
 <!-- Estos linea es para las migajas-->
-<nav class="cyan lighten-1">
+<nav class="teal">
   <div class="nav-wrapper container">
     <div class="col s12">
       <a href="#!" class="breadcrumb">Mant.</a>
@@ -15,6 +15,13 @@
 <div class="container">
 	<div class= "row">
 		<h3>Lista de clientes</h3>
+	</div>
+
+	<div class= "row">
+		<div class="col s12 right-align">
+			<a href="{{ url('cliente/create')}}" class="waves-effect waves-light btn">+ Nuevo cliente</a>
+		</div>
+		
 	</div>
 
 	<div class= "row">

@@ -27,14 +27,15 @@ class ClienteFormRequest extends FormRequest
             'nombres' => 'max:50',
             'apellidoPaterno' => 'max:100',
             'apellidoMaterno' => 'max:100',
-            'razonSocial' => 'max:100',
+            //'razonSocial' => 'max:100',
             'telefono' => 'numeric|max:20',
             'correo' => 'email|max:100',
             'direccion' => 'max:100',
             'numeroDocumento' => 'numeric|max:20',
-            'habilitado' => 'numeric|max:1|requered',
-            'idTipoDocumento'  => 'numeric|requered',
-            'idZona' => 'numeric|requered',
+            'referencia' => 'max:100'
+            //'credito' => 'numeric|max:1|requered',
+            //'idTipoDocumento'  => 'numeric|requered',
+            //'idZona' => 'numeric|requered',
         ];
     }
 }

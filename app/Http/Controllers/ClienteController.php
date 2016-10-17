@@ -41,6 +41,8 @@ class ClienteController extends Controller
     }
 
     public function store (ClienteFormRequest $request){
+        return 'Todo okay';
+        /*
     	$cliente= new Cliente();
     	$cliente->nombre=$request->get('nombre');
     	$cliente->apellidoPaterno=$request->get('apellidoPaterno');
@@ -56,7 +58,7 @@ class ClienteController extends Controller
     	$cliente->idZona=$request->get('idZona');
 
     	$cliente->save();
-    	return Redirect::to ('cliente');
+    	return Redirect::to ('cliente');*/
     }
 
     public function show ($id){

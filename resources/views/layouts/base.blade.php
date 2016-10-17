@@ -46,8 +46,8 @@
        
 
         <!--La barra superior principal-->
-        <nav class="cyan">
-          <div class="nav-wrapper container">
+        <nav class="teal">
+          <div class="nav-wrapper container ">
 
             <!--Menu de barra de haburguesa-->
             <ul id="slide-out" class="side-nav">
