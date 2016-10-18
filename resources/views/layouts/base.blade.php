@@ -52,7 +52,7 @@
             <!--Menu de barra de haburguesa-->
             <ul id="slide-out" class="side-nav">
               <li><div class="userView">
-                <img class="background" width= "100%" src="img/md_3.jpg">
+                <img class="background" width= "100%" src="{{ asset('img/md_noche.png')}}">
                 <i class="material-icons center">account_circle</i>
                 <a href="#!"><span class="white-text name">Henry Espinoza</span></a>
                 <a href="#!"><span class="white-text email">henryEspinozat@gmail.com</span></a>

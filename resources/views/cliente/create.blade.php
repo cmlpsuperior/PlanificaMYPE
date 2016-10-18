@@ -26,7 +26,7 @@
         <div class="container">
 
           <div class="row">
-            <div class="col s12 m8 offset-m2">
+            <div class="col s12 m10 l8 offset-m1 offset-l2 ">
               <div class="card">
                 <div class="card-content">
                   {{Form::open (array('url' => 'cliente', 'method'=>'POST'))}} <!--para llamar al store, se le llama igual que al index, pero con metodo post-->
@@ -54,28 +54,28 @@
                     <div class="row">
                       <div class="input-field col s6">
                         <i class="material-icons prefix">account_circle</i>
-                        <input id="Nombres" type="text" class="validate" name="nombres">
-                        <label for="Nombres">Nombres</label>
+                        <input id="Nombres" type="text" class="validate" required  value="{{ old('nombres') }}" name="nombres">
+                        <label for="Nombres">Nombres *</label>
                       </div>
                       
                       <div class="input-field col s6">
                         <i class="material-icons prefix">account_circle</i>
-                        <input id="ApellidoPaterno" type="text" class="validate" name="apellidoPaterno">
-                        <label for="ApellidoPaterno">Apellido paterno</label>
+                        <input id="ApellidoPaterno" type="text" class="validate" required value="{{ old('apellidoPaterno') }}" name="apellidoPaterno">
+                        <label for="ApellidoPaterno">Apellido paterno *</label>
                       </div>              
                     </div>
 
                     <div class="row">              
                       <div class="input-field col s6">
                         <i class="material-icons prefix">account_circle</i>
-                        <input id="ApellidoMaterno" type="text" class="validate" name="apellidoMaterno">
-                        <label for="ApellidoMaterno">Apellido materno</label>
+                        <input id="ApellidoMaterno" type="text" class="validate" required value="{{ old('apellidoMaterno') }}" name="apellidoMaterno">
+                        <label for="ApellidoMaterno">Apellido materno *</label>
                       </div>
 
                       <div class="input-field col s6">
                         <i class="material-icons prefix">assignment_ind</i>
-                        <input id="dni" type="text" class="validate" name="numeroDocumento">
-                        <label for="dni">DNI</label>
+                        <input id="dni" type="text" class="validate" required value="{{ old('numeroDocumento') }}" name="numeroDocumento">
+                        <label for="dni">DNI *</label>
                       </div>
 
                     </div>
@@ -87,13 +87,13 @@
                     <div class="row">
                       <div class="input-field col s6">
                         <i class="material-icons prefix">phone</i>
-                        <input id="icon_telephone" type="tel" class="validate" name="telefono">
+                        <input id="icon_telephone" type="tel" class="validate" value="{{ old('telefono') }}" name="telefono">
                         <label for="icon_telephone">Teléfono</label>
                       </div>
 
                       <div class="input-field col s6">
                         <i class="material-icons prefix">email</i>
-                        <input id="email" type="email" class="validate" name="correo">
+                        <input id="email" type="email" class="validate" value="{{ old('correo') }}" name="correo">
                         <label for="email" data-error="wrong" data-success="right">Correo</label>
                       </div>
                     </div>
@@ -102,7 +102,7 @@
                     <div class="row">
                       <div class="input-field col s6">
                         <i class="material-icons prefix">location_on</i>
-                        <select name="zona">
+                        <select name="zona" required class="validate">
                           <option value="" disabled selected>Seleccionar</option>
                           <option value="1">Caja de agua</option>
                           <option value="2">Bayovar</option>
@@ -112,13 +112,13 @@
                           <option value="6">10 de octubre</option>
 
                         </select>
-                        <label>Zona</label>
+                        <label>Zona *</label>
                       </div>    
 
                       <div class="input-field col s6">
                         <i class="material-icons prefix">location_on</i>
-                        <input id="direccion" type="text" class="validate" name="direccion">
-                        <label for="direccion">Dirección</label>
+                        <input id="direccion" type="text" class="validate" required value="{{ old('direccion') }}" name="direccion">
+                        <label for="direccion">Dirección *</label>
                       </div>          
                     </div>
                   
@@ -126,7 +126,7 @@
                     <div class="row">
                       <div class="input-field col s12">
                         <i class="material-icons prefix">location_on</i>
-                        <textarea id="referencia" class="materialize-textarea" name="referencia"></textarea>
+                        <textarea id="referencia" class="materialize-textarea" value="{{ old('referencia') }}" name="referencia"></textarea>
                         <label for="referencia">Referencia</label>
                       </div> 
                     </div>
@@ -143,11 +143,11 @@
                       </div>              
                     </div>
                     
-                  { Form::close()}}
+                  {{ Form::close()}}
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-@stop
+@endsection
