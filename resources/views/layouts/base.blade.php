@@ -63,8 +63,9 @@
 
               <li class="no-padding">
                 <ul class="collapsible collapsible-accordion">
-                  <li class="bold">
-                    <a class="collapsible-header waves-effect waves-teal">Recepción</a>
+                  <li class="">
+                    
+                    <a class="collapsible-header waves-effect waves-teal"><i class="material-icons">store</i>Recepción</a>  
 
                     <div class="collapsible-body">
                       <ul>
@@ -77,7 +78,7 @@
                   </li>
 
                   <li class="bold">
-                    <a class="collapsible-header waves-effect waves-teal">Gestión</a>
+                    <a class="collapsible-header waves-effect waves-teal"><i class="material-icons">assessment</i>Gestión</a>
 
                     <div class="collapsible-body">
                       <ul>
@@ -90,7 +91,7 @@
                   </li>
 
                   <li class="bold">
-                    <a class="collapsible-header waves-effect waves-teal">Viajes</a>
+                    <a class="collapsible-header waves-effect waves-teal"><i class="material-icons">navigation</i>Viajes</a>
 
                     <div class="collapsible-body">
                       <ul>
@@ -102,7 +103,7 @@
                   </li>
 
                   <li class="bold">
-                    <a class="collapsible-header waves-effect waves-teal">Mantenimiento</a>
+                    <a class="collapsible-header waves-effect waves-teal"><i class="material-icons">settings</i>Mantenimiento</a>
 
                     <div class="collapsible-body">
                       <ul>
@@ -180,13 +181,19 @@
       <!--Import jQuery before materialize.js-->
       <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
       <script type="text/javascript" src="{{ asset('js/materialize.min.js')}}"></script>
-
+      
+      
+      
       <script>
         $(document).ready(function() {
-          $('select').material_select();          
+                  
           $(".dropdown-button").dropdown();
           $(".button-collapse").sideNav();      /*es para que boton de hamburgesa funcione*/
+          
         });
       </script>
+
+      @yield('scriptcontenido')
+      
     </body>
   </html>

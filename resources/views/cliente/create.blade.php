@@ -1,4 +1,5 @@
 @extends ('layouts.base')
+
 @section ('contenido')
 
 
@@ -54,7 +55,7 @@
                     <div class="row">
                       <div class="input-field col s6">
                         <i class="material-icons prefix">account_circle</i>
-                        <input id="Nombres" type="text" class="validate" required  value="{{ old('nombres') }}" name="nombres">
+                        <input id="Nombres" type="text" class="validate"  required value="{{ old('nombres') }}" name="nombres">
                         <label for="Nombres">Nombres *</label>
                       </div>
                       
@@ -77,8 +78,28 @@
                         <input id="dni" type="text" class="validate" required value="{{ old('numeroDocumento') }}" name="numeroDocumento">
                         <label for="dni">DNI *</label>
                       </div>
+                    </div>
+
+                    <div class="row">              
+                      <div class="input-field col s6">
+                        <i class="material-icons prefix">today</i>
+                        <input id="fechaNacimiento" type="date" class="datepicker" value="{{ old('fechaNacimiento') }}" name="fechaNacimiento">
+                        <label for="fechaNacimiento">Fecha nacimiento *</label>
+                      </div>
+
+                      <div class="input-field col s6">
+                                            
+                        <input name="genero" type="radio" id="genero1" value='1' @if (old('genero') ==  1) checked="checked" @endif />
+                        <label for="genero1">Hombre</label>
+                        
+                        <input name="genero" type="radio" id="genero2" value='2' @if (old('genero') ==  2) checked="checked" @endif />
+                        <label for="genero2">Mujer</label>                    
+                        
+                      </div>
 
                     </div>
+
+
                     <br>
                     <div class="row">
                       <h5>Datos de contacto</h5>
@@ -102,8 +123,8 @@
                     <div class="row">
                       <div class="input-field col s6">
                         <i class="material-icons prefix">location_on</i>
-                        <select name="zona" required class="validate">
-                          <option value="" disabled selected>Seleccionar</option>
+                        <select name="zona">
+                          <option value="">Seleccionar</option>
                           <option value="1">Caja de agua</option>
                           <option value="2">Bayovar</option>
                           <option value="3">Mariategui</option>
@@ -126,7 +147,7 @@
                     <div class="row">
                       <div class="input-field col s12">
                         <i class="material-icons prefix">location_on</i>
-                        <textarea id="referencia" class="materialize-textarea" value="{{ old('referencia') }}" name="referencia"></textarea>
+                        <textarea id="referencia" class="materialize-textarea" name="referencia">{{ old('referencia') }}</textarea>
                         <label for="referencia">Referencia</label>
                       </div> 
                     </div>
@@ -150,4 +171,32 @@
           </div>
         </div>
 
-@endsection
+@stop
+
+
+
+@section ('scriptcontenido')
+<script>
+    $(document).ready(function() {
+
+           
+
+      $('.datepicker').pickadate({ /*es para que funcione e datepicker*/
+        selectMonths: true, // Creates a dropdown to control month
+        selectYears: 15, // Creates a dropdown of 15 years to control year
+        format: 'yyyy/mm/dd'
+      });
+
+      
+
+
+      /*Para inicar el select*/
+      $('select').material_select();     
+
+    
+
+  });
+
+  
+</script>
+@stop
