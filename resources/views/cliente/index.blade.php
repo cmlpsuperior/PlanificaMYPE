@@ -6,7 +6,7 @@
   <div class="nav-wrapper container">
     <div class="col s12">
       <a href="#!" class="breadcrumb">Mant.</a>
-      <a href="#!" class="breadcrumb">Clientes</a>
+      <a href="{{ url('cliente')}}" class="breadcrumb">Clientes</a>
     </div>
   </div>
 </nav>

@@ -35,7 +35,7 @@ class ClienteFormRequest extends FormRequest
             //'razonSocial' => 'max:100',
             'telefono' => 'digits_between:4,20|numeric',
             'correo' => 'email|max:100',
-            'zona' => 'required',
+            'idZona' => 'required',
             'direccion' => 'required|max:100',
             
             'referencia' => 'max:100',

@@ -8,8 +8,8 @@
           <div class="nav-wrapper container">
             <div class="col s12">
               <a href="#!" class="breadcrumb">Mant.</a>
-              <a href="#!" class="breadcrumb">Clientes</a>
-              <a href="#!" class="breadcrumb">Registrar</a>
+              <a href="{{ url('cliente')}}" class="breadcrumb">Clientes</a>
+              <a href="{{ url('cliente/create')}}" class="breadcrumb">Registrar</a>
             </div>
           </div>
         </nav>
@@ -99,6 +99,9 @@
 
                     </div>
 
+                    <!--Datos ocultos: codigo DNI-->
+                    <input type="hidden" value="1" name="idTipoDocumento">
+
 
                     <br>
                     <div class="row">
@@ -123,7 +126,7 @@
                     <div class="row">
                       <div class="input-field col s6">
                         <i class="material-icons prefix">location_on</i>
-                        <select name="zona">
+                        <select name="idZona">
                           <option value="">Seleccionar</option>
                           <option value="1">Caja de agua</option>
                           <option value="2">Bayovar</option>
@@ -157,7 +160,7 @@
                     <!--Los botones del formulario-->
                     <div class="row">
                       <div class="input-field col s12 right-align">
-                        <a class="waves-effect waves-light btn">Cancelar</a>
+                        <a class="waves-effect waves-light btn" href="{{ url('cliente')}}">Cancelar</a>
                         <button class="btn waves-effect waves-light" type="submit" name="action">Registrar
                           <i class="material-icons right">send</i>
                         </button>                
@@ -183,7 +186,7 @@
 
       $('.datepicker').pickadate({ /*es para que funcione e datepicker*/
         selectMonths: true, // Creates a dropdown to control month
-        selectYears: 15, // Creates a dropdown of 15 years to control year
+        selectYears: 200, // Creates a dropdown of 15 years to control year
         format: 'yyyy/mm/dd'
       });
 

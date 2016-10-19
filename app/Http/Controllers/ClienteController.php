@@ -28,8 +28,8 @@ class ClienteController extends Controller
     		          ->where('nombres', 'LIKE', '%'.$query.'%')
                       ->orWhere('apellidoPaterno', 'LIKE', '%'.$query.'%')
                       ->orWhere('apellidoMaterno', 'LIKE', '%'.$query.'%')
-    		          ->orderBy('idcliente', 'desc')
-                      ->simplePaginate(20); // 1) cuando lleva paginate, ya no va el ->get() al final
+    		          ->orderBy('numeroDocumento', 'desc')
+                      ->simplePaginate(8); // 1) cuando lleva paginate, ya no va el ->get() al final
                                             // 2) simplePaginate es mas eficiente que paginate            
     		return view('cliente.index', ['clientes'=>$clientes]);
     	}            
@@ -41,24 +41,28 @@ class ClienteController extends Controller
     }
 
     public function store (ClienteFormRequest $request){
-        return 'Todo okay';
-        /*
+               
     	$cliente= new Cliente();
-    	$cliente->nombre=$request->get('nombre');
+    	$cliente->nombres=$request->get('nombres');
     	$cliente->apellidoPaterno=$request->get('apellidoPaterno');
     	$cliente->apellidoMaterno=$request->get('apellidoMaterno');
-    	$cliente->razonSocial=$request->get('razonSocial');
+    	$cliente->razonSocial= null;
+        $cliente->numeroDocumento=$request->get('numeroDocumento');
+        $cliente->fechaNacimiento= $request->get('fechaNacimiento');
+        $cliente->genero= $request->get('genero');
+
     	$cliente->telefono=$request->get('telefono');
     	$cliente->correo=$request->get('correo');
     	$cliente->direccion=$request->get('direccion');
-    	$cliente->numeroDocumento=$request->get('numeroDocumento');
-    	$cliente->habilitado=$request->get('habilitado');
+        $cliente->referencia=$request->get('referencia');
+    	
+    	$cliente->credito= 0;
 
     	$cliente->idTipoDocumento=$request->get('idTipoDocumento');
     	$cliente->idZona=$request->get('idZona');
 
     	$cliente->save();
-    	return Redirect::to ('cliente');*/
+    	return redirect('cliente'); //es una URL
     }
 
     public function show ($id){

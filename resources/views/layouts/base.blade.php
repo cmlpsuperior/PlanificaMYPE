@@ -13,38 +13,6 @@
   
     <body>
 
-        <!-- Dropdown estructura para recepcion -->
-        <ul id="dropdown1" class="dropdown-content">
-          <li><a href="#!">Nuevo pedido</a></li>
-          <li><a href="#!">Confirmar pedido</a></li>
-          <li class="divider"></li>
-          <li><a href="{{ route ('cliente.create')}}">Registrar cliente</a></li>
-        </ul>
-
-        <!-- Dropdown Structure -->
-        <ul id="dropdown2" class="dropdown-content">
-          <li><a href="#!">Planificación</a></li>
-          <li><a href="#!">Asignar viajes</a></li>
-          <li><a href="#!">Control</a></li>
-        </ul>
-
-        <!-- Dropdown Structure -->
-        <ul id="dropdown3" class="dropdown-content">
-          <li><a href="#!">Pendientes</a></li>
-          <li><a href="#!">Historial</a></li>
-        </ul>
-
-        <!-- Dropdown Structure -->
-        <ul id="dropdown4" class="dropdown-content">
-          <li><a href="#!">Clientes</a></li>
-          <li><a href="#!">Vehículos</a></li>
-          <li><a href="#!">Artículos</a></li>          
-          <li><a href="#!">Zonas</a></li>          
-          <li><a href="#!">Empleados</a></li>
-        </ul>
-        
-       
-
         <!--La barra superior principal-->
         <nav class="teal">
           <div class="nav-wrapper container ">
@@ -71,7 +39,7 @@
                       <ul>
                         <li><a href="#!">Nuevo pedido</a></li>
                         <li><a href="#!">Confirmar pedido</a></li>
-                        <li><a href="#!">Registrar cliente</a></li>
+                        <li><a href="{{ url('cliente/create')}}">Registrar cliente</a></li>
                       </ul>
                     </div>
 
@@ -107,7 +75,7 @@
 
                     <div class="collapsible-body">
                       <ul>
-                        <li><a href="#!">Clientes</a></li>
+                        <li><a href="{{ url('cliente')}}">Clientes</a></li>
                         <li><a href="#!">Vehículos</a></li>
                         <li><a href="#!">Artículos</a></li>          
                         <li><a href="#!">Zonas</a></li>          
