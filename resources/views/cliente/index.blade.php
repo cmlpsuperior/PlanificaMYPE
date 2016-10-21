@@ -28,11 +28,10 @@
 		<table class= "bordered highlight responsive-table">
 	        <thead>
 	         	<tr>
-	          		<th data-field="id">Código</th>
-	                <th data-field="dni"># Documento</th>
+	                <th data-field="dni">Documento</th>
 	                <th data-field="nombre">Nombre</th>
 	                <th data-field="fechaRegistro">Correo</th>
-	                <th data-field="direccion">Dirección</th>
+	                <th data-field="zona">Zona</th>
 	                <th data-field="credito">Crédito</th>
 	                <th data-field="acciones">acciones</th>
 	            </tr>
@@ -42,11 +41,11 @@
 
 	        	@foreach ($clientes as $cliente)
 	            <tr>
-		            <td>{{ $cliente->idCliente}}</td>
+		            <td hidden="true">{{ $cliente->idCliente}}</td>
 		            <td>{{ $cliente->numeroDocumento}}</td>
 		            <td>{{ $cliente->nombres.' '.$cliente->apellidoPaterno.' '. $cliente->apellidoMaterno}}</td>
 		            <td>{{ $cliente->correo}}</td>
-		            <td>{{ $cliente->direccion}}</td>
+		            <td>{{ $cliente->zona->nombre}}</td>
 		            <td>
 		            	@if ($cliente->credito ===1)
 		            	Sí
@@ -55,7 +54,7 @@
 		            	@endif
 		            </td>
 		            <td>
-		            	<a href="" title="Editar"><i class="material-icons">edit</i></a>
+		            	<a href="{{action('ClienteController@edit', ['id'=>$cliente->idCliente])}}" title="Editar"><i class="material-icons">edit</i></a>
 		            	<a href="" title="Borrar"><i class="material-icons">delete</i></a>
 		            </td>
 

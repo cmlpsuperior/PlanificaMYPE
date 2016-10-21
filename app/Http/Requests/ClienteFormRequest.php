@@ -23,26 +23,26 @@ class ClienteFormRequest extends FormRequest
      */
     public function rules()
     {
-        
+        //solo personas (no empresas)
         return [
-            'nombres' => 'alpha|max:50',
-            'apellidoPaterno' => 'alpha|max:100',
-            'apellidoMaterno' => 'alpha|max:100',
+            'nombres' => 'regex:/^[\pL\s\-]+$/u|max:50',
+            'apellidoPaterno' => 'regex:/^[\pL\s\-]+$/u|max:100',
+            'apellidoMaterno' => 'regex:/^[\pL\s\-]+$/u|max:100',
             'numeroDocumento' => 'required|digits:8|numeric',
             'fechaNacimiento' => 'required|date',
-            'genero' => 'required',
+            'genero' => 'required|numeric',
 
             //'razonSocial' => 'max:100',
             'telefono' => 'digits_between:4,20|numeric',
             'correo' => 'email|max:100',
-            'idZona' => 'required',
+            'idZona' => 'required|numeric',
             'direccion' => 'required|max:100',
             
             'referencia' => 'max:100',
             
-            //'credito' => 'numeric|max:1|requered',
-            //'idTipoDocumento'  => 'numeric|requered',
-            //'idZona' => 'numeric|requered',
+            'credito' => 'required|numeric',
+            'idTipoDocumento'  => 'required|numeric',
+            
         ];
     }
 }

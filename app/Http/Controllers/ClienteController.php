@@ -7,12 +7,14 @@ use Illuminate\Http\Request;
 use PlanificaMYPE\Http\Requests;
 
 use PlanificaMYPE\Cliente;
+use PlanificaMYPE\Zona;
 
 use Illuminate\Support\Facedes\Redirect;
 
 use PlanificaMYPE\Http\Requests\ClienteFormRequest;
 
 use DB;
+use DateTime;
 
 class ClienteController extends Controller
 {
@@ -20,28 +22,40 @@ class ClienteController extends Controller
 
     }
 
-    public function index(Request $request){ //Request $request
+    public function index(){ //Request $request
         
-    	if ($request){
-    		$query = trim($request->get('searchNombre'));
-    		$clientes = DB::table('cliente') //->get();                    
-    		          ->where('nombres', 'LIKE', '%'.$query.'%')
-                      ->orWhere('apellidoPaterno', 'LIKE', '%'.$query.'%')
-                      ->orWhere('apellidoMaterno', 'LIKE', '%'.$query.'%')
-    		          ->orderBy('numeroDocumento', 'desc')
+    	
+    		$clientes = Cliente::orderBy('idCliente', 'desc')
+                      //->get();
                       ->simplePaginate(8); // 1) cuando lleva paginate, ya no va el ->get() al final
-                                            // 2) simplePaginate es mas eficiente que paginate            
-    		return view('cliente.index', ['clientes'=>$clientes]);
-    	}            
+                                            // 2) simplePaginate es mas eficiente que paginate
+            /*
+            $fechaHoy = new DateTime();
+            $years = array();
+
+            foreach ($clientes as $cliente){
+                $fechaNacimiento = new DateTime ($cliente->fechaNacimiento);
+                $year = $fechaNacimiento->diff($fechaHoy);
+                $years[] = $year->y;
+            }
+           
+            return var_dump($years); */
+            
+            return view('cliente.index', ['clientes'=>$clientes]);    	           
 
     }
 
     public function create (){
-    	return view('cliente.create');
+
+        //obtengo todas las zonas registradas:
+        $zonas= Zona::all();
+
+    	return view('cliente.create', ['zonas'=>$zonas]);
     }
 
     public function store (ClienteFormRequest $request){
-               
+        
+        
     	$cliente= new Cliente();
     	$cliente->nombres=$request->get('nombres');
     	$cliente->apellidoPaterno=$request->get('apellidoPaterno');
@@ -56,42 +70,51 @@ class ClienteController extends Controller
     	$cliente->direccion=$request->get('direccion');
         $cliente->referencia=$request->get('referencia');
     	
-    	$cliente->credito= 0;
+    	$cliente->credito= $request->get('credito'); //todos inician sin credito asignado (0)
 
     	$cliente->idTipoDocumento=$request->get('idTipoDocumento');
     	$cliente->idZona=$request->get('idZona');
 
     	$cliente->save();
-    	return redirect('cliente'); //es una URL
+
+    	return Redirect('cliente'); //es una URL*/
+        //return "entro a stroe";
     }
 
     public function show ($id){
-    	return view('cliente.show', ["cliente"=>Cliente::findOrFail($id)]);
+        return 'Legue al show';
+    	//return view('cliente.show', ["cliente"=>Cliente::findOrFail($id)]);
     }
 
     public function edit($id){
-    	return view('cliente.edit', ["cliente"=>Cliente::findOrFail($id)]);
+        $zonas= Zona::all();
+    	return view('cliente.edit', ['cliente'=>Cliente::findOrFail($id), 'zonas'=>$zonas]);
     }
 
     public function update (ClienteFormRequest $request, $id){
-    	$cliente = Cliente::findOrFail($id);
+    	$cliente = Cliente::find($id);
 
-    	$cliente->nombre=$request->get('nombre');
-    	$cliente->apellidoPaterno=$request->get('apellidoPaterno');
-    	$cliente->apellidoMaterno=$request->get('apellidoMaterno');
-    	$cliente->razonSocial=$request->get('razonSocial');
-    	$cliente->telefono=$request->get('telefono');
-    	$cliente->correo=$request->get('correo');
-    	$cliente->direccion=$request->get('direccion');
-    	$cliente->numeroDocumento=$request->get('numeroDocumento');
-    	$cliente->habilitado=$request->get('habilitado');
+    	$cliente->nombres=$request->get('nombres');
+        $cliente->apellidoPaterno=$request->get('apellidoPaterno');
+        $cliente->apellidoMaterno=$request->get('apellidoMaterno');
+        $cliente->razonSocial= null;
+        $cliente->numeroDocumento=$request->get('numeroDocumento');
+        $cliente->fechaNacimiento= $request->get('fechaNacimiento');
+        $cliente->genero= $request->get('genero');
 
-    	$cliente->idTipoDocumento=$request->get('idTipoDocumento');
-    	$cliente->idZona=$request->get('idZona');
+        $cliente->telefono=$request->get('telefono');
+        $cliente->correo=$request->get('correo');
+        $cliente->direccion=$request->get('direccion');
+        $cliente->referencia=$request->get('referencia');
+        
+        $cliente->credito= $request->get('credito'); //todos inician sin credito asignado
 
-    	$cliente->update();
+        $cliente->idTipoDocumento=$request->get('idTipoDocumento');
+        $cliente->idZona=$request->get('idZona');
 
-    	return Redirect::to('cliente');
+    	$cliente->save();
+
+        return Redirect('cliente');
 
     }
 

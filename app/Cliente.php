@@ -8,7 +8,7 @@ class Cliente extends Model
 {
     protected $table='cliente';
 
-    protected $primaryKey = 'idcliente';
+    protected $primaryKey = 'idCliente';
 
     public $timestamps=false;
 
@@ -33,4 +33,11 @@ class Cliente extends Model
 
     protected $guarded = [
     ];
+
+
+    //relaciones con otros modelos:
+    public function zona()
+    {
+        return $this->belongsTo('PlanificaMYPE\Zona', 'idZona', 'idZona');
+    }
 }
