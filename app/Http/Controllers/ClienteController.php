@@ -12,9 +12,10 @@ use PlanificaMYPE\Zona;
 use Illuminate\Support\Facedes\Redirect;
 
 use PlanificaMYPE\Http\Requests\ClienteFormRequest;
+use PlanificaMYPE\Http\Requests\ClienteUpdateFormRequest;
 
 use DB;
-use DateTime;
+//use DateTime;
 
 class ClienteController extends Controller
 {
@@ -68,17 +69,16 @@ class ClienteController extends Controller
     	$cliente->telefono=$request->get('telefono');
     	$cliente->correo=$request->get('correo');
     	$cliente->direccion=$request->get('direccion');
-        $cliente->referencia=$request->get('referencia');
-    	
-    	$cliente->credito= $request->get('credito'); //todos inician sin credito asignado (0)
+        $cliente->referencia=$request->get('referencia');    
 
     	$cliente->idTipoDocumento=$request->get('idTipoDocumento');
     	$cliente->idZona=$request->get('idZona');
 
+        $cliente->credito= 0; //todos inician sin credito asignado        
+
     	$cliente->save();
 
     	return Redirect('cliente'); //es una URL*/
-        //return "entro a stroe";
     }
 
     public function show ($id){
@@ -91,14 +91,14 @@ class ClienteController extends Controller
     	return view('cliente.edit', ['cliente'=>Cliente::findOrFail($id), 'zonas'=>$zonas]);
     }
 
-    public function update (ClienteFormRequest $request, $id){
+    public function update (ClienteUpdateFormRequest $request, $id){
     	$cliente = Cliente::find($id);
 
     	$cliente->nombres=$request->get('nombres');
         $cliente->apellidoPaterno=$request->get('apellidoPaterno');
         $cliente->apellidoMaterno=$request->get('apellidoMaterno');
         $cliente->razonSocial= null;
-        $cliente->numeroDocumento=$request->get('numeroDocumento');
+        //$cliente->numeroDocumento=$request->get('numeroDocumento');
         $cliente->fechaNacimiento= $request->get('fechaNacimiento');
         $cliente->genero= $request->get('genero');
 
@@ -106,16 +106,18 @@ class ClienteController extends Controller
         $cliente->correo=$request->get('correo');
         $cliente->direccion=$request->get('direccion');
         $cliente->referencia=$request->get('referencia');
-        
-        $cliente->credito= $request->get('credito'); //todos inician sin credito asignado
 
         $cliente->idTipoDocumento=$request->get('idTipoDocumento');
         $cliente->idZona=$request->get('idZona');
 
+        if ($request->credito=='check')
+            $cliente->credito= 1; 
+        else 
+            $cliente->credito= 0; //todos inician sin credito asignado (0)
+
     	$cliente->save();
 
         return Redirect('cliente');
-
     }
 
     public function destroy ($id){

@@ -89,7 +89,7 @@
                     </div>
 
                     <!--Datos ocultos: tipo DNI y credito-->
-                    <input type="hidden" value="{{$cliente->numeroDocumento}}" name="numeroDocumento">
+                    <input type="hidden" value="{{$cliente->numeroDocumento}}" name="numeroDocumento"> 
                     <input type="hidden" value="{{$cliente->idTipoDocumento}}" name="idTipoDocumento">
                     <input type="hidden" value="{{$cliente->credito}}" name="credito">
 
@@ -144,7 +144,27 @@
                       </div> 
                     </div>
                     
+                    <br>
+                    <div class="row">
+                      <h5>Habilitado para crédito</h5>
+                    </div>
 
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <div class="switch">
+                          <label>
+                            No
+                            <input type="checkbox"  value="check" name="credito" @if ($cliente->credito ===  1) checked="checked" @endif >
+                            <span class="lever"></span>
+                            Sí
+                          </label>
+                        </div>
+                      </div>
+                      
+                    </div>
+                    <br>
+                    <br>
+                    
 
                     <!--Los botones del formulario-->
                     <div class="row">

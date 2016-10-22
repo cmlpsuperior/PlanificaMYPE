@@ -55,7 +55,6 @@
 		            </td>
 		            <td>
 		            	<a href="{{action('ClienteController@edit', ['id'=>$cliente->idCliente])}}" title="Editar"><i class="material-icons">edit</i></a>
-		            	<a href="" title="Borrar"><i class="material-icons">delete</i></a>
 		            </td>
 
 		        </tr>   
