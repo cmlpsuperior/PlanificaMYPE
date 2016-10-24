@@ -4,25 +4,25 @@ namespace PlanificaMYPE;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TipoCarga extends Model
+class UnidadMedida extends Model
 {
-    protected $table='tipocarga';
+    protected $table='unidadmedida';
 
-    protected $primaryKey = 'idtipocarga';
+    protected $primaryKey = 'idUnidadMedida';
 
     public $timestamps=false;
 
     protected $fillable = [
-    	'nombre',
-    	'descripcion'
+    	'nombre'
     ];
 
     protected $guarded = [
     ];
 
+
     //relaciones con otros modelos:
     public function articulos()
     {
-        return $this->hasMany('PlanificaMYPE\Articulo', 'idTipoCarga', 'idTipoCarga');
+        return $this->hasMany('PlanificaMYPE\Articulo', 'idUnidadMedida', 'idUnidadMedida');
     }
 }
