@@ -80,8 +80,15 @@ class ArticuloController extends Controller
     }
 
     public function edit($id){
-        $zonas= Zona::all();
-    	return view('cliente.edit', ['cliente'=>Cliente::findOrFail($id), 'zonas'=>$zonas]);
+        //obtengo todas las zonas registradas:
+        $unidadesMedida= UnidadMedida::orderBy('nombre', 'asc')->get();
+        $marcas= Marca::orderBy('nombre', 'asc')->get();
+        $tiposCarga= TipoCarga::orderBy('nombre', 'asc')->get();
+
+    	return view('articulo.edit', [ 'articulo'=>Articulo::findOrFail($id), 
+                                       'unidadesMedida'=>$unidadesMedida, 
+                                       'marcas'=>$marcas, 
+                                       'tiposCarga'=>$tiposCarga]);
     }
 
     public function update (ClienteUpdateFormRequest $request, $id){

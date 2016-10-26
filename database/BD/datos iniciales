@@ -1,0 +1,11 @@
+1.- agregar los tipos de documento (cliente).
+2.- agregar las zonas (cliente).
+
+
+3.- tipo de carga (articulos).
+4.- unidad de medida (articulo).
+5.- marca (articulo).
+
+
+Datos a corregir:
+en crear usuario: agregar un select de dni o pasaporte
