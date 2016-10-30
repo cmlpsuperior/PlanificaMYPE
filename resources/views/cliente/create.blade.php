@@ -130,7 +130,7 @@
                         <select name="idZona">                          
                           <option value="">Seleccionar</option>
                           @foreach ($zonas as $zona)
-                          <option value="{{$zona->idZona}}">{{$zona->nombre}}</option>
+                          <option value="{{$zona->idZona}}" @if ($zona->idZona = old('idZona') ) selected @endif>{{$zona->nombre}}</option>
                           @endforeach
                         </select>
                         <label>Zona *</label>

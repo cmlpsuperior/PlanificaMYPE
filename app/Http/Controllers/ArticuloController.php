@@ -22,9 +22,10 @@ class ArticuloController extends Controller
         
     	
     		$articulos = Articulo::orderBy('idArticulo', 'desc')
-                      //->get();
-                      ->simplePaginate(8); // 1) cuando lleva paginate, ya no va el ->get() al final
-                                            // 2) simplePaginate es mas eficiente que paginate
+                        ->where('activo','=', 1)
+                        //->get();
+                        ->simplePaginate(8); // 1) cuando lleva paginate, ya no va el ->get() al final
+                                                // 2) simplePaginate es mas eficiente que paginate
             /*
             $fechaHoy = new DateTime();
             $years = array();
@@ -65,6 +66,7 @@ class ArticuloController extends Controller
         else 
             $articulo->combinable= 0; //todos inician sin credito asignado (0)
 
+        $articulo->activo= 1; //cuando creo siempre esta activo
         $articulo->idMarca= $request->get('idMarca');
         $articulo->idTipoCarga= $request->get('idTipoCarga');
     	$articulo->idUnidadMedida=$request->get('idUnidadMedida');
@@ -91,36 +93,36 @@ class ArticuloController extends Controller
                                        'tiposCarga'=>$tiposCarga]);
     }
 
-    public function update (ClienteUpdateFormRequest $request, $id){
-    	$cliente = Cliente::find($id);
+    public function update (ArticuloFormRequest $request, $id){
+    	$articulo = Articulo::find($id);
 
-    	$cliente->nombres=$request->get('nombres');
-        $cliente->apellidoPaterno=$request->get('apellidoPaterno');
-        $cliente->apellidoMaterno=$request->get('apellidoMaterno');
-        $cliente->razonSocial= null;
-        //$cliente->numeroDocumento=$request->get('numeroDocumento');
-        $cliente->fechaNacimiento= $request->get('fechaNacimiento');
-        $cliente->genero= $request->get('genero');
+        $articulo->nombre=$request->get('nombre');
+        $articulo->precioBase=$request->get('precioBase');
+        $articulo->stock=$request->get('stock');
+        $articulo->volumen=$request->get('volumen');
+        //$articulo->tiempoHorasAbastecer= null;
 
-        $cliente->telefono=$request->get('telefono');
-        $cliente->correo=$request->get('correo');
-        $cliente->direccion=$request->get('direccion');
-        $cliente->referencia=$request->get('referencia');
-
-        $cliente->idTipoDocumento=$request->get('idTipoDocumento');
-        $cliente->idZona=$request->get('idZona');
-
-        if ($request->credito=='check')
-            $cliente->credito= 1; 
+        if ($request->idTipoCarga!=  1 || $request->combinable=='check')  // solo pueden ser no combinables los tipo 1, si no son tipo 1, entonces siempre son combinables
+            $articulo->combinable= 1; 
         else 
-            $cliente->credito= 0; //todos inician sin credito asignado (0)
+            $articulo->combinable= 0; //todos inician sin credito asignado (0)
 
-    	$cliente->save();
+        $articulo->idMarca= $request->get('idMarca');
+        $articulo->idTipoCarga= $request->get('idTipoCarga');
+        $articulo->idUnidadMedida=$request->get('idUnidadMedida');
 
-        return Redirect('cliente');
+        $articulo->save();
+
+        return Redirect('articulo'); //es una URL
+
     }
 
     public function destroy ($id){
-    	
+    	$articulo = Articulo::find($id);
+
+        $articulo->activo= 0;
+
+        $articulo->save();
+        return Redirect('articulo'); //es una URL
     }
 }

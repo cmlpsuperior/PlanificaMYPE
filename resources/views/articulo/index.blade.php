@@ -40,24 +40,27 @@
 	        <tbody>
 
 	        	@foreach ($articulos as $articulo)
-	            <tr>
-		            <td hidden="true">{{ $articulo->idAticulo}}</td>
-		            <td>{{ $articulo->unidadMedida->nombre}}</td>
-		            <td>{{ $articulo->nombre.' - '.$articulo->marca->nombre}}</td>
-		            <td>{{ $articulo->tipoCarga->nombre}} - 		          
-		            	@if ($articulo->combinable ===1)
-		            	combinable
-		            	@else
-		            	no combinable
-		            	@endif
-		            </td>
-		            <td>{{ $articulo->precioBase}}</td>
-		            <td>{{ $articulo->stock}}</td>
-		            <td>
-		            	<a href="{{action('ArticuloController@edit', ['id'=>$articulo->idArticulo])}}" title="Editar"><i class="material-icons">edit</i></a>
-		            </td>
+		            <tr>
+			            <td hidden="true">{{ $articulo->idAticulo}}</td>
+			            <td>{{ $articulo->unidadMedida->nombre}}</td>
+			            <td>{{ $articulo->nombre.' - '.$articulo->marca->nombre}}</td>
+			            <td>{{ $articulo->tipoCarga->nombre}} - 		          
+			            	@if ($articulo->combinable ===1)
+			            	combinable
+			            	@else
+			            	no combinable
+			            	@endif
+			            </td>
+			            <td>{{ $articulo->precioBase}}</td>
+			            <td>{{ $articulo->stock}}</td>
+			            <td>
+			            	<a href="{{action('ArticuloController@edit', ['id'=>$articulo->idArticulo])}}" title="Editar"><i class="material-icons">edit</i></a>
+			            	<a class="modal-trigger" href="#modal-delete-{{$articulo->idArticulo}}" title="Eliminar"><i class="material-icons">delete</i></a>
+			            </td>
 
-		        </tr>   
+			        </tr>  
+					
+					@include('articulo.modal')
 
 		        @endforeach
 
@@ -73,3 +76,24 @@
 </div>
 <br>
 @endsection
+
+@section ('scriptcontenido')
+<script>  
+    
+
+    $(document).ready(function() {
+
+        
+
+     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-trigger').leanModal();   
+
+      
+
+  });
+
+  
+  
+</script>
+
+@stop

@@ -77,7 +77,7 @@
                       <ul>
                         <li><a href="{{ url('cliente')}}">Clientes</a></li>
                         <li><a href="#!">Vehículos</a></li>
-                        <li><a href="#!">Artículos</a></li>          
+                        <li><a href="{{ url('articulo')}}">Artículos</a></li>          
                         <li><a href="#!">Zonas</a></li>          
                         <li><a href="#!">Empleados</a></li>
                       </ul>
