@@ -40,4 +40,9 @@ class Cliente extends Model
     {
         return $this->belongsTo('PlanificaMYPE\Zona', 'idZona', 'idZona');
     }
+
+    public function pedidos()
+    {
+        return $this->hasMany ('PlanificaMYPE\Pedido', 'idCliente', 'idCliente');
+    }
 }

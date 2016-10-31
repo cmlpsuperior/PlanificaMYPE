@@ -24,6 +24,11 @@ class Zona extends Model
     //relaciones con otros modelos:
     public function clientes()
     {
-        return $this->hasMany('PlanificaMYPE\cliente', 'idZona', 'idZona');
+        return $this->hasMany('PlanificaMYPE\Cliente', 'idZona', 'idZona');
+    }
+
+    public function pedidos()
+    {
+        return $this->hasMany('PlanificaMYPE\Pedido', 'idZona', 'idZona');
     }
 }
