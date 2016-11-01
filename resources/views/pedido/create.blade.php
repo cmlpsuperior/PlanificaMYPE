@@ -37,6 +37,11 @@
           @endif
 
           {{Form::open (array('url' => 'pedido', 'method'=>'POST'))}} <!--para llamar al store, se le llama igual que al index, pero con metodo post-->
+          
+          <br>
+          <h5>Datos generales</h5>
+          <div class="divider"></div>
+
           <div class="row">
 
             <div class="col s12 m12 l6">
@@ -145,6 +150,11 @@
 
 
           </div>
+
+          <br>
+          <h5>Lista de articulos</h5>
+          <div class="divider"></div>
+          
           
           <div class="row"><!--fila de los articulos-->
             <div class="col s12 m12">
@@ -200,7 +210,7 @@
           </div>
           
           <div class="row">
-            <h5>Lista de articulos</h5>
+            
             <table class="bordered highlight responsive-table" id="detalles">
               <thead>
                 <tr>
@@ -235,7 +245,7 @@
 
             <div class="input-field col s12 right-align">
               <a class="waves-effect waves-light btn" href="{{ url('pedido')}}">Cancelar</a>
-              <button class="btn waves-effect waves-light" type="submit" name="action">Registrar
+              <button class="btn waves-effect waves-light" type="submit" name="action" id="btnGuardar">Registrar
                 <i class="material-icons right">send</i>
               </button>                
             </div>              
@@ -252,8 +262,12 @@
 <script>
 
   $(document).ready(function(){
+    evaluar();
+
     $("#btnAgregar").click(function(){
       agregar();
+      limpiar();
+      evaluar();
     })
 
   });
@@ -281,9 +295,7 @@
 
       contador++;
 
-      limpiar();
-      $("#total").html("S/. "+ total);
-      evaluar();
+      $("#total").html("S/. "+ total);      
       $("#detalles").append(fila);
     }
     else{
@@ -298,11 +310,13 @@
 
   function evaluar(){
     if (total>0){
-      $("#guardar").show();
+      //$("#btnGuardar").show();
+      $("#btnGuardar").prop("disabled", true);
 
     }
     else {
-      $("#guardar").hide();
+      //$("#guardar").hide();
+      $("#btnGuardar").prop("disabled", true);
     }
   }
 

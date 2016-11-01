@@ -152,7 +152,6 @@
       <script type="text/javascript" src="{{ asset('js/materialize.min.js')}}"></script>
       
       
-      
       <script>
         $(document).ready(function() {
                   
