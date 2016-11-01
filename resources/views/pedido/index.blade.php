@@ -13,9 +13,13 @@
 
 
 <div class="container">
-	<div class= "row">
-		<h3>Lista de pedidos</h3>
-	</div>
+	<br>
+	<div class="row">
+	    <div class="col s12 center">
+	      <h5>Lista de pedidos</h5>
+	      <div class="divider"></div>
+	    </div>
+	  </div>
 
 	<div class= "row">
 		<div class="col s12 right-align">

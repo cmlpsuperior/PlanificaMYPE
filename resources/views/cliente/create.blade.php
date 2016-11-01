@@ -15,161 +15,158 @@
         </nav>
 
 
-
-
-
-
-        
-
-
         <!--Contenido del cuerpo-->
         <br>
         <div class="container">
 
+          <!--Mostrara los errores que se hayan cometido:-->
+          @if (count($errors)>0)
           <div class="row">
-            <div class="col s12 m10 l8 offset-m1 offset-l2 ">
+            <div class="alert col s12">
+              <ul>
+                  @foreach ($errors -> all() as $error)
+                    <li>{{$error}}</li>
+                  @endforeach
+              </ul>
+            </div>            
+          </div>
+          @endif
+
+          <div class="row">
+            <div class="col s12 center">
+              <h5>Registrar cliente</h5>
+              <div class="divider"></div>
+            </div>
+          </div>
+          
+
+          {{Form::open (array('url' => 'cliente', 'method'=>'POST'))}} <!--para llamar al store, se le llama igual que al index, pero con metodo post-->
+          <div class="row">
+
+            <div class="col s12 m12 l6">
               <div class="card">
+
                 <div class="card-content">
-                  {{Form::open (array('url' => 'cliente', 'method'=>'POST'))}} <!--para llamar al store, se le llama igual que al index, pero con metodo post-->
-                    <div class="row">
-                      <h4 class="teal-text">Registrar nuevo cliente</h4>
+                  <i class="material-icons prefix">account_circle</i>
+                  <span class="card-title">Datos personales</span>
+                  <br><br>   
+
+                  <div class="row">
+                    <div class="input-field col s6">
+                      <input id="Nombres" type="text" class="validate"  required value="{{ old('nombres') }}" name="nombres">
+                      <label for="Nombres">Nombres *</label>
                     </div>
-                    <br>
                     
-                    <!--Mostrara los errores que se hayan cometido:-->
-                    @if (count($errors)>0)
-                    <div class="alert">
-                      <ul>
-                          @foreach ($errors -> all() as $error)
-                            <li>{{$error}}</li>
-                          @endforeach
-                      </ul>
-                    </div>
-                    @endif
+                    <div class="input-field col s6">
+                      <input id="ApellidoPaterno" type="text" class="validate" required value="{{ old('apellidoPaterno') }}" name="apellidoPaterno">
+                      <label for="ApellidoPaterno">Apellido paterno *</label>
+                    </div>              
+                  </div>
 
-                    <div class="row">
-                      <h5>Datos personales</h5>
+                  <div class="row">              
+                    <div class="input-field col s6">
+                      <input id="ApellidoMaterno" type="text" class="validate" required value="{{ old('apellidoMaterno') }}" name="apellidoMaterno">
+                      <label for="ApellidoMaterno">Apellido materno *</label>
                     </div>
 
+                    <div class="input-field col s6">
+                      <input id="dni" type="number" class="validate" required value="{{ old('numeroDocumento') }}" name="numeroDocumento">
+                      <label for="dni">DNI *</label>
+                    </div>
+                  </div>
 
-                    <div class="row">
-                      <div class="input-field col s6">
-                        <i class="material-icons prefix">account_circle</i>
-                        <input id="Nombres" type="text" class="validate"  required value="{{ old('nombres') }}" name="nombres">
-                        <label for="Nombres">Nombres *</label>
-                      </div>
+                  <div class="row">              
+                    <div class="input-field col s6">
+                      <input id="fechaNacimiento" type="date" class="datepicker" value="{{ old('fechaNacimiento') }}" name="fechaNacimiento">
+                      <label for="fechaNacimiento">Fecha nacimiento *</label>
+                    </div>
+
+                    <div class="input-field col s6">
+                                          
+                      <input name="genero" type="radio" id="genero1" value='1' @if (old('genero') ==  1) checked="checked" @endif />
+                      <label for="genero1">Hombre</label>
                       
-                      <div class="input-field col s6">
-                        <i class="material-icons prefix">account_circle</i>
-                        <input id="ApellidoPaterno" type="text" class="validate" required value="{{ old('apellidoPaterno') }}" name="apellidoPaterno">
-                        <label for="ApellidoPaterno">Apellido paterno *</label>
-                      </div>              
+                      <input name="genero" type="radio" id="genero2" value='2' @if (old('genero') ==  2) checked="checked" @endif />
+                      <label for="genero2">Mujer</label>                    
+                      
                     </div>
 
-                    <div class="row">              
-                      <div class="input-field col s6">
-                        <i class="material-icons prefix">account_circle</i>
-                        <input id="ApellidoMaterno" type="text" class="validate" required value="{{ old('apellidoMaterno') }}" name="apellidoMaterno">
-                        <label for="ApellidoMaterno">Apellido materno *</label>
-                      </div>
-
-                      <div class="input-field col s6">
-                        <i class="material-icons prefix">assignment_ind</i>
-                        <input id="dni" type="text" class="validate" required value="{{ old('numeroDocumento') }}" name="numeroDocumento">
-                        <label for="dni">DNI *</label>
-                      </div>
-                    </div>
-
-                    <div class="row">              
-                      <div class="input-field col s6">
-                        <i class="material-icons prefix">today</i>
-                        <input id="fechaNacimiento" type="date" class="datepicker" value="{{ old('fechaNacimiento') }}" name="fechaNacimiento">
-                        <label for="fechaNacimiento">Fecha nacimiento *</label>
-                      </div>
-
-                      <div class="input-field col s6">
-                                            
-                        <input name="genero" type="radio" id="genero1" value='1' @if (old('genero') ==  1) checked="checked" @endif />
-                        <label for="genero1">Hombre</label>
-                        
-                        <input name="genero" type="radio" id="genero2" value='2' @if (old('genero') ==  2) checked="checked" @endif />
-                        <label for="genero2">Mujer</label>                    
-                        
-                      </div>
-
-                    </div>
-
-                    <!--Datos ocultos: codigo DNI-->
-                    <input type="hidden" value="1" name="idTipoDocumento">
-                    <input type="hidden" value="0" name="credito">
-
-
-                    <br>
-                    <div class="row">
-                      <h5>Datos de contacto</h5>
-                    </div>
-
-                    <div class="row">
-                      <div class="input-field col s6">
-                        <i class="material-icons prefix">phone</i>
-                        <input id="icon_telephone" type="tel" class="validate" value="{{ old('telefono') }}" name="telefono">
-                        <label for="icon_telephone">Teléfono</label>
-                      </div>
-
-                      <div class="input-field col s6">
-                        <i class="material-icons prefix">email</i>
-                        <input id="email" type="email" class="validate" value="{{ old('correo') }}" name="correo">
-                        <label for="email" data-error="wrong" data-success="right">Correo</label>
-                      </div>
-                    </div>
-                    
-
-                    <div class="row">
-                      <div class="input-field col s6">
-                        <i class="material-icons prefix">location_on</i>
-                        <select name="idZona">                          
-                          <option value="">Seleccionar</option>
-                          @foreach ($zonas as $zona)
-                          <option value="{{$zona->idZona}}" @if ($zona->idZona = old('idZona') ) selected @endif>{{$zona->nombre}}</option>
-                          @endforeach
-                        </select>
-                        <label>Zona *</label>
-                      </div>    
-
-                      <div class="input-field col s6">
-                        <i class="material-icons prefix">location_on</i>
-                        <input id="direccion" type="text" class="validate" required value="{{ old('direccion') }}" name="direccion">
-                        <label for="direccion">Dirección *</label>
-                      </div>          
-                    </div>
-                  
-
-                    <div class="row">
-                      <div class="input-field col s12">
-                        <i class="material-icons prefix">location_on</i>
-                        <textarea id="referencia" class="materialize-textarea" name="referencia">{{ old('referencia') }}</textarea>
-                        <label for="referencia">Referencia</label>
-                      </div> 
-                    </div>
-                    
-
-
-                    <!--Los botones del formulario-->
-                    <div class="row">
-                      <div class="input-field col s12 right-align">
-                        <a class="waves-effect waves-light btn" href="{{ url('cliente')}}">Cancelar</a>
-                        <button class="btn waves-effect waves-light" type="submit" name="action">Registrar
-                          <i class="material-icons right">send</i>
-                        </button>                
-                      </div>              
-                    </div>
-                    
-                  {{ Form::close()}}
+                  </div>
+                  <br><br>
                 </div>
               </div>
             </div>
+
+            <!--Datos ocultos: codigo DNI-->
+            <input type="hidden" value="1" name="idTipoDocumento">
+            <input type="hidden" value="0" name="credito">
+
+            <div class="col s12 m12 l6">
+              <div class="card">
+
+                <div class="card-content">
+                  <i class="material-icons prefix">account_circle</i>
+                  <span class="card-title">Datos de contacto</span>
+                  <br><br>  
+
+                  <div class="row">
+                    <div class="input-field col s6">
+                      <input id="icon_telephone" type="tel" class="validate" value="{{ old('telefono') }}" name="telefono">
+                      <label for="icon_telephone">Teléfono</label>
+                    </div>
+
+                    <div class="input-field col s6">
+                      <input id="email" type="email" class="validate" value="{{ old('correo') }}" name="correo">
+                      <label for="email" data-error="wrong" data-success="right">Correo</label>
+                    </div>
+                  </div>
+                    
+
+                  <div class="row">
+                    <div class="input-field col s6">
+                      <select name="idZona">                          
+                        <option value="">Seleccionar</option>
+                        @foreach ($zonas as $zona)
+                        <option value="{{$zona->idZona}}" @if ($zona->idZona = old('idZona') ) selected @endif>{{$zona->nombre}}</option>
+                        @endforeach
+                      </select>
+                      <label>Zona *</label>
+                    </div>    
+
+                    <div class="input-field col s6">
+                      <input id="direccion" type="text" class="validate" required value="{{ old('direccion') }}" name="direccion">
+                      <label for="direccion">Dirección *</label>
+                    </div>          
+                  </div>
+                
+
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <textarea id="referencia" class="materialize-textarea" name="referencia">{{ old('referencia') }}</textarea>
+                      <label for="referencia">Referencia</label>
+                    </div> 
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
           </div>
+
+
+          <!--Los botones del formulario-->
+          <div class="row">
+            <div class="input-field col s12 right-align">
+              <a class="waves-effect waves-light btn" href="{{ url('cliente')}}">Cancelar</a>
+              <button class="btn waves-effect waves-light" type="submit" name="action">Registrar
+                <i class="material-icons right">send</i>
+              </button>                
+            </div>              
+          </div>
+                    
+          {{ Form::close()}}          
         </div>
+        
 
 @stop
 

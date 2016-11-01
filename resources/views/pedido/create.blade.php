@@ -38,11 +38,17 @@
 
           {{Form::open (array('url' => 'pedido', 'method'=>'POST'))}} <!--para llamar al store, se le llama igual que al index, pero con metodo post-->
           
-          <br>
-          <h5>Datos generales</h5>
-          <div class="divider"></div>
+          <div class="row">
+            <div class="col s12 center">
+              <h5>Datos generales</h5>
+              <div class="divider"></div>
+            </div>
+          </div>
+          
 
           <div class="row">
+
+            
 
             <div class="col s12 m12 l6">
               <div class="card">
@@ -151,11 +157,14 @@
 
           </div>
 
-          <br>
-          <h5>Lista de articulos</h5>
-          <div class="divider"></div>
+          <div class="row">
+            <div class="col s12 center">
+              <h5>Lista de articulos</h5>
+              <div class="divider"></div>
+            </div>
+          </div>
           
-          
+          <!--inicio: posiblemente se va-->
           <div class="row"><!--fila de los articulos-->
             <div class="col s12 m12">
 
@@ -208,7 +217,16 @@
 
             </div>
           </div>
-          
+          <!--fin: posiblemente se va-->
+
+
+          <div class= "row">
+            <div class="col s12 right-align">
+              <a href="#!" class="waves-effect waves-light btn">Agregar articulos</a>
+            </div>
+            
+          </div>
+
           <div class="row">
             
             <table class="bordered highlight responsive-table" id="detalles">
@@ -276,6 +294,7 @@
   contador=0;
   total =0;
   subtotal=[];
+
   function agregar(){
     idArticulo= $("#pIdArticulo").val();
     articulo= $("#pIdArticulo option:selected").text();
@@ -286,11 +305,12 @@
       subtotal[contador]= cantidad*precioUnitario;
       total= total+ subtotal[contador];
 
-      var fila =  '<tr class="selected" id="fila"'+contador+'">'+                    
+      var fila =  '<tr class="selected" id="fila'+contador+'">'+                    
                     '<td><input type="hidden" name="cantidades[]" value="'+cantidad+'">'+cantidad+'</td>'+
                     '<td><input type="hidden" name="idArticulos[]" value="'+idArticulo+'">'+articulo+'</td>'+
                     '<td><input type="hidden" name="preciosUnitarios[]" value="'+precioUnitario+'">'+precioUnitario+'</td>'+
                     '<td>'+precioUnitario*cantidad+'</td>'+
+                    '<td><a class="modal-trigger" href="#!" onclick="eliminar('+contador+');" title="Eliminar"><i class="material-icons">delete</i></a></td>'
                   '</tr>';
 
       contador++;
@@ -311,7 +331,7 @@
   function evaluar(){
     if (total>0){
       //$("#btnGuardar").show();
-      $("#btnGuardar").prop("disabled", true);
+      $("#btnGuardar").prop("disabled", false);
 
     }
     else {

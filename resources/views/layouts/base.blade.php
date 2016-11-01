@@ -76,11 +76,12 @@
 
                     <div class="collapsible-body">
                       <ul>
-                        <li><a href="{{ url('cliente')}}">Clientes</a></li>
-                        <li><a href="#!">Vehículos</a></li>
-                        <li><a href="{{ url('articulo')}}">Artículos</a></li>          
+                        <li><a href="{{ url('pedido') }}">Pedidos</a></li> 
+                        <li><a href="{{ url('cliente') }}">Clientes</a></li>                        
+                        <li><a href="{{ url('articulo') }}">Artículos</a></li>          
                         <li><a href="#!">Zonas</a></li>          
                         <li><a href="#!">Empleados</a></li>
+                        <li><a href="#!">Vehículos</a></li>
                       </ul>
                     </div>
 

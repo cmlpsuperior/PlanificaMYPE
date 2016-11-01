@@ -13,10 +13,14 @@
 
 
 <div class="container">
-	<div class= "row">
-		<h3>Lista de clientes</h3>
-	</div>
-
+	<br>
+	<div class="row">
+	    <div class="col s12 center">
+	      <h5>Lista de clientes</h5>
+	      <div class="divider"></div>
+	    </div>
+	  </div>
+	
 	<div class= "row">
 		<div class="col s12 right-align">
 			<a href="{{ url('cliente/create')}}" class="waves-effect waves-light btn">+ Nuevo cliente</a>
