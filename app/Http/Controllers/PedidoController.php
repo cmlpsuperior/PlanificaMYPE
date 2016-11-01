@@ -39,7 +39,7 @@ class PedidoController extends Controller
         $empleados= Empleado::orderBy('apellidoPaterno', 'asc')->get();
         $articulos= Articulo::orderBy('nombre', 'asc')->get();
 
-    	return view('pedido.create', ['zonas'=>$zonas, 'clientes'=> $clientes, 'empleados' => $empleados]);
+    	return view('pedido.create', ['zonas'=>$zonas, 'clientes'=> $clientes, 'empleados' => $empleados, 'articulos'=>$articulos]);
     }
 
     public function store (PedidoFormRequest $request){

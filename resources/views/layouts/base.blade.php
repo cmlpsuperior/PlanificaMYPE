@@ -6,7 +6,8 @@
       <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import materialize.css-->
       <link type="text/css" rel="stylesheet" href="{{ asset('css/materialize.min.css')}}"  media="screen,projection"/>
-
+      <!--Mis stilos-->
+      <link type="text/css" rel="stylesheet" href="{{ asset('css/main.css')}}"/>
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
@@ -157,6 +158,14 @@
                   
           $(".dropdown-button").dropdown();
           $(".button-collapse").sideNav();      /*es para que boton de hamburgesa funcione*/
+          
+          $('select').material_select(); 
+          $('.datepicker').pickadate({ /*es para que funcione e datepicker*/
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 200, // Creates a dropdown of 15 years to control year
+            format: 'yyyy/mm/dd'
+          });
+        
           
         });
       </script>

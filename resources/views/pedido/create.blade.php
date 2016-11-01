@@ -25,133 +25,213 @@
         <!--Contenido del cuerpo-->
         <br>
         <div class="container">
+          <!--Mostrara los errores que se hayan cometido:-->
+          @if (count($errors)>0)
+          <div class="alert">
+            <ul>
+                @foreach ($errors -> all() as $error)
+                  <li>{{$error}}</li>
+                @endforeach
+            </ul>
+          </div>
+          @endif
+
           {{Form::open (array('url' => 'pedido', 'method'=>'POST'))}} <!--para llamar al store, se le llama igual que al index, pero con metodo post-->
           <div class="row">
-            <div class="col s12 m10 l8 offset-m1 offset-l2 ">
+
+            <div class="col s12 m12 l6">
+              <div class="card">
+
+                <div class="card-content">
+                  <i class="material-icons prefix">account_circle</i>
+                  <span class="card-title">Datos del cliente</span>
+                  <br><br>
+                  <div class="row">
+    
+                    <div class="input-field col s6">                      
+                      <select name="idCliente">                          
+                        <option value="">Seleccionar</option>
+                        @foreach ($clientes as $cliente)
+                          <option value="{{$cliente->idCliente}}" @if ($cliente->idCliente == old('idCliente') ) selected @endif>{{$cliente->numeroDocumento}}</option>
+                        @endforeach
+                      </select>
+                      <label for ="idCliente">Documento *</label>
+                    </div> 
+
+                    <div class="input-field col s6">
+                      <input id="credito" type="text" class="validate"  disabled value="" name="credito">
+                      <label for="credito">Crédito</label>
+                    </div>
+                                
+                  </div> 
+
+                  <div class="row">
+    
+                    <div class="input-field col s12">
+                      <input id="nombreCompleto" type="text" class="validate"  disabled value="" name="nombreCompleto">
+                      <label for="nombreCompleto">Nombre completo</label>
+                    </div>
+                                
+                  </div>
+
+
+                </div>
+
+
+                <div class="card-action ">                  
+                    <a href="#" class="teal-text">Buscar</a>
+                
+                </div>
+
+              </div><!--fin de la tarjeta-->
+            </div>
+
+            <div class="col s12 m12 l6">
               <div class="card">
                 <div class="card-content">
-                  
-                    <div class="row">
-                      <h4 class="teal-text">Registrar nuevo pedido</h4>
+                  <i class="material-icons prefix">location_on</i>
+                  <span class="card-title">Datos de envío</span>
+                  <br><br>
+
+                  <div class="row">  
+
+                    <div class="input-field col s6">
+                      <i class="material-icons prefix">today</i>
+                      <input id="fechaEnvio" type="date" class="datepicker" value="{{ old('fechaEnvio') }}" name="fechaEnvio">
+                      <label for="fechaEnvio">Envío *</label>
                     </div>
                     
-                    <!--Mostrara los errores que se hayan cometido:-->
-                    @if (count($errors)>0)
-                    <div class="alert">
-                      <ul>
-                          @foreach ($errors -> all() as $error)
-                            <li>{{$error}}</li>
-                          @endforeach
-                      </ul>
-                    </div>
-                    @endif
-
-                    <div class="row">
-                      <h5>Tipo de pedido</h5>
+                    <div class="input-field col s6">
+                      <i class="material-icons prefix">phone</i>
+                      <input id="telefono" type="number" min="0" class="validate" value="{{ old('telefono') }}" name="telefono">
+                      <label for="telefono" data-error="wrong" data-success="right">Teléfono</label>
                     </div>
 
-                    <div class="row">
 
-                      <div class="input-field col s12">
-                                            
-                        <input name="tipoPedido" type="radio" id="tipoPedido1" value='1' @if (old('tipoPedido') ==  1) checked="checked" @endif />
-                        <label for="tipoPedido1">Presencial</label>
-                        
-                        <input name="tipoPedido" type="radio" id="tipoPedido2" value='2' @if (old('tipoPedido') ==  2) checked="checked" @endif />
-                        <label for="tipoPedido2">Por teléfono</label>                    
-                        
-                      </div>
-                      
-                    </div>
+                  </div>
 
-                    <br>
-                    <div class="row">
-                      <h5>Datos del cliente</h5>
-                    </div>
+
+                  <div class="row">
                     
-                    <div class="row">
-      
-                      <div class="input-field col s6">
-                        <i class="material-icons prefix">account_circle</i>
-                        <select name="idCliente">                          
-                          <option value="">Seleccionar</option>
-                          @foreach ($clientes as $cliente)
-                            <option value="{{$cliente->idCliente}}" @if ($cliente->idCliente == old('idCliente') ) selected @endif>{{$cliente->numeroDocumento}} {{$cliente->nombres}}</option>
-                          @endforeach
-                        </select>
-                        <label for ="idCliente">Cliente *</label>
-                      </div> 
+                    <div class="input-field col s6">
 
-                      <div class="input-field col s6">
-                        <i class="material-icons prefix">account_circle</i>
-                        <input id="nombreCliente" type="text" class="validate"  disabled value="" name="nombreCliente">
-                        <label for="nombreCliente">Nombre</label>
-                      </div>
-                                  
-                    </div>                    
-                    
-                    <br>
-                    <div class="row">
-                      <h5>Datos de envío</h5>
-                    </div>
+                      <select name="idZona" id="idZona">                          
+                        <option value="">Seleccionar</option>
+                        @foreach ($zonas as $zona)
+                          <option value="{{$zona->idZona}}" @if ( $zona->idZona == old('idZona') ) selected @endif >{{$zona->nombre}}</option>
+                        @endforeach
+                      </select>
+                      <label for ="idZona">Zona *</label>
+                    </div> 
 
-                    <div class="row">  
+                    <div class="input-field col s6">
+                      <input id="direccion" type="text" class="validate" required value="{{ old('direccion') }}" name="direccion">
+                      <label for="direccion">Dirección *</label>
+                    </div>  
 
-                      <div class="input-field col s6">
-                        <i class="material-icons prefix">today</i>
-                        <input id="fechaEnvio" type="date" class="datepicker" value="{{ old('fechaEnvio') }}" name="fechaEnvio">
-                        <label for="fechaEnvio">Fecha de envío *</label>
-                      </div>
-                      
-                      <div class="input-field col s6">
-                        <i class="material-icons prefix">phone</i>
-                        <input id="telefono" type="number" min="0" class="validate" value="{{ old('telefono') }}" name="telefono">
-                        <label for="telefono" data-error="wrong" data-success="right">Teléfono</label>
-                      </div>
+                  </div>
 
-
-                    </div>
-
-
-                    <div class="row">
-                      
-                      <div class="input-field col s6">
-                        <i class="material-icons prefix">location_on</i>
-                        <select name="idZona" id="idZona">                          
-                          <option value="">Seleccionar</option>
-                          @foreach ($zonas as $zona)
-                            <option value="{{$zona->idZona}}" @if ( $zona->idZona == old('idZona') ) selected @endif >{{$zona->nombre}}</option>
-                          @endforeach
-                        </select>
-                        <label for ="idZona">Zona *</label>
-                      </div> 
-
-                      <div class="input-field col s6">
-                        <i class="material-icons prefix">location_on</i>
-                        <input id="direccion" type="text" class="validate" required value="{{ old('direccion') }}" name="direccion">
-                        <label for="direccion">Dirección *</label>
-                      </div>  
-
-                    </div>
-
-                    <div class="row">
-                      <div class="input-field col s12">
-                        <i class="material-icons prefix">location_on</i>
-                        <textarea id="referencia" class="materialize-textarea" name="referencia">{{ old('referencia') }}</textarea>
-                        <label for="referencia">Referencia</label>
-                      </div> 
-                    </div>
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <textarea id="referencia" class="materialize-textarea" name="referencia">{{ old('referencia') }}</textarea>
+                      <label for="referencia">Referencia</label>
+                    </div> 
+                  </div>
           
                     
                 </div>
               </div>
             </div>
+
+
+          </div>
+          
+          <div class="row"><!--fila de los articulos-->
+            <div class="col s12 m12">
+
+              <div class="card">
+
+                <div class="card-content">
+                  <i class="material-icons prefix">shopping_cart</i>
+
+                  <span class="card-title">Datos del articulo</span>
+                  <br><br>
+                  <div class="row">
+    
+                    <div class="input-field col s12"> 
+                      
+                      <select name="pIdArticulo" id="pIdArticulo">                          
+                        <option value="">Seleccionar</option>
+                        @foreach ($articulos as $articulo)
+                          <option value="{{$articulo->idArticulo}}" @if ($articulo->idArticulo == old('idArticulo') ) selected @endif>
+                            {{$articulo->nombre}} -  {{$articulo->marca->nombre}} ( {{$articulo->unidadMedida->nombre}} )
+                          </option>
+                        @endforeach
+                      </select>
+                      <label for ="idCliente">Descripcion*</label>
+                    </div> 
+                                
+                  </div> 
+
+                  <div class="row">
+                    
+                    <div class="input-field col s6">
+                      <input id="pCantidad" type="number" step="0.5" min="0.5" class="validate" required value="{{ old('pCantidad') }}" name="pCantidad">
+                      <label for="pCantidad">Cantidad *</label>
+                    </div>
+
+                    <div class="input-field col s6">
+                      <input id="pPrecioUnitario" type="number" step="0.01" min="0.01" class="validate" required value="{{ old('pPrecioUnitario') }}" name="pPrecioUnitario">
+                      <label for="pPrecioUnitario">Precio unitario *</label>
+                    </div>
+                                
+                  </div>
+
+                </div>
+
+                <div class="card-action ">                  
+                    <a href="#!" class="teal-text" id="btnAgregar">Agregar a la lista</a>
+                
+                </div>
+
+              </div><!--fin de la tarjeta-->
+
+            </div>
+          </div>
+          
+          <div class="row">
+            <h5>Lista de articulos</h5>
+            <table class="bordered highlight responsive-table" id="detalles">
+              <thead>
+                <tr>
+                    <th data-field="cantidad">Cantidad</th>
+                    <th data-field="descripcion">Descripción</th>
+                    <th data-field="precio">P.U.</th>
+                    <th data-field="subtotal">Subtotal</th>
+                    <th data-field="acciones">Acciones</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Total</th>
+                  <th></th>
+                  <th></th>
+                  <th><h5 id="total">S/. 0.00</h5></th>
+                  <th></th>
+                  
+                </tr>
+
+              </tfoot>
+            </table>    
+                       
           </div>
 
-
-
           <!--Los botones del formulario-->
-          <div class="row">
+          <div class="row" id="guardar">
 
             <div class="input-field col s12 right-align">
               <a class="waves-effect waves-light btn" href="{{ url('pedido')}}">Cancelar</a>
@@ -166,27 +246,73 @@
 
 @stop
 
+
 @section ('scriptcontenido')
-<script>  
-    
 
-    $(document).ready(function() {
+<script>
 
-      $('.datepicker').pickadate({ /*es para que funcione e datepicker*/
-        selectMonths: true, // Creates a dropdown to control month
-        selectYears: 200, // Creates a dropdown of 15 years to control year
-        format: 'yyyy/mm/dd'
-      });
-
-      /*Para inicar el select*/
-      $('select').material_select();     
-
-      
+  $(document).ready(function(){
+    $("#btnAgregar").click(function(){
+      agregar();
+    })
 
   });
 
-  
-  
-</script>
 
+  contador=0;
+  total =0;
+  subtotal=[];
+  function agregar(){
+    idArticulo= $("#pIdArticulo").val();
+    articulo= $("#pIdArticulo option:selected").text();
+    cantidad= $("#pCantidad").val();
+    precioUnitario = $("#pPrecioUnitario").val();
+
+    if (idArticulo!="" && cantidad!="" && cantidad>0 && precioUnitario!=""){
+      subtotal[contador]= cantidad*precioUnitario;
+      total= total+ subtotal[contador];
+
+      var fila =  '<tr class="selected" id="fila"'+contador+'">'+                    
+                    '<td><input type="hidden" name="cantidades[]" value="'+cantidad+'">'+cantidad+'</td>'+
+                    '<td><input type="hidden" name="idArticulos[]" value="'+idArticulo+'">'+articulo+'</td>'+
+                    '<td><input type="hidden" name="preciosUnitarios[]" value="'+precioUnitario+'">'+precioUnitario+'</td>'+
+                    '<td>'+precioUnitario*cantidad+'</td>'+
+                  '</tr>';
+
+      contador++;
+
+      limpiar();
+      $("#total").html("S/. "+ total);
+      evaluar();
+      $("#detalles").append(fila);
+    }
+    else{
+      alert("Error al agregar un articulo, verifique que los datos ingresados sean correctos");
+    }
+  }
+
+  function limpiar(){
+    $("#pPrecioUnitario").val("");
+    $("#pCantidad").val("");
+  }
+
+  function evaluar(){
+    if (total>0){
+      $("#guardar").show();
+
+    }
+    else {
+      $("#guardar").hide();
+    }
+  }
+
+  function  eliminar (index){
+    total= total-subtotal[index];
+    $("#total").html("S/. "+ total);
+    $("#fila"+index).remove();
+    evaluar();
+  }
+
+</script>
 @stop
+
