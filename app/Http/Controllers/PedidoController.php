@@ -11,8 +11,12 @@ use PlanificaMYPE\Pedido;
 use PlanificaMYPE\Cliente;
 use PlanificaMYPE\Empleado;
 use PlanificaMYPE\Zona;
+use PlanificaMYPE\Marca;
+
+use Illuminate\Support\Facades\DB;
 
 use PlanificaMYPE\Http\Requests\ArticuloFormRequest;
+use Illuminate\Contracts\Routing\ResponseFactory;
 
 class PedidoController extends Controller
 {
@@ -84,7 +88,7 @@ class PedidoController extends Controller
     }
 
     public function show ($id){
-        return 'Legue al show';
+        return 'Legue al show de pedido';
     	//return view('cliente.show', ["cliente"=>Cliente::findOrFail($id)]);
     }
 
@@ -131,5 +135,64 @@ class PedidoController extends Controller
 
         $articulo->save();
         return Redirect('articulo'); //es una URL
+    }
+
+
+
+    //Peticiones AJAX:
+    public function buscarArticulos (Request $request){
+        $buscarMarca = $request->get('marca');
+        $buscarNombre = $request->get('nombre');
+
+        $articulos= null;
+
+        //primero buscamos en nombre
+        if ($buscarNombre != ''){
+            $articulos =  DB::table('articulo')
+                ->join('marca', 'articulo.idMarca', '=', 'marca.idMarca')
+                ->join('unidadmedida', 'articulo.idUnidadMedida', '=', 'unidadmedida.idUnidadMedida')
+
+                ->select('articulo.*', 'marca.nombre as nombreMarca', 'unidadmedida.nombre as nombreUnidadMedida')
+
+                ->where ('articulo.nombre','like','%'.$buscarNombre.'%')
+                ->where('articulo.activo','=',1)
+                //->where('marca.nombre' ,'like','%'.$buscarMarca.'%' )
+                ->get();
+        }
+        
+        
+        //luego buscamos por marca
+        else if ($buscarMarca != ''){
+            $articulos =  DB::table('articulo')
+                ->join('marca', 'articulo.idMarca', '=', 'marca.idMarca')
+                ->join('unidadmedida', 'articulo.idUnidadMedida', '=', 'unidadmedida.idUnidadMedida')
+
+                ->select('articulo.*', 'marca.nombre as nombreMarca', 'unidadmedida.nombre as nombreUnidadMedida')
+
+                //->where ('articulo.nombre','like','%'.$buscarNombre.'%')
+                ->where('articulo.activo','=',1)
+                ->Where('marca.nombre' ,'like','%'.$buscarMarca.'%' )
+                ->get();  
+        }
+
+        //si no se ingreso ningun campo, listamos todos los articulos
+        else{
+            $articulos =  DB::table('articulo')
+                ->join('marca', 'articulo.idMarca', '=', 'marca.idMarca')
+                ->join('unidadmedida', 'articulo.idUnidadMedida', '=', 'unidadmedida.idUnidadMedida')
+
+                ->select('articulo.*', 'marca.nombre as nombreMarca', 'unidadmedida.nombre as nombreUnidadMedida')
+
+                //->where ('articulo.nombre','like','%'.$buscarNombre.'%')
+                ->where('articulo.activo','=',1)
+                //->where('marca.nombre' ,'like','%'.$buscarMarca.'%' )
+                ->get();
+        }
+
+        return response()->json([
+                            'Articulos' => $articulos
+                            
+                        ]);
+        
     }
 }

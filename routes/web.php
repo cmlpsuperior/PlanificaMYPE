@@ -17,4 +17,6 @@ Route::get('/', function () {
 
 Route::resource ('cliente','ClienteController' );
 Route::resource ('articulo','ArticuloController' );
+
 Route::resource ('pedido','PedidoController' );
+Route::post('pedido/buscarArticulos', 'PedidoController@buscarArticulos' ); //AJAX

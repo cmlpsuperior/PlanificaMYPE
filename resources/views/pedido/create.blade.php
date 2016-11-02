@@ -35,6 +35,9 @@
             </ul>
           </div>
           @endif
+          
+
+          <meta name="csrf-token" content="{{ csrf_token() }}" />
 
           {{Form::open (array('url' => 'pedido', 'method'=>'POST'))}} <!--para llamar al store, se le llama igual que al index, pero con metodo post-->
           
@@ -222,7 +225,8 @@
 
           <div class= "row">
             <div class="col s12 right-align">
-              <a href="#!" class="waves-effect waves-light btn">Agregar articulos</a>
+              <a class="modal-trigger waves-effect waves-light btn" href="#modalAgregar">Agregar articulos</a>
+              
             </div>
             
           </div>
@@ -272,6 +276,8 @@
         {{ Form::close()}}
         </div>
 
+        @include('pedido.modalAgregar')
+
 @stop
 
 
@@ -280,6 +286,11 @@
 <script>
 
   $(document).ready(function(){
+
+     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-trigger').leanModal();   
+
+    //Inicio: para que agrege a la tabla:
     evaluar();
 
     $("#btnAgregar").click(function(){
@@ -287,6 +298,43 @@
       limpiar();
       evaluar();
     })
+    //Fin: para que agrege a la tabla
+
+
+    //Inicio: AJAX para actualizar la busqueda del modal
+    $("#btnBuscarModal").click(function(){
+      bMarca = $("#bMarca").val();
+      bNombre = $("#bNombre").val();
+
+      miUrl=  "{{ url('pedido/buscarArticulos') }}";
+      var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+      console.log(bMarca); 
+      console.log(bNombre); 
+
+      $.ajax({        
+        type: "POST",   
+        url: miUrl,
+        dataType : "JSON",
+        data: {
+            marca: bMarca,
+            nombre: bNombre,
+            _token: CSRF_TOKEN
+        },
+        success: function(data){
+
+          console.log(data);  // for testing only
+           
+        },
+        error: function (e) {
+          console.log(e.responseText);
+        },
+
+      });
+      console.log(bNombre); 
+      
+    });
+    //Fin: para actualizar la busqueda del modal
 
   });
 
@@ -346,6 +394,10 @@
     $("#fila"+index).remove();
     evaluar();
   }
+  
+
+
+
 
 </script>
 @stop
