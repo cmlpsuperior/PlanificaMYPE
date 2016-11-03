@@ -26,14 +26,14 @@
 
     <div class="row">
             
-      <table class="bordered highlight responsive-table" id="tblArticulos">
+      <table class="bordered highlight responsive-table" id="tblBuscarArticulos">
         <thead>
           <tr>
               <th data-field="cantidad">Cantidad</th>
               <th data-field="descripcion">Unidad</th>
               <th data-field="descripcion">Nombre</th>
               <th data-field="descripcion">Marca</th>
-              <th data-field="precio">P.U.</th>
+              <th data-field="precio">P. U. (S/.)</th>
           </tr>
         </thead>
 

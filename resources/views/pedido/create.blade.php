@@ -167,8 +167,8 @@
             </div>
           </div>
           
-          <!--inicio: posiblemente se va-->
-          <div class="row"><!--fila de los articulos-->
+          <!--inicio: posiblemente se va
+          <div class="row">
             <div class="col s12 m12">
 
               <div class="card">
@@ -216,11 +216,11 @@
                 
                 </div>
 
-              </div><!--fin de la tarjeta-->
+              </div>
 
             </div>
           </div>
-          <!--fin: posiblemente se va-->
+          fin: posiblemente se va-->
 
 
           <div class= "row">
@@ -293,7 +293,7 @@
     //Inicio: para que agrege a la tabla:
     evaluar();
 
-    $("#btnAgregar").click(function(){
+    $("#btnAgregarModal").click(function(){
       agregar();
       limpiar();
       evaluar();
@@ -309,8 +309,7 @@
       miUrl=  "{{ url('pedido/buscarArticulos') }}";
       var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
-      console.log(bMarca); 
-      console.log(bNombre); 
+      
 
       $.ajax({        
         type: "POST",   
@@ -323,7 +322,34 @@
         },
         success: function(data){
 
-          console.log(data);  // for testing only
+          //console.log(data);  // for testing only
+          $.each(data, function(){
+            console.log('antes');
+            $('#tblBuscarArticulos tbody').empty();
+            $.each(this, function(k, value){
+              console.log(k);
+              console.log(value.nombre);
+              console.log(value.nombreMarca);
+              console.log(value.nombreUnidadMedida);
+              console.log(value.precioBase);
+
+
+              $('#tblBuscarArticulos').append('<tr>'+
+                                                '<td><input type="number" name="cantidades[]" step="0.5" min="0.5" class="validate" ></td>'+
+                                                '<td>'+value.nombreUnidadMedida+'</td>'+
+                                                '<td><input type="hidden" name="idArticulos[]"  value="'+value.idArticulo+'">'+value.nombre+'</td>'+
+                                                '<td>'+value.nombreMarca+'</td>'+
+                                                '<td><input type="number" name="precios[]" step="0.01" min="0.01" class="validate" value="'+value.precioBase+'"></td>'+
+                                              '</tr>');
+
+            });
+            
+            console.log('despuess');
+            //console.log(data[index].nombreMarca);
+            //console.log(data[index].nombreUnidadMedida);
+            //console.log(data[index].precioBase);
+            //console.log(data[index].stock);
+          });
            
         },
         error: function (e) {
@@ -331,7 +357,7 @@
         },
 
       });
-      console.log(bNombre); 
+       
       
     });
     //Fin: para actualizar la busqueda del modal
@@ -344,6 +370,15 @@
   subtotal=[];
 
   function agregar(){
+    $('#tblBuscarArticulos tbody tr').each(function (index2) {
+
+      var pk = $(this).find("td").eq(0).html();
+      var nombre = $(this).find("td").eq(1).html();
+      var apellidos = $(this).find("td").eq(3).html();
+      if (index2>0)
+      alert(pk);
+    });
+    
     idArticulo= $("#pIdArticulo").val();
     articulo= $("#pIdArticulo option:selected").text();
     cantidad= $("#pCantidad").val();
