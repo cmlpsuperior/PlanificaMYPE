@@ -46,6 +46,6 @@ class Pedido extends Model
     //relaciond e muchos a muchos con articulo:
     public function articulos (){
         return $this->belongsToMany('PlanificaMYPE\Articulo', 'detallepedido', 'idPedido', 'idArticulo')
-        			->withPivot('cantidad', 'cantidadAtendida', 'precioUniario', 'monto');
+        			->withPivot('cantidad', 'cantidadAtendida', 'precioUnitario', 'monto');
     }
 }

@@ -26,12 +26,13 @@ class PedidoController extends Controller
 
     public function index(){ //Request $request
         
-    		$pedidos = Pedido::orderBy('idPedido', 'desc')
+    		$pedidos = Pedido::orderBy('fechaEnvio', 'asc')
+                        ->orderBy('fechaRegistro', 'asc')
                         //->where('activo','=', 1)
                         //->get();
                         ->simplePaginate(8); // 1) cuando lleva paginate, ya no va el ->get() al final
                                                 // 2) simplePaginate es mas eficiente que paginate
-                   
+            
             return view('pedido.index', ['pedidos'=>$pedidos]);    	           
 
     }
@@ -46,20 +47,22 @@ class PedidoController extends Controller
     	return view('pedido.create', ['zonas'=>$zonas, 'clientes'=> $clientes, 'empleados' => $empleados, 'articulos'=>$articulos]);
     }
 
-    public function store (PedidoFormRequest $request){
+    public function store (Request $request){
+
+        
         //inicio una transaccion
-        DB::transaction(function () {
+        DB::beginTransaction();
 		    $pedido= new Pedido();
 
 	    	//datos generales del pedido
 	    	$pedido->fechaRegistro= date("Y-m-d H:i:s");
 
-	    	$pedido->FechaEnvio= $request->get('fechaEnvio');
-	    	$pedido->montoTotal=$request->get('montoTotal');
+	    	$pedido->FechaEnvio= $request->get('fechaEnvio'); //date("Y-m-d H:i:s");//
+	    	$pedido->montoTotal= $request->get('montoTotal');
 	    	$pedido->montoPagado=0;
-	        $pedido->estado= 'pre-pedido';
+	        $pedido->estado= 'Pre-pedido';
 	    	$pedido->idCliente= $request->get('idCliente');
-	    	$pedido->idEmpleado= $request->get('idEmpleado');
+	    	$pedido->idEmpleado= 1; //$request->get('idEmpleado');
 	    	$pedido->idZona= $request->get('idZona');
 
 	    	$pedido->save();
@@ -82,8 +85,9 @@ class PedidoController extends Controller
 	    		$contador++;
 	    	}
 
-		});
-
+		 DB::commit();
+        
+        //return "llegue al store ". $request->get('montoTotal');;
     	return Redirect('pedido'); //es una URL
     }
 
@@ -91,7 +95,7 @@ class PedidoController extends Controller
         return 'Legue al show de pedido';
     	//return view('cliente.show', ["cliente"=>Cliente::findOrFail($id)]);
     }
-
+/*
     public function edit($id){
         //obtengo todas las zonas registradas:
         $unidadesMedida= UnidadMedida::orderBy('nombre', 'asc')->get();
@@ -127,14 +131,14 @@ class PedidoController extends Controller
         return Redirect('articulo'); //es una URL
 
     }
-
+*/
     public function destroy ($id){
-    	$articulo = Articulo::find($id);
+    	$pedido = Pedido::find($id);
 
-        $articulo->activo= 0;
+        $pedido->estado= 'Anulado';
 
-        $articulo->save();
-        return Redirect('articulo'); //es una URL
+        $pedido->save();
+        return Redirect('pedido'); //es una URL
     }
 
 
@@ -156,6 +160,8 @@ class PedidoController extends Controller
 
                 ->where ('articulo.nombre','like','%'.$buscarNombre.'%')
                 ->where('articulo.activo','=',1)
+
+                ->orderBy('articulo.nombre', 'asc')
                 //->where('marca.nombre' ,'like','%'.$buscarMarca.'%' )
                 ->get();
         }
@@ -172,6 +178,8 @@ class PedidoController extends Controller
                 //->where ('articulo.nombre','like','%'.$buscarNombre.'%')
                 ->where('articulo.activo','=',1)
                 ->Where('marca.nombre' ,'like','%'.$buscarMarca.'%' )
+
+                ->orderBy('articulo.nombre', 'asc')
                 ->get();  
         }
 
@@ -185,6 +193,8 @@ class PedidoController extends Controller
 
                 //->where ('articulo.nombre','like','%'.$buscarNombre.'%')
                 ->where('articulo.activo','=',1)
+
+                ->orderBy('articulo.nombre', 'asc')
                 //->where('marca.nombre' ,'like','%'.$buscarMarca.'%' )
                 ->get();
         }
@@ -194,5 +204,56 @@ class PedidoController extends Controller
                             
                         ]);
         
+    }
+
+    public function buscarClientes (Request $request){
+        $buscarNumeroDocumento = $request->get('numeroDocumento');
+        $buscarNombre = $request->get('nombre');
+
+        $clientes= null;
+
+        //primero buscamos en nombre
+        if ($buscarNombre != ''){
+            $clientes =  DB::table('cliente')
+                ->join('zona', 'cliente.idZona', '=', 'zona.idZona')
+
+                ->select('cliente.*', 'zona.nombre as nombreZona')
+
+                ->where ('cliente.nombres', 'like', '%'.$buscarNombre.'%')
+                ->orWhere('cliente.apellidoPaterno', 'like', '%'.$buscarNombre.'%')
+                ->orWhere('cliente.apellidoMaterno', 'like', '%'.$buscarNombre.'%')
+
+                ->orderBy('cliente.apellidoPaterno', 'asc')
+                ->get(); 
+         
+        }
+        //luego por documento
+        else if ($buscarNumeroDocumento != ''){
+            $clientes =  DB::table('cliente')
+                ->join('zona', 'cliente.idZona', '=', 'zona.idZona')
+
+                ->select('cliente.*', 'zona.nombre as nombreZona')
+
+                ->where ('numeroDocumento', 'like', '%'.$buscarNumeroDocumento.'%')
+
+                ->orderBy('cliente.apellidoPaterno', 'asc')
+                ->get(); 
+         
+        }
+        //si no se ingreso ningun campo, listamos todos los clientes
+        else {
+            $clientes =  DB::table('cliente')
+                ->join('zona', 'cliente.idZona', '=', 'zona.idZona')
+
+                ->select('cliente.*', 'zona.nombre as nombreZona')
+
+                ->orderBy('cliente.apellidoPaterno', 'asc')
+                ->get(); 
+        }
+
+        return response()->json([
+                            'clientes' => $clientes
+                            
+                        ]);
     }
 }

@@ -20,3 +20,4 @@ Route::resource ('articulo','ArticuloController' );
 
 Route::resource ('pedido','PedidoController' );
 Route::post('pedido/buscarArticulos', 'PedidoController@buscarArticulos' ); //AJAX
+Route::post('pedido/buscarClientes', 'PedidoController@buscarClientes' ); //AJAX

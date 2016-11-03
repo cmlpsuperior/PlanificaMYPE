@@ -49,7 +49,7 @@
   <br><br>
   <div class="modal-footer">    
    	
-   	<button class="modal-action modal-close waves-effect waves-teal btn-flat" name="btnAgregarModal" id="btnAgregarModal">Agregar</button> 
+   	<button class="modal-action waves-effect waves-teal btn-flat" name="btnAgregarModal" id="btnAgregarModal">Agregar</button> 
     <a  class="modal-action modal-close waves-effect waves-teal btn-flat">Cancelar</a>    
    
   </div>
