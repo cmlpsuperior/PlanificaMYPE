@@ -16,6 +16,7 @@ use PlanificaMYPE\Marca;
 use Illuminate\Support\Facades\DB;
 
 use PlanificaMYPE\Http\Requests\ArticuloFormRequest;
+use PlanificaMYPE\Http\Requests\ConfirmarRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
 
 class PedidoController extends Controller
@@ -92,7 +93,7 @@ class PedidoController extends Controller
     }
 
     public function show ($id){
-        return 'Legue al show de pedido';
+        return 'Legue al show porque?'.$id;
     	//return view('cliente.show', ["cliente"=>Cliente::findOrFail($id)]);
     }
 /*
@@ -141,6 +142,19 @@ class PedidoController extends Controller
         return Redirect('pedido'); //es una URL
     }
 
+    public function confirmar (){
+        return view('pedido.confirmar');  
+    }
+
+    public function confirmar_update (ConfirmarRequest $request){
+        $pedido = Pedido::findOrFail($request->get('idPedido'));
+
+        $pedido->montoPagado = $request->get('montoPagado');
+        $pedido->estado = 'Confirmado';
+
+        $pedido->save();
+        return Redirect('pedido');  
+    }
 
 
     //Peticiones AJAX:
@@ -253,6 +267,60 @@ class PedidoController extends Controller
 
         return response()->json([
                             'clientes' => $clientes
+                            
+                        ]);
+    }
+
+    public function buscarPedidos (Request $request){
+        $buscarNumeroDocumento = $request->get('numeroDocumento');
+        $buscarIdPedido = $request->get('idPedido');
+
+        $pedidos= null;
+
+        //
+        if ($buscarNumeroDocumento != ''){
+            $pedidos =  DB::table('pedido')
+                ->join('cliente', 'cliente.idCliente', '=', 'pedido.idCliente')
+
+                ->select('pedido.*', 'cliente.nombres as nombreCliente', 'cliente.apellidoPaterno as apellidoPaternoCliente', 'cliente.apellidoMaterno as apellidoMaternoCliente', 'cliente.numeroDocumento as numeroDocumentoCliente')
+
+                ->where ('cliente.numeroDocumento', 'like', '%'.$buscarNumeroDocumento.'%')
+                ->where ('pedido.estado', '=', 'Pre-pedido')
+
+                ->orderBy('cliente.numeroDocumento', 'asc')
+                ->get(); 
+         
+        }
+        //luego por id
+        else if ($buscarIdPedido != ''){
+            $pedidos =  DB::table('pedido')
+                ->join('cliente', 'cliente.idCliente', '=', 'pedido.idCliente')
+
+                ->select('pedido.*', 'cliente.nombres as nombreCliente', 'cliente.apellidoPaterno as apellidoPaternoCliente', 'cliente.apellidoMaterno as apellidoMaternoCliente', 'cliente.numeroDocumento as numeroDocumentoCliente')
+                
+                ->where ('pedido.idPedido', '=', $buscarIdPedido)
+                ->where ('pedido.estado', '=', 'Pre-pedido')
+
+                ->orderBy('pedido.idPedido', 'desc')
+                ->get(); 
+         
+        }
+        //si no se ingreso ningun campo, listamos los pedidos registrados en el dia:
+        else {
+            $pedidos =  DB::table('pedido')
+                ->join('cliente', 'cliente.idCliente', '=', 'pedido.idCliente')
+
+                ->select('pedido.*', 'cliente.nombres as nombreCliente', 'cliente.apellidoPaterno as apellidoPaternoCliente', 'cliente.apellidoMaterno as apellidoMaternoCliente', 'cliente.numeroDocumento as numeroDocumentoCliente')
+
+                ->where ('pedido.fechaRegistro', '>=', 'DATE(NOW())')
+                ->where ('pedido.estado', '=', 'Pre-pedido')
+
+                ->orderBy('pedido.fechaRegistro', 'desc')
+                ->get(); 
+        }
+
+        return response()->json([
+                            'pedidos' => $pedidos
                             
                         ]);
     }

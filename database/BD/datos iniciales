@@ -1,10 +1,12 @@
 Carga inicial:
-- debe haber almenos un vendedor, codigo de cargo 2.
+- debe haber almenos un vendedor.
 
 Datos a corregir:
 en crear usuario: agregar un select de dni o pasaporte
-por ahora solo carga los pedidos con el empleado 1.
-
 validar campos (select), al registrar pedido, con js.
 
+Pedido:
+- por ahora solo carga los pedidos con el empleado 1.
+- el trigger cuando se crea un pedido.
+- cambiar el estado de pedido: pre-pedido, confirmado
 

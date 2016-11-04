@@ -9,7 +9,7 @@
             <div class="col s12">
               <a href="#!" class="breadcrumb">Mant.</a>
               <a href="{{ url('pedido')}}" class="breadcrumb">Pedido</a>
-              <a href="{{ url('pedido/create')}}" class="breadcrumb">confirmar</a>
+              <a href="{{ action('PedidoController@confirmar') }}" class="breadcrumb">confirmar</a>
             </div>
           </div>
         </nav>
@@ -30,10 +30,10 @@
           </div>
           @endif
           
-
+          <!--
           <meta name="csrf-token" content="{{ csrf_token() }}" />
-
-          {{Form::open (array('url' => 'pedido', 'method'=>'POST'))}} <!--para llamar al store, se le llama igual que al index, pero con metodo post-->
+          -->
+          {{Form::open ( array('action' => array('PedidoController@confirmar_update'), 'method'=>'put')) }}
           
           <div class="row">
             <div class="col s12 center">
@@ -52,7 +52,7 @@
 
                 <div class="card-content">
                   <i class="material-icons prefix">account_circle</i>
-                  <span class="card-title">Pedido</span>
+                  <span class="card-title">Cliente</span>
                   <br><br>
                   <div class="row">
                     <!--codigo del cliente esta oculto pero sera actualizado por JS-->
@@ -60,7 +60,7 @@
 
 
                     <div class="input-field col s6">                      
-                      <input id="numeroDocumento" type="text" class="validate"  disabled value="" name="numeroDocumento">
+                      <input id="numeroDocumento" type="text" class="validate"  readonly value="" name="numeroDocumento">
                       <label for="numeroDocumento">Documento</label>
                     </div>                    
                                 
@@ -69,18 +69,18 @@
                   <div class="row">
     
                     <div class="input-field col s12">
-                      <input id="nombreCompleto" type="text" class="validate"  disabled value="" name="nombreCompleto">
+                      <input id="nombreCompleto" type="text" class="validate"  readonly value="" name="nombreCompleto">
                       <label for="nombreCompleto">Nombre completo</label>
                     </div>
                                 
                   </div>
 
-                  <br><br><br><br>
+                  <br><br>
                 </div>
 
 
                 <div class="card-action ">                  
-                    <a href="#modalCliente" class="teal-text modal-trigger">Buscar</a>
+                    <a href="#modalConfirmar" class="teal-text modal-trigger">Buscar</a>
                 
                 </div>
               
@@ -91,23 +91,33 @@
               <div class="card">
                 <div class="card-content">
                   <i class="material-icons prefix">location_on</i>
-                  <span class="card-title">Datos de envío</span>
+                  <span class="card-title">Pago del pedido</span>
                   <br><br>
+
+                  
+
+                  <div class="row">
+
+                    <div class="input-field col s6">
+                      <input id="idPedido" type="text" value="{{ old('idPedido') }}" name="idPedido" readonly>
+                      <label for="idPedido">Código pedido</label>
+                    </div> 
+
+                    <div class="input-field col s6">
+                      <i class="material-icons prefix">today</i>
+                      <input id="fechaRegistro" type="text"  value="{{ old('fechaRegistro') }}" name="fechaRegistro" readonly>
+                      <label for="fechaRegistro">Fecha registro</label>
+                    </div>
+
+                  </div>
+                  
 
                   <div class="row">  
 
                     <div class="input-field col s6">
-                      <i class="material-icons prefix">today</i>
-                      <input id="fechaEnvio" type="date" class="datepicker" value="{{ old('fechaEnvio') }}" name="fechaEnvio">
-                      <label for="fechaEnvio">Envío *</label>
-                    </div>
-                    
-                    <div class="input-field col s6">
-                      <i class="material-icons prefix">phone</i>
-                      <input id="telefono" type="number" min="0" class="validate" value="{{ old('telefono') }}" name="telefono">
-                      <label for="telefono" data-error="wrong" data-success="right">Teléfono</label>
-                    </div>
-
+                      <input id="montoOriginal" type="number" min="0" step="0.01" class="" value="{{ old('montoOriginal') }}" name="montoOriginal" readonly>
+                      <label for="montoOriginal" data-error="wrong" data-success="right">Monto original (S/.)</label>
+                    </div>   
 
                   </div>
 
@@ -115,29 +125,18 @@
                   <div class="row">
                     
                     <div class="input-field col s6">
-
-                      <select name="idZona" id="idZona">                          
-                        <option value="">Seleccionar</option>
-                        @foreach ($zonas as $zona)
-                          <option value="{{$zona->idZona}}" @if ( $zona->idZona == old('idZona') ) selected @endif >{{$zona->nombre}}</option>
-                        @endforeach
-                      </select>
-                      <label for ="idZona">Zona *</label>
-                    </div> 
+                      <input id="montoPagado" type="number" min="0" step="0.01" class="" value="{{ old('montoPagado') }}" name="montoPagado">
+                      <label for="montoPagado" data-error="wrong" data-success="right">Monto pagado (S/.)</label>
+                    </div>
 
                     <div class="input-field col s6">
-                      <input id="direccion" type="text" class="validate" required value="{{ old('direccion') }}" name="direccion">
-                      <label for="direccion">Dirección *</label>
-                    </div>  
+                      <input id="montoPendiente" type="number" min="0" step="0.01"  value="{{ old('montoPendiente') }}" name="montoPendiente" readonly>
+                      <label for="montoPendiente" data-error="wrong" data-success="right">Monto pendiente (S/.)</label>
+                    </div>
 
                   </div>
 
-                  <div class="row">
-                    <div class="input-field col s12">
-                      <textarea id="referencia" class="materialize-textarea" name="referencia">{{ old('referencia') }}</textarea>
-                      <label for="referencia">Referencia</label>
-                    </div> 
-                  </div>
+                  
           
                     
                 </div>
@@ -146,81 +145,133 @@
 
 
           </div>
-
-          <div class="row">
-            <div class="col s12 center">
-              <h5>Lista de articulos</h5>
-              <div class="divider"></div>
-            </div>
-          </div>   
-
-          <div class= "row">
-            <div class="col s12 right-align">
-              <a class="modal-trigger waves-effect waves-light btn" href="#modalAgregar" id="btnAbrirModalArticulos">Agregar articulos</a>
-              
-            </div>
-            
-          </div>
-
-          <div class="row">
-            
-            <table class="bordered highlight responsive-table" id="detalles">
-              <thead>
-                <tr>
-                    <th data-field="cantidad">Cantidad</th>
-                    <th data-field="descripcion">Descripción</th>
-                    <th data-field="precio">P.U. (S/.)</th>
-                    <th data-field="subtotal">Subtotal (S/.)</th>
-                    <th data-field="acciones">Acciones</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th>Total</th>
-                  <th></th>
-                  <th></th>
-                  <th><h5 id="montoTotalH" >S/. 0.00</h5></th>
-                  <th><input type="hidden" name="montoTotal" id="montoTotal" value=""></th>
-                  
-                </tr>
-
-              </tfoot>
-            </table>    
-                       
-          </div>
+         
 
           <!--Los botones del formulario-->
           <div class="row" id="guardar">
 
             <div class="input-field col s12 right-align">
               <a class="waves-effect waves-light btn" href="{{ url('pedido')}}">Cancelar</a>
-              <button class="btn waves-effect waves-light" type="submit" name="action" id="btnGuardar">Registrar
+              <button class="btn waves-effect waves-light" type="submit" name="action" id="btnGuardar">Confirmar
                 <i class="material-icons right">send</i>
               </button>                
             </div>              
           </div>
           
         {{ Form::close()}}
-        </div>
+      </div>
 
-        @include('pedido.modalAgregar')
+      @include('pedido.modalConfirmar')
     
 
 @stop
 
 @section ('scriptcontenido')
-<script>
+<script>  
+    
 
-  $(document).ready(function(){
+    $(document).ready(function() {
+
+        
 
      // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-    $('.modal-trigger').leanModal();
+    $('.modal-trigger').leanModal();   
 
+    //Inicio: agregar pedido a confirmar desde el modal
+    $("#btnAgregarPedidoModal").click(function(){
+      agregarPedido();      
+      
+    });
+    //fin:
 
+    //Inicio: AJAX para actualizar la busqueda del pedido del modal
+    $("#btnBuscarPedidoModal").click(function(){
+      mcIdPedido = $("#mcIdPedido").val();
+      bcNumeroDocumento = $("#mcNumeroDocumento").val();
+
+      miUrl=  "{{ url('pedido/buscarPedidos') }}";
+      var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+      $.ajax({        
+        type: "GET",   
+        url: miUrl,
+        dataType : "JSON",
+        data: {
+            idPedido: mcIdPedido,
+            numeroDocumento: bcNumeroDocumento,
+            _token: CSRF_TOKEN
+        },
+        success: function(data){
+
+          console.log(data);  // for testing only
+          
+          $.each(data, function(){
+            
+            $('#tblBuscarPedido tbody').empty();
+            $.each(this, function(k, value){
+              
+              $('#tblBuscarPedido').append('<tr>'+
+                                                '<td><input type="radio" name="radPedido" id="id'+k+'"><label for="id'+k+'">'+value.idPedido+'</label></td>'+
+                                                '<td>'+value.nombreCliente+' '+value.apellidoPaternoCliente+' '+ value.apellidoMaternoCliente+'</td>'+
+                                                '<td>'+value.numeroDocumentoCliente+'</td>'+                                           
+                                                '<td>'+value.fechaRegistro+'</td>'+
+                                                '<td>'+value.montoTotal+'</td>'+
+
+                                                '<td hidden>'+value.idPedido+'</td>'+
+                                              '</tr>');
+
+            });
+            
+           
+          }); 
+          
+        },
+        error: function (e) {
+          console.log(e.responseText);
+        },
+
+      });
+       
+      
+    });
+    //Inicio: AJAX para actualizar la busqueda del modal
 
   });
+
+
+  //apoyo del modal buscar pedido
+  function agregarPedido(){
+    $('#tblBuscarPedido tbody tr').each(function (index2) {
+
+      
+      var radio = $(this).find("td").eq(0).find("input").is(":checked"); //me indica si el radio fue seleccionado o no :)
+      var nombre = $(this).find("td").eq(1).html();
+      var numeroDocumento = $(this).find("td").eq(2).html();
+      var fechaRegistro = $(this).find("td").eq(3).html();
+      var montoTotal = $(this).find("td").eq(4).html();
+      var idPedido = $(this).find("td").eq(5).html(); //oculto
+
+      //alert(nombre +" "+ numeroDocumento+ " "+ credito +" " +telefono+" " + idZona + " "+ nombreZona +" "+ direccion +" " + referencia);
+      
+      if (radio){ //veo quien fue seleccionado      
+        //Actualizamos los valores de los campos:
+        $("#idPedido").val(idPedido);
+        $("#numeroDocumento").val(numeroDocumento);
+        $("#nombreCompleto").val(nombre);
+
+        $("#fechaRegistro").val(fechaRegistro);
+        $("#montoOriginal").val(montoTotal);
+        
+        Materialize.updateTextFields(); //para que funcione el materialize
+        return false; //esto hace que acabe la iteracion
+      }
+      
+
+    });   
+    
+  }
+  
+  
 </script>
+
+@stop

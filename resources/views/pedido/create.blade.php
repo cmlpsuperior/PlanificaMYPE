@@ -59,12 +59,12 @@
                     <input id="idCliente" type="hidden" value="" name="idCliente">
 
                     <div class="input-field col s6">                      
-                      <input id="numeroDocumento" type="text" class="validate"  disabled value="" name="numeroDocumento">
+                      <input id="numeroDocumento" type="text" class="validate"  readonly value="" name="numeroDocumento">
                       <label for="numeroDocumento">Documento</label>
                     </div> 
 
                     <div class="input-field col s6">
-                      <input id="credito" type="text" class="validate"  disabled value="" name="credito">
+                      <input id="credito" type="text" class="validate"  readonly value="" name="credito">
                       <label for="credito">Crédito</label>
                     </div>
                                 
@@ -73,7 +73,7 @@
                   <div class="row">
     
                     <div class="input-field col s12">
-                      <input id="nombreCompleto" type="text" class="validate"  disabled value="" name="nombreCompleto">
+                      <input id="nombreCompleto" type="text" class="validate"  readonly value="" name="nombreCompleto">
                       <label for="nombreCompleto">Nombre completo</label>
                     </div>
                                 

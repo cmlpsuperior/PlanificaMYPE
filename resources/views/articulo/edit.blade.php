@@ -9,7 +9,7 @@
             <div class="col s12">
               <a href="#!" class="breadcrumb">Mant.</a>
               <a href="{{ url('articulo')}}" class="breadcrumb">Articulo</a>
-              <a href="{{ url('articulo/create')}}" class="breadcrumb">Editar</a>
+              <a href="{{ action('articulo/edit', $articulo->idArticulo) }}" class="breadcrumb">Editar</a>
             </div>
           </div>
         </nav>
