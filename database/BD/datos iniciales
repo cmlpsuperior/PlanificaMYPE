@@ -1,11 +1,8 @@
-1.- agregar los tipos de documento (cliente).
-2.- agregar las zonas (cliente).
-
-
-3.- tipo de carga (articulos). El primero debe ser carga comun.
-4.- unidad de medida (articulo).
-5.- marca (articulo).
-
+Carga inicial:
+- debe haber almenos un vendedor, codigo de cargo 2.
 
 Datos a corregir:
 en crear usuario: agregar un select de dni o pasaporte
+por ahora solo carga los pedidos con el empleado 1.
+
+
