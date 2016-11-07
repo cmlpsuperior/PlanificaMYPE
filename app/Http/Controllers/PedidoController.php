@@ -27,8 +27,8 @@ class PedidoController extends Controller
 
     public function index(){ //Request $request
         
-    		$pedidos = Pedido::orderBy('fechaEnvio', 'asc')
-                        ->orderBy('fechaRegistro', 'asc')
+    		$pedidos = Pedido::orderBy('fechaRegistro', 'asc')
+                        //->orderBy('fechaRegistro', 'asc')
                         //->where('activo','=', 1)
                         //->get();
                         ->simplePaginate(8); // 1) cuando lleva paginate, ya no va el ->get() al final
