@@ -272,7 +272,8 @@
               
 
               $('#tblBuscarArticulos').append('<tr>'+
-                                                '<td><input type="number" name="" step="0.5" min="0.5" class="validate" ></td>'+
+                                                '<td><input type="number" name="" step="0.5" min="0.5" max ="'+value.stock +'" class="validate" ></td>'+
+                                                '<td>'+value.stock+'</td>'+
                                                 '<td>'+value.nombreUnidadMedida+'</td>'+
                                                 '<td><input type="hidden" name=""  value="'+value.idArticulo+'">'+value.nombre+'</td>'+
                                                 '<td>'+value.nombreMarca+'</td>'+
@@ -374,11 +375,12 @@
     $('#tblBuscarArticulos tbody tr').each(function (index2) {
 
       var cantidad = $(this).find("td").eq(0).find("input").val();
-      var unidadMedida = $(this).find("td").eq(1).html();
-      var idArticulo = $(this).find("td").eq(2).find("input").val();
-      var nombreArticulo = $(this).find("td").eq(2).html();
-      var marca = $(this).find("td").eq(3).html();
-      var precio = $(this).find("td").eq(4).find("input").val();
+
+      var unidadMedida = $(this).find("td").eq(2).html();
+      var idArticulo = $(this).find("td").eq(3).find("input").val();
+      var nombreArticulo = $(this).find("td").eq(3).html();
+      var marca = $(this).find("td").eq(4).html();
+      var precio = $(this).find("td").eq(5).find("input").val();
       if (cantidad!="" && precio != ""){ //me aseguro que los campos tengan datos.
         subtotal[contador]= cantidad*precio;
         total= total+ subtotal[contador];

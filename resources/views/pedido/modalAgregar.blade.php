@@ -30,6 +30,7 @@
         <thead>
           <tr>
               <th data-field="cantidad">Cantidad</th>
+              <th data-field="stock">Stock</th>
               <th data-field="descripcion">Unidad</th>
               <th data-field="descripcion">Nombre</th>
               <th data-field="descripcion">Marca</th>

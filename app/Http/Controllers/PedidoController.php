@@ -27,7 +27,7 @@ class PedidoController extends Controller
 
     public function index(){ //Request $request
         
-    		$pedidos = Pedido::orderBy('fechaRegistro', 'asc')
+    		$pedidos = Pedido::orderBy('fechaRegistro', 'desc')
                         //->orderBy('fechaRegistro', 'asc')
                         //->where('activo','=', 1)
                         //->get();
@@ -77,12 +77,20 @@ class PedidoController extends Controller
 	    	$contador=0;
 	    	$cantidadFilas= count($idArticulos); //cuento cuantas filas tiene el detalle de pedido
 	    	while ($contador<$cantidadFilas){
+                //inserto en la tabla detallePedido
 	    		$pedido->articulos()->attach($idArticulos[$contador], [
 											'cantidad'=>$cantidad[$contador],
 											'cantidadAtendida'=>0,
 											'precioUnitario'=>$preciosUnitarios[$contador],
 											'monto'=> $preciosUnitarios[$contador]*$cantidad[$contador]
 	    									]);
+
+                //resto el stock en la tabla articulo:
+                $articuloStock= Articulo::findOrFail($idArticulos[$contador]);
+                $articuloStock->stock = $articuloStock->stock - $cantidad[$contador];
+                $articuloStock->save();
+
+                //siguiente fila
 	    		$contador++;
 	    	}
 

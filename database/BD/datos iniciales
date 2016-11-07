@@ -1,12 +1,12 @@
 Carga inicial:
-- debe haber almenos un vendedor.
+- debe haber almenos un vendedor. (listoo)
 
 Datos a corregir:
 en crear usuario: agregar un select de dni o pasaporte
 validar campos (select), al registrar pedido, con js.
 
 Pedido:
-- por ahora solo carga los pedidos con el empleado 1.
-- el trigger cuando se crea un pedido.
-- cambiar el estado de pedido: pre-pedido, confirmado
+- por ahora solo carga los pedidos con el empleado 1. 
+- el trigger cuando se crea un pedido. (listo, aunque no se usara trigger, sino en el controller)
+- cambiar el estado de pedido en el doc: pre-pedido, confirmado
 
