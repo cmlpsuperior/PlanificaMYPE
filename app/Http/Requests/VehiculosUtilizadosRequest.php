@@ -4,7 +4,7 @@ namespace PlanificaMYPE\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TipoCargaFormRequest extends FormRequest
+class VehiculosUtilizadosRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,17 @@ class TipoCargaFormRequest extends FormRequest
      * @return array
      */
     public function rules()
-    {
+    {   
+        /*
+        $rules=[];
+        if ($this->request->has('idPedidosCercanos') ){
+            $rules['idPedidosCercanos'] = 'required';
+        }
+
+        return $rules; */
+        
         return [
-            'nombre'=>'required|max:50',
-            'descripcion'=>'max:256',
+            'idPedidoPrincipal' => 'required',            
         ];
     }
 }

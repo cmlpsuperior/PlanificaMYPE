@@ -4,7 +4,7 @@ namespace PlanificaMYPE\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TipoCargaFormRequest extends FormRequest
+class SeleccionarPedidoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class TipoCargaFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'nombre'=>'required|max:50',
-            'descripcion'=>'max:256',
+            'selecionarPedido' => 'required',
+            
         ];
     }
 }

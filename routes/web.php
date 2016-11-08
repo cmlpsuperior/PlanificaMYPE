@@ -35,5 +35,13 @@ Route::put('pedido/{pedido}', 'PedidoController@update' )->name('pedido.update')
 Route::delete('pedido/{pedido}', 'PedidoController@destroy' )->name('pedido.destroy');
 Route::get('pedido/{pedido}/edit', 'PedidoController@edit' )->name('pedido.edit');
 
-//Route::post('pedido/buscarArticulos', 'PedidoController@buscarArticulos' )->name('pedido.buscarArticulos'); 
-//Route::post('pedido/buscarClientes', 'PedidoController@buscarClientes' )->name('pedido.buscarclientes'); //AJAX
+
+//planificacion:
+Route::get('planificacion/seleccionarPedido', 'PlanificacionController@seleccionarPedido' )->name('planificacion.seleccionarPedido');
+Route::post('planificacion/seleccionarPedido', 'PlanificacionController@seleccionarPedido_procesar' )->name('planificacion.seleccionarPedido_procesar');
+
+Route::get('planificacion/{id}/pedidosCercanos', 'PlanificacionController@pedidosCercanos' )->name('planificacion.pedidosCercanos');
+Route::post('planificacion/{id}/pedidosCercanos', 'PlanificacionController@pedidosCercanos_procesar' )->name('planificacion.pedidosCercanos_procesar');
+
+Route::get('planificacion/{id}/vehiculosUtilizados', 'PlanificacionController@vehiculosUtilizados' )->name('planificacion.vehiculosUtilizados');
+Route::post('planificacion/{id}/vehiculosUtilizados', 'PlanificacionController@vehiculosUtilizados_procesar' )->name('planificacion.vehiculosUtilizados_procesar');

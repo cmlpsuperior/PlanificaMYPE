@@ -9,4 +9,5 @@ Pedido:
 - por ahora solo carga los pedidos con el empleado 1. 
 - el trigger cuando se crea un pedido. (listo, aunque no se usara trigger, sino en el controller)
 - cambiar el estado de pedido en el doc: pre-pedido, confirmado
+- un pedido confirmado puede ser anulado?
 

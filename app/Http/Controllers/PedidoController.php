@@ -143,10 +143,12 @@ class PedidoController extends Controller
 */
     public function destroy ($id){
     	$pedido = Pedido::find($id);
+        if ($pedido->estado== 'Pre-pedido'){
+            $pedido->estado= 'Anulado';
+            $pedido->save();
+        }       
 
-        $pedido->estado= 'Anulado';
-
-        $pedido->save();
+        
         return Redirect('pedido'); //es una URL
     }
 
