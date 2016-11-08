@@ -8,7 +8,7 @@ class TipoCarga extends Model
 {
     protected $table='tipocarga';
 
-    protected $primaryKey = 'idtipocarga';
+    protected $primaryKey = 'idTipoCarga';
 
     public $timestamps=false;
 
@@ -24,5 +24,12 @@ class TipoCarga extends Model
     public function articulos()
     {
         return $this->hasMany('PlanificaMYPE\Articulo', 'idTipoCarga', 'idTipoCarga');
+    }
+
+
+    //relaciond e muchos a muchos con tipo de vehiculo:
+    public function tiposVehiculos (){
+        return $this->belongsToMany('PlanificaMYPE\TipoVehiculo', 'tipovehiculoxtipocarga',  'idTipoCarga', 'idTipoVehiculo')
+                    ->withPivot('cantidad', 'volumen');
     }
 }

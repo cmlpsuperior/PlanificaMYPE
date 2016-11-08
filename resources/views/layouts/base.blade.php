@@ -53,7 +53,7 @@
 
                     <div class="collapsible-body">
                       <ul>
-                        <li><a href="#!">Planificación</a></li>
+                        <li><a href="{{ action('PlanificacionController@seleccionarPedido')  }}">Planificación</a></li>
                         <li><a href="#!">Asignar viajes</a></li>
                         <li><a href="#!">Control</a></li>
                       </ul>

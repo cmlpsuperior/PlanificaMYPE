@@ -11,3 +11,5 @@ Pedido:
 - cambiar el estado de pedido en el doc: pre-pedido, confirmado
 - un pedido confirmado puede ser anulado?
 
+Carga * tipo vehiculo
+- al crear el tipo de vehiculo, se debe indicar la capacidad del vehiculo para cada carga

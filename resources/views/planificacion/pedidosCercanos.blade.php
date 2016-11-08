@@ -70,7 +70,7 @@
 	        	@foreach ($pedidosCercanos as $pedido)
 		            <tr>
 		            	
-		            	<td><input type="checkbox" name="idPedidosCercanos[]" value="{{$pedido->idPedido}}" id="id{{$pedido->idPedido}}"><label for="id{{$pedido->idPedido}}">{{$pedido->idPedido}}</label></td>
+		            	<td><input type="checkbox" checked name="idPedidosCercanos[]" value="{{$pedido->idPedido}}" id="id{{$pedido->idPedido}}"><label for="id{{$pedido->idPedido}}">{{$pedido->idPedido}}</label></td>
 		            	<td>{{ $pedido->cliente->nombres }} {{ $pedido->cliente->apellidoPaterno }} </td>			            
 			            <td>{{ $pedido->zona->nombre}}</td>
 			            <td>{{ $pedido->fechaRegistro}}</td>

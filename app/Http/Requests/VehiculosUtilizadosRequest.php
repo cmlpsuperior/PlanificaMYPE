@@ -23,16 +23,17 @@ class VehiculosUtilizadosRequest extends FormRequest
      */
     public function rules()
     {   
-        /*
-        $rules=[];
-        if ($this->request->has('idPedidosCercanos') ){
-            $rules['idPedidosCercanos'] = 'required';
-        }
-
-        return $rules; */
-        
+                
         return [
-            'idPedidoPrincipal' => 'required',            
+            'idTiposVehiculos' => 'required'            
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'idTiposVehiculos.required' => 'Debe seleccionar al menos un tipo de vehiculo',
+            // ..
         ];
     }
 }
