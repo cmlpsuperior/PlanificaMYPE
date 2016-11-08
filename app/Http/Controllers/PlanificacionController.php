@@ -94,7 +94,10 @@ class PlanificacionController extends Controller
     }
 
 
-    //aqui se ejecuta el algoritmo :)
+
+
+    
+
     public function viajes ($id){ 
 
         //verificamos que existan las dos variables nesesarias:
@@ -107,9 +110,10 @@ class PlanificacionController extends Controller
             $pedidosCercanos= Pedido::whereIn ('idPedido', $idPedidosCercanos )->get();
             $tiposVehiculos= TipoVehiculo::whereIn ('idTipoVehiculo', $idTiposVehiculos )->get();
 
-            $viajes = generarViajes($pedidoPrincipal, $pedidosCercanos, $tiposVehiculos);
+            $viajes = $this->generarViajes($pedidoPrincipal, $pedidosCercanos, $tiposVehiculos);
 
-            return view('planificacion.viajes', ['pedidoPrincipal'=>$pedidoPrincipal, 'tiposVehiculos'=> $tiposVehiculos, 'pedidosCercanos'=> $pedidosCercanos, 'viajes'=>$viajes]);
+            return $viajes->nombre. ' carga: '. $viajes->tiposCargas[0]->pivot->volumen.' Carga pequeña: '.$viajes->tiposCargas[1]->pivot->volumen. ' Crga aerea '. $viajes->tiposCargas[2]->pivot->cantidad ;
+            //return view('planificacion.viajes', ['pedidoPrincipal'=>$pedidoPrincipal, 'tiposVehiculos'=> $tiposVehiculos, 'pedidosCercanos'=> $pedidosCercanos, 'viajes'=>$viajes]);
             /*
             //borramos los valores de la session
             session()->forget('idPedidosCercanos');
@@ -124,21 +128,20 @@ class PlanificacionController extends Controller
       
     }
 
-
-    //que comienze el juego:
     public function generarViajes ($pedidoPrincipal, $pedidosCercanos, $tiposVehiculos){
         /*Primer paso: solucion inicial: */
-        $vehiculoMasGrande = obtenerVehiculoMasGrande ($tiposVehiculos);
-        $listaVehiculos =    distribuirPedidoEnVehiculoMasGrande ($pedidoPrincipal, $vehiculoMasGrande);
+        $vehiculoMasGrande = $this->obtenerVehiculoMasGrande ($tiposVehiculos);
+        //$listaVehiculos =    distribuirPedidoEnVehiculoMasGrande ($pedidoPrincipal, $vehiculoMasGrande);
 
         /*Segundo paso: usar vehiculos mas pequeños*/
-        $tiposVehiculosOrdenados = ordenarMayorAMenorListaVehiculosDisponibles ($tiposVehiculos);
-        $listaFinalVehiculos = cambiarAVehiculosMasPequenios ($listaVehiculos, $tiposVehiculosOrdenados);
+        //$tiposVehiculosOrdenados = ordenarMayorAMenorListaVehiculosDisponibles ($tiposVehiculos);
+        //$listaFinalVehiculos = cambiarAVehiculosMasPequenios ($listaVehiculos, $tiposVehiculosOrdenados);
 
         /*Tercer paso: Agregar otros pedidos a los vehiculos*/
-        $viajes= agregarOtrosPedidos ($listaFinalVehiculos, $pedidosCercanos);
+        //$viajes= agregarOtrosPedidos ($listaFinalVehiculos, $pedidosCercanos);
 
-        return $viajes;
+        //return $viajes;
+        return $vehiculoMasGrande;
 
     }
 
@@ -148,8 +151,9 @@ class PlanificacionController extends Controller
         $iMaximo= 0; //ningun id
         $tamanoArreglo = count($tiposVehiculos);
         for ($i=0; $i< $tamanoArreglo; $i++){
-            $unTipo = $tiposVehiculos[$id];
-            $cargaNormal = $unTipo->cargas[0]->pivot->volumen; //la carga 0 es del tipo nomral
+            $unTipo = $tiposVehiculos[$i];
+            //$cargas = $unTipo->cargas();
+            $cargaNormal = $unTipo->tiposCargas[0]->pivot->volumen; //la carga 0 es del tipo nomral
             if ($cargaNormal>=$volumenMaximo){
                 $volumenMaximo = $cargaNormal;
                 $iMaximo= $i;
@@ -157,5 +161,8 @@ class PlanificacionController extends Controller
         }
 
         return $tiposVehiculos[$iMaximo];
-    }
+    }   
+    
+
+    
 }
