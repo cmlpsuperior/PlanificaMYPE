@@ -13,3 +13,14 @@ Pedido:
 
 Carga * tipo vehiculo
 - al crear el tipo de vehiculo, se debe indicar la capacidad del vehiculo para cada carga
+
+
+Articulo:
+- todos son medidos en volumen.
+
+DetalleViaje:
+- cantidad es double no int.
+
+Viaje:
+- se debe agregar el idTipoVehiculo.
+

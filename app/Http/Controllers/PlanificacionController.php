@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use PlanificaMYPE\Http\Requests;
 use PlanificaMYPE\Pedido;
 use PlanificaMYPE\TipoVehiculo;
+use PlanificaMYPE\TipoCarga;
 use PlanificaMYPE\Http\Requests\SeleccionarPedidoRequest;
 use PlanificaMYPE\Http\Requests\VehiculosUtilizadosRequest;
 use Illuminate\Http\RedirectResponse; //para el redirect
@@ -112,13 +113,24 @@ class PlanificacionController extends Controller
 
             $viajes = $this->generarViajes($pedidoPrincipal, $pedidosCercanos, $tiposVehiculos);
 
-            return $viajes->nombre. ' carga: '. $viajes->tiposCargas[0]->pivot->volumen.' Carga pequeña: '.$viajes->tiposCargas[1]->pivot->volumen. ' Crga aerea '. $viajes->tiposCargas[2]->pivot->cantidad ;
+            //return $viajes->nombre. ' carga: '. $viajes->tiposCargas[0]->pivot->volumen.' Carga pequeña: '.$viajes->tiposCargas[1]->pivot->volumen. ' Crga aerea '. $viajes->tiposCargas[2]->pivot->cantidad ;
             //return view('planificacion.viajes', ['pedidoPrincipal'=>$pedidoPrincipal, 'tiposVehiculos'=> $tiposVehiculos, 'pedidosCercanos'=> $pedidosCercanos, 'viajes'=>$viajes]);
             /*
             //borramos los valores de la session
             session()->forget('idPedidosCercanos');
             session()->forget('idTiposVehiculos');
-            */            
+            */
+            /*
+            print_r($viajes) ;
+            foreach ($viajes as $key => $viaje){
+                echo $key.' :<br>';
+                
+                echo 'Capacidad maxima : '.$viaje['maximo'].' <br>'; 
+                echo 'ocupado : '.$viaje['ocupado'].' <br>';
+                echo 'disponible : '.$viaje['disponible'].' <br>';
+                
+            }
+            */       
         }
         else{
             //sino, vuelve al inicio del flujo
@@ -131,20 +143,37 @@ class PlanificacionController extends Controller
     public function generarViajes ($pedidoPrincipal, $pedidosCercanos, $tiposVehiculos){
         /*Primer paso: solucion inicial: */
         $vehiculoMasGrande = $this->obtenerVehiculoMasGrande ($tiposVehiculos);
-        //$listaVehiculos =    distribuirPedidoEnVehiculoMasGrande ($pedidoPrincipal, $vehiculoMasGrande);
+        $listaContenedoresVehiculos =    $this->distribuirPedidoEnVehiculoMasGrande ($pedidoPrincipal, $vehiculoMasGrande);
 
         /*Segundo paso: usar vehiculos mas pequeños*/
         //$tiposVehiculosOrdenados = ordenarMayorAMenorListaVehiculosDisponibles ($tiposVehiculos);
-        //$listaFinalVehiculos = cambiarAVehiculosMasPequenios ($listaVehiculos, $tiposVehiculosOrdenados);
+        //$listaFinalVehiculos = cambiarAVehiculosMasPequenios ($listaContenedoresVehiculos, $tiposVehiculosOrdenados);
 
         /*Tercer paso: Agregar otros pedidos a los vehiculos*/
         //$viajes= agregarOtrosPedidos ($listaFinalVehiculos, $pedidosCercanos);
 
         //return $viajes;
-        return $vehiculoMasGrande;
+        return $listaContenedoresVehiculos;
 
     }
 
+     
+    
+    public function distribuirPedidoEnVehiculoMasGrande ($pedidoPrincipal, $vehiculoMasGrande){        
+
+        $contenedorVehiculo = $this->iniciarVehiculoVacio ($vehiculoMasGrande); //me da un contenedor vacio
+
+        foreach ($pedidoPrincipal->articulos as $articulo){            
+            $volumen = $articulo->pivot->cantidad * $articulo->volumen;
+            $idTipoCarga = $articulo->idTipoCarga;
+            $divisible = $articulo->minimoDivisible;
+
+            
+        }
+        return $contenedorVehiculo;
+    }
+
+    /**funcionando a la perfeccion :)*/
     public function obtenerVehiculoMasGrande ($tiposVehiculos){
         //analizamos la carga normal: ya que de eso depende el tamaño de la camioneta:
         $volumenMaximo=0;
@@ -161,8 +190,43 @@ class PlanificacionController extends Controller
         }
 
         return $tiposVehiculos[$iMaximo];
-    }   
-    
+    }  
+
+    /**funcionando a la perfeccion :)*/
+    public function iniciarVehiculoVacio ($tipoVehiculo){ //ve la capaciddad que tiene el vehiculo para cada tipo de carga
+
+        $capacidades = array();
+        $tipoCargaTotal = TipoCarga::all(); //sacamos todas las cargas existentes
+
+        foreach ($tipoCargaTotal as $tipoCarga) {
+            $maximo =  $this->buscarCapacidad ($tipoVehiculo, $tipoCarga->idTipoCarga);
+            $ocupado = 0;
+            $disponible =0;
+
+            $capacidades [$tipoCarga->idTipoCarga] = array( "maximo"=>$maximo, 
+                                                            "ocupado"=>$ocupado,
+                                                            "disponible"=>$disponible
+                                                            );  //agregamos al arreglo.
+            
+        }
+
+        return $capacidades;
+    }
+
+    /**funcionando a la perfeccion :)*/
+    public function buscarCapacidad ($tipoVehiculo, $idTipoCarga){ 
+
+        $cargas = $tipoVehiculo->tiposCargas;
+
+        foreach ($cargas as $carga) {
+
+            if ($carga->idTipoCarga == $idTipoCarga ){
+                return $carga->pivot->volumen;
+            }
+        }
+        return 0;
+
+    }
 
     
 }
