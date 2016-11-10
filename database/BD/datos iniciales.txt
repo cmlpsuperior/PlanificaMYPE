@@ -17,6 +17,7 @@ Carga * tipo vehiculo
 
 Articulo:
 - todos son medidos en volumen.
+- agregar el campo con el valor minimo divisible;
 
 DetalleViaje:
 - cantidad es double no int.
@@ -24,3 +25,5 @@ DetalleViaje:
 Viaje:
 - se debe agregar el idTipoVehiculo.
 
+TipoVehiculoXtipoCarga:
+- quitar el campo cantidad, todo sera por volumen (ver lo de articuos tmb);
