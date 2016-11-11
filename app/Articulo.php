@@ -19,6 +19,7 @@ class Articulo extends Model
     	'volumen',
         'tiempoHorasAbastecer',
         'combinable',
+        'minimoDivisible',
         'activo',
         
     	'idMarca',

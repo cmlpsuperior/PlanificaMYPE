@@ -136,16 +136,24 @@
 
                   <div class="row">
                     <div class="input-field col s6">
-                      <input id="stock" type="number" min="0" class="validate" value="{{ old('stock') }}" name="stock">
+                      <input id="stock" type="number" min="0" step="0.5" class="validate" value="{{ old('stock') }}" name="stock" required>
                       <label for="stock" data-error="wrong" data-success="right">Stock *</label>
                     </div>
 
                     <div class="input-field col s6">
-                      <input id="volumen" type="number" step="0.001" min="0" class="validate" value="{{ old('volumen') }}" name="volumen">
+                      <input id="volumen" type="number" step="0.001" min="0" class="validate" value="{{ old('volumen') }}" name="volumen" required>
                       <label for="volumen" data-error="wrong" data-success="right">Volumen (m3) *</label>
                     </div>
                   </div>
                   
+                  <div class="row">
+                    <div class="input-field col s6">
+                      <input id="minimoDivisible" type="number" min="0.5" step="0.5" class="validate" value="{{ old('minimoDivisible') }}" name="minimoDivisible" required>
+                      <label for="minimoDivisible" data-error="wrong" data-success="right">Cantidad mínima *</label>
+                    </div>
+
+                    
+                  </div>
         
                   
                     

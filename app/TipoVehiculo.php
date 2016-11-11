@@ -29,6 +29,6 @@ class TipoVehiculo extends Model
     //relaciond e muchos a muchos con tipo de carga:
     public function tiposCargas (){
         return $this->belongsToMany('PlanificaMYPE\TipoCarga', 'tipovehiculoxtipocarga', 'idTipoVehiculo', 'idTipoCarga')
-                    ->withPivot('cantidad', 'volumen');
+                    ->withPivot('volumen');
     }
 }

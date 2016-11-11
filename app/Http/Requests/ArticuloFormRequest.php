@@ -28,10 +28,12 @@ class ArticuloFormRequest extends FormRequest
             'precioBase' => 'required|numeric',
             'stock' => 'required|numeric',
             'volumen' => 'required|numeric',
+            'minimoDivisible' => 'required|numeric',
             //'combinable' => 'required',
             'idMarca' => 'required|integer',
             'idTipoCarga' => 'required|integer',
             'idUnidadMedida' => 'required|integer',
-        ];
+
+                    ];
     }
 }

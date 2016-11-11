@@ -60,6 +60,7 @@ class ArticuloController extends Controller
     	$articulo->stock=$request->get('stock');
         $articulo->volumen=$request->get('volumen');
     	$articulo->tiempoHorasAbastecer= null;
+        $articulo->minimoDivisible = $request->get('minimoDivisible');
         
         if ($request->idTipoCarga!=  1 || $request->combinable=='check')  // solo pueden ser no combinables los tipo 1, si no son tipo 1, entonces siempre son combinables
             $articulo->combinable= 1; 

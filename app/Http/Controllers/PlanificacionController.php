@@ -113,6 +113,7 @@ class PlanificacionController extends Controller
 
             $viajes = $this->generarViajes($pedidoPrincipal, $pedidosCercanos, $tiposVehiculos);
 
+            dd($viajes);
             //return $viajes->nombre. ' carga: '. $viajes->tiposCargas[0]->pivot->volumen.' Carga pequeña: '.$viajes->tiposCargas[1]->pivot->volumen. ' Crga aerea '. $viajes->tiposCargas[2]->pivot->cantidad ;
             //return view('planificacion.viajes', ['pedidoPrincipal'=>$pedidoPrincipal, 'tiposVehiculos'=> $tiposVehiculos, 'pedidosCercanos'=> $pedidosCercanos, 'viajes'=>$viajes]);
             /*
@@ -144,7 +145,8 @@ class PlanificacionController extends Controller
         /*Primer paso: solucion inicial: */
         $vehiculoMasGrande = $this->obtenerVehiculoMasGrande ($tiposVehiculos);
         $listaContenedoresVehiculos =    $this->distribuirPedidoEnVehiculoMasGrande ($pedidoPrincipal, $vehiculoMasGrande);
-
+        
+        //dd($listaContenedoresVehiculos);
         /*Segundo paso: usar vehiculos mas pequeños*/
         //$tiposVehiculosOrdenados = ordenarMayorAMenorListaVehiculosDisponibles ($tiposVehiculos);
         //$listaFinalVehiculos = cambiarAVehiculosMasPequenios ($listaContenedoresVehiculos, $tiposVehiculosOrdenados);
@@ -153,6 +155,7 @@ class PlanificacionController extends Controller
         //$viajes= agregarOtrosPedidos ($listaFinalVehiculos, $pedidosCercanos);
 
         //return $viajes;
+        
         return $listaContenedoresVehiculos;
 
     }
@@ -163,26 +166,20 @@ class PlanificacionController extends Controller
 
         $listaContenedoresVehiculos[0] = $this->iniciarVehiculoVacio ($vehiculoMasGrande);
         //$contenedorVehiculo = $this->iniciarVehiculoVacio ($vehiculoMasGrande); //me da un contenedor vacio
-        $indece=0;
-        while ( $indice< count($pedidoPrincipal->articulos) ){
-            $articulo = $pedidoPrincipal->articulos[$i]; 
-
-            $volumen = $articulo->pivot->cantidad * $articulo->volumen;
-            $idTipoCarga = $articulo->idTipoCarga;
-            $divisible = $articulo->minimoDivisible;
-            $combinable = $articulo->combinable; //1: si        0: no;
-
+        
+        $valor=-1;
+        foreach ($pedidoPrincipal->articulos as $articulo ){             
             //analizamos si cabe en los contenedores:
-            $listaContenedoresVehiculos = insertarAContenedores($listaContenedoresVehiculos, $articulo);
-            $indice++; //solo si se llego a ingresar todo el producto en el auto;        
-
+            $valor= $this->insertarAContenedores($listaContenedoresVehiculos, $articulo, $vehiculoMasGrande); //$listaContenedoresVehiculos = insertarAContenedores($listaContenedoresVehiculos, $articulo);
         }
+        //dd($valor);
+        
         return $listaContenedoresVehiculos;
     }
 
-    public function insertarAContenedores($listaContenedoresVehiculos, $articulo){
+    public function insertarAContenedores(&$listaContenedoresVehiculos, $articulo, $vehiculoMasGrande){
         $arIdArticulo = $articulo->idArticulo;
-        $arCantidad = $articulo->pivot->cantidad; // se debe cambiar en la BD el nombre 
+        $arCantidad = round($articulo->pivot->cantidad, 2); // redondeo a 2 decimales
         $arVolumen = $articulo->pivot->cantidad * $articulo->volumen;
         $arIdTipoCarga = $articulo->idTipoCarga;
         $arMinimoDivisible = $articulo->minimoDivisible; //cantidad
@@ -191,7 +188,7 @@ class PlanificacionController extends Controller
         
         //vemos si entra de manera completa
         for ($i=0; $i<count($listaContenedoresVehiculos); $i++ ){
-            $contenedor = $listaContenedoresVehiculos[$i];
+            $contenedor = &$listaContenedoresVehiculos[$i];
 
             if ($arCombinable ==0 && $contenedor[$arIdTipoCarga]['haynocombinable']==1 ){ // es un articulo no combinable, y ya hay en el contenedor un no combinable
                 continue; // no puede ingresar 
@@ -204,9 +201,9 @@ class PlanificacionController extends Controller
 
                     $contenedor['articulos'][]= array('idArticulo'=>$arIdArticulo, 'cantidad'=> $arCantidad);
                     if ($arCombinable == 0) //el articulo no es combinable
-                        $contenedor[$arIdTipoCarga]['haynocombinable']==1; //indico que ahora ya tiene un no combinable;
+                        $contenedor[$arIdTipoCarga]['haynocombinable']=1; //indico que ahora ya tiene un no combinable;
 
-                    return $listaContenedoresVehiculos; //se llego a ingresar por completo el articulo en un contenedor;
+                    return 1; //1: todo ok, salgo de la funcion//$listaContenedoresVehiculos; //se llego a ingresar por completo el articulo en un contenedor;
 
                 }
                 
@@ -221,7 +218,7 @@ class PlanificacionController extends Controller
         $VolumenMinimoDivisible = $arMinimoDivisible * $articulo->volumen;  
 
         for ($i=0; $i<count($listaContenedoresVehiculos); $i++ ){
-            $contenedor = $listaContenedoresVehiculos[$i];
+            $contenedor = &$listaContenedoresVehiculos[$i];
             $arVolumen = $arCantidad * $articulo->volumen;
 
             if ($arCombinable ==0 && $contenedor[$arIdTipoCarga]['haynocombinable']==1 ){ // es un articulo no combinable, y ya hay en el contenedor un no combinable
@@ -235,17 +232,18 @@ class PlanificacionController extends Controller
 
                     $contenedor['articulos'][]= array('idArticulo'=>$arIdArticulo, 'cantidad'=> $arCantidad); //guardo todo
                     if ($arCombinable == 0) //el articulo no es combinable
-                        $contenedor[$arIdTipoCarga]['haynocombinable']==1; //indico que ahora ya tiene un no combinable;
+                        $contenedor[$arIdTipoCarga]['haynocombinable']=1; //indico que ahora ya tiene un no combinable;
 
-                    return $listaContenedoresVehiculos; //se llego a ingresar por completo, salgo de la funcion
+                    return 2; //se llego a ingresar por completo, salgo de la funcion
 
                 }
                 else if ($contenedor[$arIdTipoCarga]['disponible'] >= $VolumenMinimoDivisible){ //almenos puede entrar uno
 
-                    $cantidadPosible = floor( $contenedor[$arIdTipoCarga]['disponible'] / $VolumenMinimoDivisible ); //redondeado hacia abajo, nunca sera 0;
+                    $vecesMinimoPosible =  floor( $contenedor[$arIdTipoCarga]['disponible'] / $VolumenMinimoDivisible ); //redondeado hacia abajo, nunca sera 0;
+                    $cantidadPosible = round ($vecesMinimoPosible* $arMinimoDivisible, 2);
 
                     //actualizo la cantidad del articulo:
-                    $arCantidad = $arCantidad - $cantidadPosible; //disminuye cantidad
+                    $arCantidad = round ($arCantidad - $cantidadPosible, 2); //disminuye cantidad
 
                     //actualizo los contenedores:
                     $contenedor[$arIdTipoCarga]['disponible'] = $contenedor[$arIdTipoCarga]['disponible'] - $articulo->volumen*$cantidadPosible;
@@ -253,7 +251,7 @@ class PlanificacionController extends Controller
 
                     $contenedor['articulos'][]= array('idArticulo'=>$arIdArticulo, 'cantidad'=> $cantidadPosible); //guardo solo lo que entra
                     if ($arCombinable == 0) //el articulo no es combinable
-                        $contenedor[$arIdTipoCarga]['haynocombinable']==1; //indico que ahora ya tiene un no combinable;
+                        $contenedor[$arIdTipoCarga]['haynocombinable']=1; //indico que ahora ya tiene un no combinable;
 
 
                 }
@@ -261,34 +259,40 @@ class PlanificacionController extends Controller
 
 
         }
+        
 
         //si llego aqui es porque aun tengo cantidades que no pudieron ser ingresados en ningun contenedor, ahora lo metere en nuevos contenedores hasta que no haya ninguna cantidad:
+        $arCantidad = round($arCantidad, 2);
 
         while ($arCantidad >0){
+            
             $arVolumen = $arCantidad * $articulo->volumen;            
             $nuevoContenedor = $this->iniciarVehiculoVacio ($vehiculoMasGrande);
 
-            if ($nuevoContenedor[$arIdTipoCarga]['disponible'] >= $arCantidad ){ // si cabe todo:
+            //dd($arVolumen);
+            if ($nuevoContenedor[$arIdTipoCarga]['disponible'] >= $arVolumen ){ // si cabe todo:
 
                 $nuevoContenedor[$arIdTipoCarga]['disponible'] = $nuevoContenedor[$arIdTipoCarga]['disponible'] - $arVolumen;
                 $nuevoContenedor[$arIdTipoCarga]['ocupado'] = $nuevoContenedor[$arIdTipoCarga]['ocupado'] + $arVolumen;
 
                 $nuevoContenedor['articulos'][]= array('idArticulo'=>$arIdArticulo, 'cantidad'=> $arCantidad); //guardo todo
                 if ($arCombinable == 0) //el articulo no es combinable
-                    $nuevoContenedor[$arIdTipoCarga]['haynocombinable']==1; //indico que ahora ya tiene un no combinable;
+                    $nuevoContenedor[$arIdTipoCarga]['haynocombinable']=1; //indico que ahora ya tiene un no combinable;
 
 
                 //agregamos el nuevo contenedor a la lista:
                 $listaContenedoresVehiculos[]= $nuevoContenedor;
-                return $listaContenedoresVehiculos; //se llego a ingresar por completo, salgo de la funcion
+                return 3; //se llego a ingresar por completo, salgo de la funcion
             }
 
             else if ($nuevoContenedor[$arIdTipoCarga]['disponible'] >= $VolumenMinimoDivisible){ //no cabe todo, pero si una parte
-
-                $cantidadPosible = floor( $nuevoContenedor[$arIdTipoCarga]['disponible'] / $VolumenMinimoDivisible ); //redondeado hacia abajo, nunca sera 0;
+                
+                $vecesMinimoPosible =  floor( $nuevoContenedor[$arIdTipoCarga]['disponible'] / $VolumenMinimoDivisible ); //redondeado hacia abajo, nunca sera 0;
+                $cantidadPosible = round ($vecesMinimoPosible* $arMinimoDivisible, 2);
+                //dd($contenedor[$arIdTipoCarga]['disponible']);
 
                 //actualizo la cantidad del articulo:
-                $arCantidad = $arCantidad - $cantidadPosible; //disminuye cantidad
+                $arCantidad = round($arCantidad - $cantidadPosible, 2); //disminuye cantidad
 
                 //actualizo los contenedores:
                 $nuevoContenedor[$arIdTipoCarga]['disponible'] = $nuevoContenedor[$arIdTipoCarga]['disponible'] - $articulo->volumen*$cantidadPosible;
@@ -296,20 +300,21 @@ class PlanificacionController extends Controller
 
                 $nuevoContenedor['articulos'][]= array('idArticulo'=>$arIdArticulo, 'cantidad'=> $cantidadPosible); //guardo solo lo que entra
                 if ($arCombinable == 0) //el articulo no es combinable
-                    $nuevoContenedor[$arIdTipoCarga]['haynocombinable']==1; //indico que ahora ya tiene un no combinable;
+                    $nuevoContenedor[$arIdTipoCarga]['haynocombinable']=1; //indico que ahora ya tiene un no combinable;
 
                 //agregamos el nuevo contenedor a la lista:
                 $listaContenedoresVehiculos[]= $nuevoContenedor;
 
             }
             else{ //esto nunca debe pasar, a menos que un articulo sea tan grande que no pueda ser llevado en un vehiculo. saldre del bucle;
-                return $listaContenedoresVehiculos; 
+                return -1; 
             }
         }
+        //dd($VolumenMinimoDivisible);
 
 
         //no deberia llegar nunca aqui:
-        return $listaContenedoresVehiculos; 
+        return -2; 
 
 
 
