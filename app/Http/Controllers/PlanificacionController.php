@@ -107,30 +107,23 @@ class PlanificacionController extends Controller
             $idPedidosCercanos = session('idPedidosCercanos');
             $idTiposVehiculos = session('idTiposVehiculos');
 
-            //obtengo todos los pedidos cercanos
+            //obtengo los datos que nesesito procesar
             $pedidoPrincipal = Pedido::findOrFail($id);
-            $pedidosCercanos= Pedido::whereIn ('idPedido', $idPedidosCercanos )->get();
+            $pedidosCercanos= Pedido::whereIn ('idPedido', $idPedidosCercanos )->get();          
+            $contenedoresDisponibles= $this->obtenerTodosContenedores($idTiposVehiculos); //los contenedores que utilizare.
             
-            $contenedoresTotal= $this->obtenerTodosContenedores();
-            //obtengo los tipos de vehiculos selecionados por el supervisor y los ordeno de grande a pequeño
-            $tipoVehiculosOrdenados = DB::table('tipoVehiculoxtipocarga')->whereIn ('idTipoVehiculo', $idTiposVehiculos )->where('idTipoCarga','=',1)->orderBy('idTipoCarga', 'asc')->orderBy('volumen', 'desc')->get(); //solo veo el 1 que el la carga normal
-            //ordenamos los tiposVehiculos:
-            $tiposVehiculos= array(); //vacio
-            foreach ($tipoVehiculosOrdenados as $tipoVehiculoOrdenado){
-                $tiposVehiculos[]= TipoVehiculo::findOrFail($tipoVehiculoOrdenado->idTipoVehiculo);
-            }
+            //llamo al algoritmo
+            $viajes = $this->generarViajes($pedidoPrincipal, $pedidosCercanos, $contenedoresDisponibles);
 
-            $viajes = $this->generarViajes($pedidoPrincipal, $pedidosCercanos, $tiposVehiculos);
-
+            /*
             dd($viajes);
             //return $viajes->nombre. ' carga: '. $viajes->tiposCargas[0]->pivot->volumen.' Carga pequeña: '.$viajes->tiposCargas[1]->pivot->volumen. ' Crga aerea '. $viajes->tiposCargas[2]->pivot->cantidad ;
             //return view('planificacion.viajes', ['pedidoPrincipal'=>$pedidoPrincipal, 'tiposVehiculos'=> $tiposVehiculos, 'pedidosCercanos'=> $pedidosCercanos, 'viajes'=>$viajes]);
-            /*
+            
             //borramos los valores de la session
             session()->forget('idPedidosCercanos');
             session()->forget('idTiposVehiculos');
-            */
-            /*
+          
             print_r($viajes) ;
             foreach ($viajes as $key => $viaje){
                 echo $key.' :<br>';
@@ -150,142 +143,164 @@ class PlanificacionController extends Controller
       
     }
 
-    public function obtenerTodosContenedores (){
+    /*Ordena de mayor a menor los contenedores, con sus capacidades. FUNCIONANDO*/
+    public function obtenerTodosContenedores ($idTiposVehiculos){
         $contenedores = array();
         
-        //obtengo los tipos de vehiculos selecionados por el supervisor y los ordeno de grande a pequeño
-        $tipoVehiculosOrdenados = DB::table('tipoVehiculoxtipocarga')->where('idTipoCarga','=',1)->orderBy('volumen', 'desc')->get(); //solo veo el 1 que el la carga normal
-            
-        $tipoVehiculoTotal = TipoVehiculo::all();
+        //obtengo los tipos de vehiculos existentes y los ordeno de grande a pequeño.
+        $tipoVehiculosOrdenados = DB::table('tipoVehiculoxtipocarga')
+                                    ->whereIn('idTipoVehiculo', $idTiposVehiculos)
+                                    ->where('idTipoCarga','=',1) //solo veo el 1 que el la carga normal
+                                    ->orderBy('volumen', 'desc')
+                                    ->get(); 
 
-        foreach ($tipoVehiculoTotal as $tipoVehiculo) {
+        $tipoCargaTotal = TipoCarga::orderBy('idTipoCarga', 'asc')->get();
+
+        foreach ($tipoVehiculosOrdenados as $tipoVehiculo) {
             $contenedor = array();
             $contenedor['idTipoVehiculo']= $tipoVehiculo->idTipoVehiculo;
             $contenedor['articulos']= array();
             $contenedor['cargas']= array();
 
-            foreach($tipoCargaTotal as $tipoCarga){
+            foreach($tipoCargaTotal as $tipoCarga){ //podriamos hacerlo por busqueda en el mismo php, y que no vaya al BD
+                $cargaVehiculo = DB::table('tipoVehiculoxtipocarga')
+                                            ->where('idTipoCarga','=',$tipoCarga->idTipoCarga)
+                                            ->where('idTipoVehiculo','=',$tipoVehiculo->idTipoVehiculo)
+                                            ->get(); //solo veo el 1 que el la carga normal
 
-            }
-            
-            
-            
-
-            $maximo =  $this->buscarCapacidad ($tipoVehiculo, $tipoCarga->idTipoCarga);
-            $ocupado = 0;
-            $disponible = $maximo;
-
-            $capacidades ['cargas'][$tipoCarga->idTipoCarga] = array( "maximo"=>$maximo, 
-                                                            "ocupado"=>$ocupado,
-                                                            "disponible"=>$disponible,
+                if ( $cargaVehiculo->isEmpty() )  // no tiene carga asiganda en la base de datos.
+                    $contenedor['cargas'][$tipoCarga->idTipoCarga] = array( "maximo"=>0, 
+                                                            "ocupado"=>0,
+                                                            "disponible"=>0,
                                                             "haynocombinable" => 0
-                                                            );  //agregamos al arreglo.
+                                                            );            
+                else {
+                    //dd($cargaVehiculo);
+                    $contenedor['cargas'][$tipoCarga->idTipoCarga] = array( "maximo"=>$cargaVehiculo[0]->volumen, //se le pone [0] ya que la consulta query devulve arreglo, y yo solo queiro el primero
+                                                            "ocupado"=>0,
+                                                            "disponible"=>$cargaVehiculo[0]->volumen,
+                                                            "haynocombinable" => 0
+                                                            ); 
+
+                }
+            }
+
+            $contendores[] = $contenedor;       
             
         }
-        
-        $capacidades['articulos']= array(); // no tiene ningun articulo aun;
-        return $capacidades;
+
+        return $contendores;
     }
 
-    public function buscarCapacidad ($tipoVehiculo, $idTipoCarga){ 
 
-        $cargas = $tipoVehiculo->tiposCargas;
+    public function generarViajes ($pedidoPrincipal, $pedidosCercanos, $maestraContenedores){
 
-        foreach ($cargas as $carga) {
-
-            if ($carga->idTipoCarga == $idTipoCarga ){
-                return $carga->pivot->volumen;
-            }
-        }
-        return 0;
-
-    }
-
-    public function generarViajes ($pedidoPrincipal, $pedidosCercanos, $tiposVehiculos){
         /*Primer paso: solucion inicial: */
-        $vehiculoMasGrande = $this->obtenerVehiculoMasGrande ($tiposVehiculos);
-        $listaContenedoresVehiculos =    $this->distribuirPedidoEnVehiculoMasGrande ($pedidoPrincipal, $vehiculoMasGrande);
-        
+        $contenedorMasGrande = $maestraContenedores[0]; //como esta ordenado de mayor a menor, el mayor es el primero
+        $contenedoresUtilizados = $this->distribuirPedidoEnContenedorMasGrande ($pedidoPrincipal, $contenedorMasGrande);
+                
         /*Segundo paso: usar vehiculos mas pequeños*/
-        //los tipos de vehiculos ya estan ordenados de mayor a menor
-        $this->cambiarAVehiculosMasPequenios ($listaContenedoresVehiculos, $tiposVehiculos);
-
+        $this->cambiarAVehiculosMasPequenios ($contenedoresUtilizados, $maestraContenedores);
 
         /*Tercer paso: Agregar otros pedidos a los vehiculos*/
-        //$viajes= agregarOtrosPedidos ($listaFinalVehiculos, $pedidosCercanos);
+        $viajes= agregarOtrosPedidos ($contenedoresUtilizados, $pedidosCercanos);
 
         //return $viajes;
         
-        return $listaContenedoresVehiculos;
+        return $contenedoresUtilizados;
 
     }
 
-    public function cambiarAVehiculosMasPequenios (&$listaContenedoresVehiculos, $tiposVehiculos){
-        foreach ($listaContenedoresVehiculos as $contenedorVehiculo){
 
-            $idTipoVehiculo = $this->tipoVehiculoDelContenedor($contenedorVehiculo, $tiposVehiculos);
-            $contenedorVehiculo['idTipoVehiculo'] = $idTipoVehiculo;
+    /**PARTE2 **/
+    public function cambiarAVehiculosMasPequenios (&$contenedoresUtilizados, $maestraContenedores){
+        foreach ($contenedoresUtilizados as &$contenedorUtilizado){
+
+            $contenedorMenor = $this->buscarMenorContenedor($contenedorUtilizado, $maestraContenedores);
+            if ( empty($contenedorMenor) ){ // no encotro ningun contenedor, esto no deberia pasar
+                //nada
+            }
+            else{
+                $contenedorUtilizado['cargas']= $contenedorMenor['cargas']; //actualizo las cargas
+                $contenedorUtilizado['idTipoVehiculo']= $contenedorMenor['idTipoVehiculo']; //cambio el tipo de contenedor
+
+            }
 
         }
     }
 
-    public function tipoVehiculoDelContenedor ($contenedorVehiculo, $tiposVehiculos){
+    public function buscarMenorContenedor ($contenedorUtilizado, $maestraContenedores){
+        $contenedorMenor = array(); 
 
-            //recorremos todos los tipos de carga de cada contenedor:
-            foreach($contenedorVehiculo['cargas'] as $key => $carga ){
+        foreach ($maestraContenedores as $contenedorMaestro){
+            $cargasMenor = array();
+            foreach($contenedorUtilizado['cargas'] as $key => $carga){
+                
+
+                if ($carga['ocupado'] > $contenedorMaestro['cargas'][$key]['maximo']){
+                    return $contenedorMenor; //como esta de mayor a menor, si este contenedor es uy pequeño, entonces los que restan tambien.
+                }
+                else{
+                    $cargasMenor[$key]['maximo']= $contenedorMaestro['cargas'][$key]['maximo'];
+                    $cargasMenor[$key]['ocupado']= $carga['ocupado'];
+                    
+                    $cargasMenor[$key]['disponible']= $cargasMenor[$key]['maximo'] - $cargasMenor[$key]['ocupado'];
+                    $cargasMenor[$key]['haynocombinable']= $carga['haynocombinable'];
 
 
+                }
             }
-            while ($indice<=$tamanioContenedor){
-                $contenedorVehiculo[$indice]['ocupado'];
-                $indice++;
 
-            }
+            $contenedorMenor['cargas']= $cargasMenor;            
+            $contenedorMenor['idTipoVehiculo']= $contenedorMaestro['idTipoVehiculo'];
+            
+        }
+
+        return $contenedorMenor;
     }
+    /**fin parte 2**/
  
-    
-    public function distribuirPedidoEnVehiculoMasGrande ($pedidoPrincipal, $vehiculoMasGrande){        
+    /**PARTE1 **/
+    public function distribuirPedidoEnContenedorMasGrande ($pedidoPrincipal, $contenedorMasGrande){ 
 
-        $listaContenedoresVehiculos[0] = $this->iniciarVehiculoVacio ($vehiculoMasGrande);
-        //$contenedorVehiculo = $this->iniciarVehiculoVacio ($vehiculoMasGrande); //me da un contenedor vacio
+        $contenedoresUtilizados[0] = $contenedorMasGrande;  //hago una copia de un contenedor y lo meto en mi lista   
         
         $valor=-1;
-        foreach ($pedidoPrincipal->articulos as $articulo ){             
-            //analizamos si cabe en los contenedores:
-            $valor= $this->insertarAContenedores($listaContenedoresVehiculos, $articulo, $vehiculoMasGrande); //$listaContenedoresVehiculos = insertarAContenedores($listaContenedoresVehiculos, $articulo);
+        foreach ($pedidoPrincipal->articulos as $articulo ){  
+            $valor= $this->insertarAContenedores($contenedoresUtilizados, $articulo, $contenedorMasGrande, $pedidoPrincipal->idPedido); 
         }
         //dd($valor);
-        
-        return $listaContenedoresVehiculos;
+        return $contenedoresUtilizados;
     }
 
-    public function insertarAContenedores(&$listaContenedoresVehiculos, $articulo, $vehiculoMasGrande){
+    public function insertarAContenedores(&$contenedoresUtilizados, $articulo, $contenedorMasGrande, $idPedido){
         $arIdArticulo = $articulo->idArticulo;
-        $arCantidad = round($articulo->pivot->cantidad, 2); // redondeo a 2 decimales
-        $arVolumen = $articulo->pivot->cantidad * $articulo->volumen;
         $arIdTipoCarga = $articulo->idTipoCarga;
         $arMinimoDivisible = $articulo->minimoDivisible; //cantidad
         $arCombinable = $articulo->combinable; //1: si        0: no;
-        
-        
-        //vemos si entra de manera completa
-        for ($i=0; $i<count($listaContenedoresVehiculos); $i++ ){
-            $contenedor = &$listaContenedoresVehiculos[$i];
 
-            if ($arCombinable ==0 && $contenedor[$arIdTipoCarga]['haynocombinable']==1 ){ // es un articulo no combinable, y ya hay en el contenedor un no combinable
+        $arCantidad = round($articulo->pivot->cantidad, 2); // redondeo a 2 decimales
+        $arVolumen = $articulo->pivot->cantidad * $articulo->volumen;
+        
+        //1: vemos si entra de manera completa
+        for ($i=0; $i<count($contenedoresUtilizados); $i++ ){
+            $contenedor = &$contenedoresUtilizados[$i];
+            $cargas = &$contenedoresUtilizados[$i]['cargas'];
+
+            if ($arCombinable ==0 && $cargas[$arIdTipoCarga]['haynocombinable']==1 ){ // es un articulo no combinable, y ya hay en el contenedor un no combinable
                 continue; // no puede ingresar 
             }
             else{
-                if ($contenedor[$arIdTipoCarga]['disponible']>= $arVolumen ){ // sí cabe
+                if ($cargas[$arIdTipoCarga]['disponible']>= $arVolumen ){ // sí cabe
                     
-                    $contenedor[$arIdTipoCarga]['disponible'] = $contenedor[$arIdTipoCarga]['disponible'] - $arVolumen;
-                    $contenedor[$arIdTipoCarga]['ocupado'] = $contenedor[$arIdTipoCarga]['ocupado'] + $arVolumen;
+                    $cargas[$arIdTipoCarga]['disponible'] = $cargas[$arIdTipoCarga]['disponible'] - $arVolumen;
+                    $cargas[$arIdTipoCarga]['ocupado'] = $cargas[$arIdTipoCarga]['ocupado'] + $arVolumen;
 
-                    $contenedor['articulos'][]= array('idArticulo'=>$arIdArticulo, 'cantidad'=> $arCantidad);
+                    $contenedor['articulos'][]= array('idArticulo'=>$arIdArticulo, 'idPedido'=> $idPedido, 'cantidad'=> $arCantidad);
                     if ($arCombinable == 0) //el articulo no es combinable
-                        $contenedor[$arIdTipoCarga]['haynocombinable']=1; //indico que ahora ya tiene un no combinable;
+                        $cargas[$arIdTipoCarga]['haynocombinable']=1; //indico que ahora ya tiene un no combinable;
 
-                    return 1; //1: todo ok, salgo de la funcion//$listaContenedoresVehiculos; //se llego a ingresar por completo el articulo en un contenedor;
+                    return 1; //1: todo ok, salgo de la funcion. se llego a ingresar por completo el articulo en un contenedor;
 
                 }
                 
@@ -296,44 +311,46 @@ class PlanificacionController extends Controller
         }
 
         //si llego aqui, es porque no cabe el articulo completamnete en algun contenedor:
-        //intentamos ingresarlo por partes:
+        //2: intentamos ingresarlo por partes:
         $VolumenMinimoDivisible = $arMinimoDivisible * $articulo->volumen;  
 
-        for ($i=0; $i<count($listaContenedoresVehiculos); $i++ ){
-            $contenedor = &$listaContenedoresVehiculos[$i];
+        for ($i=0; $i<count($contenedoresUtilizados); $i++ ){
+            $contenedor = &$contenedoresUtilizados[$i];
+            $cargas = &$contenedoresUtilizados[$i]['cargas'];
+
             $arVolumen = $arCantidad * $articulo->volumen;
 
-            if ($arCombinable ==0 && $contenedor[$arIdTipoCarga]['haynocombinable']==1 ){ // es un articulo no combinable, y ya hay en el contenedor un no combinable
+            if ($arCombinable ==0 && $cargas[$arIdTipoCarga]['haynocombinable']==1 ){ // es un articulo no combinable, y ya hay en el contenedor un no combinable
                 continue; // no puede ingresar 
             }
             else{
-                if ($contenedor[$arIdTipoCarga]['disponible']>= $arVolumen ){ //la primera iteracion nunca entrara aca, pero las que siguen quisas si
+                if ($cargas[$arIdTipoCarga]['disponible']>= $arVolumen ){ //la primera iteracion nunca entrara aca, pero las que siguen quisas si
 
-                    $contenedor[$arIdTipoCarga]['disponible'] = $contenedor[$arIdTipoCarga]['disponible'] - $arVolumen;
-                    $contenedor[$arIdTipoCarga]['ocupado'] = $contenedor[$arIdTipoCarga]['ocupado'] + $arVolumen;
+                    $cargas[$arIdTipoCarga]['disponible'] = $cargas[$arIdTipoCarga]['disponible'] - $arVolumen;
+                    $cargas[$arIdTipoCarga]['ocupado'] = $cargas[$arIdTipoCarga]['ocupado'] + $arVolumen;
 
-                    $contenedor['articulos'][]= array('idArticulo'=>$arIdArticulo, 'cantidad'=> $arCantidad); //guardo todo
+                    $contenedor['articulos'][]= array('idArticulo'=>$arIdArticulo, 'idPedido'=> $idPedido, 'cantidad'=> $arCantidad);
                     if ($arCombinable == 0) //el articulo no es combinable
-                        $contenedor[$arIdTipoCarga]['haynocombinable']=1; //indico que ahora ya tiene un no combinable;
+                        $cargas[$arIdTipoCarga]['haynocombinable']=1; //indico que ahora ya tiene un no combinable;
 
                     return 2; //se llego a ingresar por completo, salgo de la funcion
 
                 }
-                else if ($contenedor[$arIdTipoCarga]['disponible'] >= $VolumenMinimoDivisible){ //almenos puede entrar uno
+                else if ($cargas[$arIdTipoCarga]['disponible'] >= $VolumenMinimoDivisible){ //almenos puede entrar uno
 
-                    $vecesMinimoPosible =  floor( $contenedor[$arIdTipoCarga]['disponible'] / $VolumenMinimoDivisible ); //redondeado hacia abajo, nunca sera 0;
+                    $vecesMinimoPosible =  floor( $cargas[$arIdTipoCarga]['disponible'] / $VolumenMinimoDivisible ); //redondeado hacia abajo, nunca sera 0;
                     $cantidadPosible = round ($vecesMinimoPosible* $arMinimoDivisible, 2);
 
                     //actualizo la cantidad del articulo:
                     $arCantidad = round ($arCantidad - $cantidadPosible, 2); //disminuye cantidad
 
                     //actualizo los contenedores:
-                    $contenedor[$arIdTipoCarga]['disponible'] = $contenedor[$arIdTipoCarga]['disponible'] - $articulo->volumen*$cantidadPosible;
-                    $contenedor[$arIdTipoCarga]['ocupado'] = $contenedor[$arIdTipoCarga]['ocupado'] + $articulo->volumen*$cantidadPosible;
+                    $cargas[$arIdTipoCarga]['disponible'] = $cargas[$arIdTipoCarga]['disponible'] - $articulo->volumen*$cantidadPosible;
+                    $cargas[$arIdTipoCarga]['ocupado'] = $cargas[$arIdTipoCarga]['ocupado'] + $articulo->volumen*$cantidadPosible;
 
-                    $contenedor['articulos'][]= array('idArticulo'=>$arIdArticulo, 'cantidad'=> $cantidadPosible); //guardo solo lo que entra
+                    $contenedor['articulos'][]= array('idArticulo'=>$arIdArticulo, 'idPedido'=> $idPedido, 'cantidad'=> $cantidadPosible);
                     if ($arCombinable == 0) //el articulo no es combinable
-                        $contenedor[$arIdTipoCarga]['haynocombinable']=1; //indico que ahora ya tiene un no combinable;
+                        $cargas[$arIdTipoCarga]['haynocombinable']=1; //indico que ahora ya tiene un no combinable;
 
 
                 }
@@ -343,49 +360,49 @@ class PlanificacionController extends Controller
         }
         
 
-        //si llego aqui es porque aun tengo cantidades que no pudieron ser ingresados en ningun contenedor, ahora lo metere en nuevos contenedores hasta que no haya ninguna cantidad:
+        //si llego aqui es porque aun tengo cantidades que no pudieron ser ingresados en ningun contenedor.
+        //3: ahora lo metere en nuevos contenedores hasta que no haya ninguna cantidad:
         $arCantidad = round($arCantidad, 2);
 
         while ($arCantidad >0){
             
             $arVolumen = $arCantidad * $articulo->volumen;            
-            $nuevoContenedor = $this->iniciarVehiculoVacio ($vehiculoMasGrande);
+            $nuevoContenedor = $contenedorMasGrande;
+            $cargas = &$nuevoContenedor['cargas'];
 
-            //dd($arVolumen);
-            if ($nuevoContenedor[$arIdTipoCarga]['disponible'] >= $arVolumen ){ // si cabe todo:
+            if ($cargas[$arIdTipoCarga]['disponible'] >= $arVolumen ){ // si cabe todo:
 
-                $nuevoContenedor[$arIdTipoCarga]['disponible'] = $nuevoContenedor[$arIdTipoCarga]['disponible'] - $arVolumen;
-                $nuevoContenedor[$arIdTipoCarga]['ocupado'] = $nuevoContenedor[$arIdTipoCarga]['ocupado'] + $arVolumen;
+                $cargas[$arIdTipoCarga]['disponible'] = $cargas[$arIdTipoCarga]['disponible'] - $arVolumen;
+                $cargas[$arIdTipoCarga]['ocupado'] = $cargas[$arIdTipoCarga]['ocupado'] + $arVolumen;
 
-                $nuevoContenedor['articulos'][]= array('idArticulo'=>$arIdArticulo, 'cantidad'=> $arCantidad); //guardo todo
+                $nuevoContenedor['articulos'][]= array('idArticulo'=>$arIdArticulo, 'idPedido'=> $idPedido, 'cantidad'=> $arCantidad);
                 if ($arCombinable == 0) //el articulo no es combinable
-                    $nuevoContenedor[$arIdTipoCarga]['haynocombinable']=1; //indico que ahora ya tiene un no combinable;
+                    $cargas[$arIdTipoCarga]['haynocombinable']=1; //indico que ahora ya tiene un no combinable;
 
 
                 //agregamos el nuevo contenedor a la lista:
-                $listaContenedoresVehiculos[]= $nuevoContenedor;
+                $contenedoresUtilizados[]= $nuevoContenedor;
                 return 3; //se llego a ingresar por completo, salgo de la funcion
             }
 
-            else if ($nuevoContenedor[$arIdTipoCarga]['disponible'] >= $VolumenMinimoDivisible){ //no cabe todo, pero si una parte
+            else if ($cargas[$arIdTipoCarga]['disponible'] >= $VolumenMinimoDivisible){ //no cabe todo, pero si una parte
                 
-                $vecesMinimoPosible =  floor( $nuevoContenedor[$arIdTipoCarga]['disponible'] / $VolumenMinimoDivisible ); //redondeado hacia abajo, nunca sera 0;
-                $cantidadPosible = round ($vecesMinimoPosible* $arMinimoDivisible, 2);
-                //dd($contenedor[$arIdTipoCarga]['disponible']);
+                $vecesMinimoPosible =  floor( $cargas[$arIdTipoCarga]['disponible'] / $VolumenMinimoDivisible ); //redondeado hacia abajo, nunca sera 0;
+                $cantidadPosible = round ($vecesMinimoPosible* $arMinimoDivisible, 2);     
 
                 //actualizo la cantidad del articulo:
                 $arCantidad = round($arCantidad - $cantidadPosible, 2); //disminuye cantidad
 
                 //actualizo los contenedores:
-                $nuevoContenedor[$arIdTipoCarga]['disponible'] = $nuevoContenedor[$arIdTipoCarga]['disponible'] - $articulo->volumen*$cantidadPosible;
-                $nuevoContenedor[$arIdTipoCarga]['ocupado'] = $nuevoContenedor[$arIdTipoCarga]['ocupado'] + $articulo->volumen*$cantidadPosible;
+                $cargas[$arIdTipoCarga]['disponible'] = $cargas[$arIdTipoCarga]['disponible'] - $articulo->volumen*$cantidadPosible;
+                $cargas[$arIdTipoCarga]['ocupado'] = $cargas[$arIdTipoCarga]['ocupado'] + $articulo->volumen*$cantidadPosible;
 
-                $nuevoContenedor['articulos'][]= array('idArticulo'=>$arIdArticulo, 'cantidad'=> $cantidadPosible); //guardo solo lo que entra
+                $nuevoContenedor['articulos'][]= array('idArticulo'=>$arIdArticulo, 'idPedido'=> $idPedido, 'cantidad'=> $cantidadPosible);
                 if ($arCombinable == 0) //el articulo no es combinable
-                    $nuevoContenedor[$arIdTipoCarga]['haynocombinable']=1; //indico que ahora ya tiene un no combinable;
+                    $cargas[$arIdTipoCarga]['haynocombinable']=1; //indico que ahora ya tiene un no combinable;
 
                 //agregamos el nuevo contenedor a la lista:
-                $listaContenedoresVehiculos[]= $nuevoContenedor;
+                $contenedoresUtilizados[]= $nuevoContenedor;
 
             }
             else{ //esto nunca debe pasar, a menos que un articulo sea tan grande que no pueda ser llevado en un vehiculo. saldre del bucle;
@@ -399,65 +416,7 @@ class PlanificacionController extends Controller
         return -2; 
 
 
-
     }
-
-    /**funcionando a la perfeccion :)*/
-    public function obtenerVehiculoMasGrande ($tiposVehiculos){
-        //analizamos la carga normal: ya que de eso depende el tamaño de la camioneta:
-        $volumenMaximo=0;
-        $iMaximo= 0; //ningun id
-        $tamanoArreglo = count($tiposVehiculos);
-        for ($i=0; $i< $tamanoArreglo; $i++){
-            $unTipo = $tiposVehiculos[$i];
-            //$cargas = $unTipo->cargas();
-            $cargaNormal = $unTipo->tiposCargas[0]->pivot->volumen; //la carga 0 es del tipo nomral
-            if ($cargaNormal>=$volumenMaximo){
-                $volumenMaximo = $cargaNormal;
-                $iMaximo= $i;
-            }
-        }
-
-        return $tiposVehiculos[$iMaximo];
-    }  
-
-    /**funcionando a la perfeccion :)*/
-    public function iniciarVehiculoVacio ($tipoVehiculo){ //ve la capaciddad que tiene el vehiculo para cada tipo de carga
-
-        $capacidades = array();
-        $tipoCargaTotal = TipoCarga::all(); //sacamos todas las cargas existentes
-
-        foreach ($tipoCargaTotal as $tipoCarga) {
-            $maximo =  $this->buscarCapacidad ($tipoVehiculo, $tipoCarga->idTipoCarga);
-            $ocupado = 0;
-            $disponible = $maximo;
-
-            $capacidades [$tipoCarga->idTipoCarga] = array( "maximo"=>$maximo, 
-                                                            "ocupado"=>$ocupado,
-                                                            "disponible"=>$disponible,
-                                                            "haynocombinable" => 0
-                                                            );  //agregamos al arreglo.
-            
-        }
-        
-        $capacidades['articulos']= array(); // no tiene ningun articulo aun;
-        return $capacidades;
-    }
-
-    /**funcionando a la perfeccion :)*/
-    public function buscarCapacidad ($tipoVehiculo, $idTipoCarga){ 
-
-        $cargas = $tipoVehiculo->tiposCargas;
-
-        foreach ($cargas as $carga) {
-
-            if ($carga->idTipoCarga == $idTipoCarga ){
-                return $carga->pivot->volumen;
-            }
-        }
-        return 0;
-
-    }
-
+    /**fin parte 1**/
     
 }
