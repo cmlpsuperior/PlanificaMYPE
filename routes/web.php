@@ -47,3 +47,4 @@ Route::get('planificacion/{id}/vehiculosUtilizados', 'PlanificacionController@ve
 Route::post('planificacion/{id}/vehiculosUtilizados', 'PlanificacionController@vehiculosUtilizados_procesar' )->name('planificacion.vehiculosUtilizados_procesar');
 
 Route::get('planificacion/{id}/viajes', 'PlanificacionController@viajes' )->name('planificacion.viajes');
+Route::post('planificacion/{id}/viajes', 'PlanificacionController@viajes_procesar' )->name('planificacion.viajes_procesar');

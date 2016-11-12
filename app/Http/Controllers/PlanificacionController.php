@@ -113,26 +113,38 @@ class PlanificacionController extends Controller
             $contenedoresDisponibles= $this->obtenerTodosContenedores($idTiposVehiculos); //los contenedores que utilizare.
             
             //llamo al algoritmo
-            $viajes = $this->generarViajes($pedidoPrincipal, $pedidosCercanos, $contenedoresDisponibles);
+            $contenedoresUtilizados = $this->generarViajes($pedidoPrincipal, $pedidosCercanos, $contenedoresDisponibles);
 
-            /*
-            dd($viajes);
-            //return $viajes->nombre. ' carga: '. $viajes->tiposCargas[0]->pivot->volumen.' Carga pequeña: '.$viajes->tiposCargas[1]->pivot->volumen. ' Crga aerea '. $viajes->tiposCargas[2]->pivot->cantidad ;
-            //return view('planificacion.viajes', ['pedidoPrincipal'=>$pedidoPrincipal, 'tiposVehiculos'=> $tiposVehiculos, 'pedidosCercanos'=> $pedidosCercanos, 'viajes'=>$viajes]);
+            //agregamos los nombres de los vehiculos, el numero de clientes, y los montos:
+            foreach ($contenedoresUtilizados as &$contenedorUtilizado){
+                $vehiculoUtilizado = TipoVehiculo::findOrFail ($contenedorUtilizado['idTipoVehiculo']);
+                $contenedorUtilizado['tipoVehiculo']= $vehiculoUtilizado;
+
+                //veo cuentos pedidos hay:
+                $idPedidos = array();
+                foreach ($contenedorUtilizado['articulos'] as $articulo){
+
+                    if ( !in_array($articulo['idPedido'], $idPedidos) ){
+                        $idPedidos[]= $articulo['idPedido'];
+                    }
+                }
+
+                //obtengo los datos de los pedidos:
+                $pedidos= array();
+                foreach ($idPedidos as $idPedido){
+                    $pedidos[] = Pedido::findOrFail($idPedido);
+                }
+
+                $contenedorUtilizado['pedidos']= $pedidos;
+
+            }
             
+            return view('planificacion.mostrarViajes', ['contenedores'=> $contenedoresUtilizados, 'pedidoPrincipal'=>$pedidoPrincipal]);
+            
+            /*
             //borramos los valores de la session
             session()->forget('idPedidosCercanos');
             session()->forget('idTiposVehiculos');
-          
-            print_r($viajes) ;
-            foreach ($viajes as $key => $viaje){
-                echo $key.' :<br>';
-                
-                echo 'Capacidad maxima : '.$viaje['maximo'].' <br>'; 
-                echo 'ocupado : '.$viaje['ocupado'].' <br>';
-                echo 'disponible : '.$viaje['disponible'].' <br>';
-                
-            }
             */       
         }
         else{
@@ -203,7 +215,7 @@ class PlanificacionController extends Controller
         $this->cambiarAVehiculosMasPequenios ($contenedoresUtilizados, $maestraContenedores);
 
         /*Tercer paso: Agregar otros pedidos a los vehiculos*/
-        $viajes= agregarOtrosPedidos ($contenedoresUtilizados, $pedidosCercanos);
+        //$viajes= agregarOtrosPedidos ($contenedoresUtilizados, $pedidosCercanos);
 
         //return $viajes;
         
