@@ -11,6 +11,7 @@ use PlanificaMYPE\TipoCarga;
 use PlanificaMYPE\Http\Requests\SeleccionarPedidoRequest;
 use PlanificaMYPE\Http\Requests\VehiculosUtilizadosRequest;
 use Illuminate\Http\RedirectResponse; //para el redirect
+use DB;
 
 class PlanificacionController extends Controller
 {
@@ -109,7 +110,15 @@ class PlanificacionController extends Controller
             //obtengo todos los pedidos cercanos
             $pedidoPrincipal = Pedido::findOrFail($id);
             $pedidosCercanos= Pedido::whereIn ('idPedido', $idPedidosCercanos )->get();
-            $tiposVehiculos= TipoVehiculo::whereIn ('idTipoVehiculo', $idTiposVehiculos )->get();
+            
+            $contenedoresTotal= $this->obtenerTodosContenedores();
+            //obtengo los tipos de vehiculos selecionados por el supervisor y los ordeno de grande a pequeño
+            $tipoVehiculosOrdenados = DB::table('tipoVehiculoxtipocarga')->whereIn ('idTipoVehiculo', $idTiposVehiculos )->where('idTipoCarga','=',1)->orderBy('idTipoCarga', 'asc')->orderBy('volumen', 'desc')->get(); //solo veo el 1 que el la carga normal
+            //ordenamos los tiposVehiculos:
+            $tiposVehiculos= array(); //vacio
+            foreach ($tipoVehiculosOrdenados as $tipoVehiculoOrdenado){
+                $tiposVehiculos[]= TipoVehiculo::findOrFail($tipoVehiculoOrdenado->idTipoVehiculo);
+            }
 
             $viajes = $this->generarViajes($pedidoPrincipal, $pedidosCercanos, $tiposVehiculos);
 
@@ -141,15 +150,66 @@ class PlanificacionController extends Controller
       
     }
 
+    public function obtenerTodosContenedores (){
+        $contenedores = array();
+        
+        //obtengo los tipos de vehiculos selecionados por el supervisor y los ordeno de grande a pequeño
+        $tipoVehiculosOrdenados = DB::table('tipoVehiculoxtipocarga')->where('idTipoCarga','=',1)->orderBy('volumen', 'desc')->get(); //solo veo el 1 que el la carga normal
+            
+        $tipoVehiculoTotal = TipoVehiculo::all();
+
+        foreach ($tipoVehiculoTotal as $tipoVehiculo) {
+            $contenedor = array();
+            $contenedor['idTipoVehiculo']= $tipoVehiculo->idTipoVehiculo;
+            $contenedor['articulos']= array();
+            $contenedor['cargas']= array();
+
+            foreach($tipoCargaTotal as $tipoCarga){
+
+            }
+            
+            
+            
+
+            $maximo =  $this->buscarCapacidad ($tipoVehiculo, $tipoCarga->idTipoCarga);
+            $ocupado = 0;
+            $disponible = $maximo;
+
+            $capacidades ['cargas'][$tipoCarga->idTipoCarga] = array( "maximo"=>$maximo, 
+                                                            "ocupado"=>$ocupado,
+                                                            "disponible"=>$disponible,
+                                                            "haynocombinable" => 0
+                                                            );  //agregamos al arreglo.
+            
+        }
+        
+        $capacidades['articulos']= array(); // no tiene ningun articulo aun;
+        return $capacidades;
+    }
+
+    public function buscarCapacidad ($tipoVehiculo, $idTipoCarga){ 
+
+        $cargas = $tipoVehiculo->tiposCargas;
+
+        foreach ($cargas as $carga) {
+
+            if ($carga->idTipoCarga == $idTipoCarga ){
+                return $carga->pivot->volumen;
+            }
+        }
+        return 0;
+
+    }
+
     public function generarViajes ($pedidoPrincipal, $pedidosCercanos, $tiposVehiculos){
         /*Primer paso: solucion inicial: */
         $vehiculoMasGrande = $this->obtenerVehiculoMasGrande ($tiposVehiculos);
         $listaContenedoresVehiculos =    $this->distribuirPedidoEnVehiculoMasGrande ($pedidoPrincipal, $vehiculoMasGrande);
         
-        //dd($listaContenedoresVehiculos);
         /*Segundo paso: usar vehiculos mas pequeños*/
-        //$tiposVehiculosOrdenados = ordenarMayorAMenorListaVehiculosDisponibles ($tiposVehiculos);
-        //$listaFinalVehiculos = cambiarAVehiculosMasPequenios ($listaContenedoresVehiculos, $tiposVehiculosOrdenados);
+        //los tipos de vehiculos ya estan ordenados de mayor a menor
+        $this->cambiarAVehiculosMasPequenios ($listaContenedoresVehiculos, $tiposVehiculos);
+
 
         /*Tercer paso: Agregar otros pedidos a los vehiculos*/
         //$viajes= agregarOtrosPedidos ($listaFinalVehiculos, $pedidosCercanos);
@@ -160,7 +220,29 @@ class PlanificacionController extends Controller
 
     }
 
-     
+    public function cambiarAVehiculosMasPequenios (&$listaContenedoresVehiculos, $tiposVehiculos){
+        foreach ($listaContenedoresVehiculos as $contenedorVehiculo){
+
+            $idTipoVehiculo = $this->tipoVehiculoDelContenedor($contenedorVehiculo, $tiposVehiculos);
+            $contenedorVehiculo['idTipoVehiculo'] = $idTipoVehiculo;
+
+        }
+    }
+
+    public function tipoVehiculoDelContenedor ($contenedorVehiculo, $tiposVehiculos){
+
+            //recorremos todos los tipos de carga de cada contenedor:
+            foreach($contenedorVehiculo['cargas'] as $key => $carga ){
+
+
+            }
+            while ($indice<=$tamanioContenedor){
+                $contenedorVehiculo[$indice]['ocupado'];
+                $indice++;
+
+            }
+    }
+ 
     
     public function distribuirPedidoEnVehiculoMasGrande ($pedidoPrincipal, $vehiculoMasGrande){        
 

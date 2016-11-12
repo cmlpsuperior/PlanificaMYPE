@@ -29,6 +29,6 @@ class TipoVehiculo extends Model
     //relaciond e muchos a muchos con tipo de carga:
     public function tiposCargas (){
         return $this->belongsToMany('PlanificaMYPE\TipoCarga', 'tipovehiculoxtipocarga', 'idTipoVehiculo', 'idTipoCarga')
-                    ->withPivot('volumen');
+                    ->withPivot('volumen')->orderBy('tipovehiculoxtipocarga.idTipoCarga', 'asc'); //asi se que el codigo 1 va a estar primero, es obligatorio
     }
 }
