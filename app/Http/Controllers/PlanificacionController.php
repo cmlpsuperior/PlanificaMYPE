@@ -142,7 +142,15 @@ class PlanificacionController extends Controller
                             'cantidadDescargado' => 0
                         ]);
 
-                }                
+                }
+
+                //insertamos en la tabla pedidoxviaje
+                $pedidos = $viaje['pedidos'];
+
+                foreach ($pedidos as $pedido){
+                    
+                    $v->pedidos()->attach($pedido->idPedido);
+                }
 
             } 
 

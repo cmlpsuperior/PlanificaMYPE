@@ -48,3 +48,11 @@ Route::post('planificacion/{id}/vehiculosUtilizados', 'PlanificacionController@v
 
 Route::get('planificacion/{id}/viajes', 'PlanificacionController@viajes' )->name('planificacion.viajes');
 Route::post('planificacion/{id}/viajes', 'PlanificacionController@viajes_procesar' )->name('planificacion.viajes_procesar');
+
+
+//viaje:
+Route::get('asignarViaje/seleccionarViaje', 'AsignarViajeController@seleccionarViaje' )->name('asignarViaje.seleccionarViaje');
+Route::post('asignarViaje/seleccionarViaje', 'AsignarViajeController@seleccionarViaje_procesar' )->name('asignarViaje.seleccionarViaje_procesar');
+
+Route::get('asignarViaje/{id}/seleccionarEmpleado', 'AsignarViajeController@seleccionarEmpleado' )->name('asignarViaje.seleccionarEmpleado');
+Route::post('asignarViaje/{id}/seleccionarEmpleado', 'AsignarViajeController@seleccionarEmpleado_procesar' )->name('asignarViaje.seleccionarEmpleado_procesar');

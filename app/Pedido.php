@@ -48,4 +48,10 @@ class Pedido extends Model
         return $this->belongsToMany('PlanificaMYPE\Articulo', 'detallepedido', 'idPedido', 'idArticulo')
         			->withPivot('cantidad', 'cantidadAtendida', 'precioUnitario', 'monto');
     }
+
+    //relacion muchos a muchos con viaje
+    public function viajes (){
+        return $this->belongsToMany('PlanificaMYPE\Viaje', 'pedidoxviaje', 'idPedido', 'idViaje');
+                    //->withPivot('idPedido','cantidad', 'cantidadDescargado');
+    }
 }

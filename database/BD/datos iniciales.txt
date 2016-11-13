@@ -29,4 +29,18 @@ TipoVehiculoXtipoCarga:
 - esta table debe tener todos las combinacion entre tipoVehoiculo y TipoCarga SIEMPRE.
 
 
+empleado:
+- agregar el campo Licencia.
+
+
+Planificacion controller:
+- no tomar la relacion pedidoxviaje, solo tomar detalleViaje
+
+DOCUMENTOS
+
+diagrama de estados de pedido:
+	- viajes listos y enviando cambiar por "En proceso".
+	- cambiar preorder por "Pre-pedido".
+
+
 

@@ -52,4 +52,9 @@ class Articulo extends Model
                     ->withPivot('cantidad', 'cantidadAtendida', 'precioUnitario', 'monto');
     }
 
+    public function viajes (){
+        return $this->belongsToMany('PlanificaMYPE\Viaje', 'detalleviaje', 'idArticulo', 'idViaje')
+                    ->withPivot('idPedido','cantidad', 'cantidadDescargado');
+    }
+
 }

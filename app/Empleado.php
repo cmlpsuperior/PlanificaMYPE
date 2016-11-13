@@ -40,4 +40,8 @@ class Empleado extends Model
         return $this->belongsTo('PlanificaMYPE\TipoDocumento', 'idTipoDocumento', 'idTipoDocumento');
     }
 
+    public function viajes()
+    {
+        return $this->hasMany ('PlanificaMYPE\Viaje', 'idEmpleado', 'idEmpleado');
+    }
 }

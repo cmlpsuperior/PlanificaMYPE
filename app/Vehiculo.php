@@ -27,10 +27,10 @@ class Vehiculo extends Model
     //relaciones con otros modelos:
     public function tipoVehiculo()
     {
-        return $this->belongTo('PlanificaMYPE\TipoVehiculo', 'idTipoVehiculo', 'idTipoVehiculo');
+        return $this->belongsTo('PlanificaMYPE\TipoVehiculo', 'idTipoVehiculo', 'idTipoVehiculo');
     }
 
     public function marcaVehiculo (){
-    	return $this->belongTo('PlanificaMYPE\MarcaVehiculo', 'idMarcaVehiculo', 'idMarcaVehiculo');
+    	return $this->belongsTo('PlanificaMYPE\MarcaVehiculo', 'idMarcaVehiculo', 'idMarcaVehiculo');
     }
 }

@@ -26,6 +26,12 @@ class TipoVehiculo extends Model
         return $this->hasMany('PlanificaMYPE\Vehiculo', 'idTipoVehiculo', 'idTipoVehiculo');
     }
 
+     //relaciones con otros modelos:
+    public function viajes()
+    {
+        return $this->hasMany('PlanificaMYPE\Viaje', 'idTipoVehiculo', 'idTipoVehiculo');
+    }
+
     //relaciond e muchos a muchos con tipo de carga:
     public function tiposCargas (){
         return $this->belongsToMany('PlanificaMYPE\TipoCarga', 'tipovehiculoxtipocarga', 'idTipoVehiculo', 'idTipoCarga')

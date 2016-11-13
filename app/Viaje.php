@@ -29,14 +29,28 @@ class Viaje extends Model
     //relaciones con otros modelos:
     public function tipoVehiculo()
     {
-        return $this->belongTo('PlanificaMYPE\TipoVehiculo', 'idTipoVehiculo', 'idTipoVehiculo');
+        return $this->belongsTo('PlanificaMYPE\TipoVehiculo', 'idTipoVehiculo', 'idTipoVehiculo');
     }
 
     public function empleado (){
-    	return $this->belongTo('PlanificaMYPE\Empleado', 'idEmpleado', 'idEmpleado');
+    	return $this->belongsTo('PlanificaMYPE\Empleado', 'idEmpleado', 'idEmpleado');
     }
 
     public function vehiculo (){
-    	return $this->belongTo('PlanificaMYPE\Vehiculo', 'idVehiculo', 'idVehiculo');
+    	return $this->belongsTo('PlanificaMYPE\Vehiculo', 'idVehiculo', 'idVehiculo');
+    }
+
+
+
+    
+    public function articulos (){
+        return $this->belongsToMany('PlanificaMYPE\Articulo', 'detalleviaje', 'idViaje', 'idArticulo')
+                    ->withPivot('idPedido','cantidad', 'cantidadDescargado');
+    }
+
+    //relacion muchos a muchos con pedido
+    public function pedidos (){
+        return $this->belongsToMany('PlanificaMYPE\Pedido', 'pedidoxviaje', 'idViaje', 'idPedido');
+                    //->withPivot('idPedido','cantidad', 'cantidadDescargado');
     }
 }
