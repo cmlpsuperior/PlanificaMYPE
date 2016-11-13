@@ -56,26 +56,22 @@
 	         		<th data-field="seleccion">N° viaje</th>
 	         		<th data-field="cliente">Zona</th>               
 	                <th data-field="zona">Vehiculo</th>
+	                <th data-field="zona">N° materiales</th>
 	                <th data-field="destinos">N° destinos</th>
-	                <th data-field="montos">Monto cobrar</th>
 	                <th data-field="acciones">Acciones</th>
 	            </tr>
 	        </thead>
 
 	        <tbody>
 
-	        	@foreach ($contenedores as $key => $contenedor)
+	        	@foreach ($viajes as $key => $viaje)
 		            <tr>		            	
-		            	<td hidden>{{ $contenedor['idTipoVehiculo'] }} </td>
+		            	<td hidden>{{ $viaje['tipoVehiculo']->idTipoVehiculo }} </td>
 		            	<td>{{ $key +1 }} </td>	
-		            	<td>{{ $pedidoPrincipal->zona->nombre }} </td>			            
-			            <td>{{ $contenedor['tipoVehiculo']->nombre }}</td>
-			            <td>{{ count($contenedor['pedidos']) }}</td>
-			            <?php $suma = 0; ?>
-			            @foreach ($contenedor['pedidos'] as $pedido)
-			            	<?php $suma = $suma + $pedido->montoTotal - $pedido->montoPagado; ?>
-			            @endforeach
-			            <td>{{ $suma }}	</td>
+		            	<td>{{ $pedidoPrincipal->zona->nombre }} </td>
+		            	<td>{{ $viaje['tipoVehiculo']->nombre }}</td>
+		            	<td>{{ count($viaje['detallesLineas']) }}</td>
+			            <td>{{ count($viaje['pedidos']) }}</td>			           
 	
 			        </tr>
 

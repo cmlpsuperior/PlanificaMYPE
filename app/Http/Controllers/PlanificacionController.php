@@ -8,6 +8,7 @@ use PlanificaMYPE\Http\Requests;
 use PlanificaMYPE\Pedido;
 use PlanificaMYPE\TipoVehiculo;
 use PlanificaMYPE\TipoCarga;
+use PlanificaMYPE\Articulo;
 use PlanificaMYPE\Http\Requests\SeleccionarPedidoRequest;
 use PlanificaMYPE\Http\Requests\VehiculosUtilizadosRequest;
 use Illuminate\Http\RedirectResponse; //para el redirect
@@ -116,30 +117,36 @@ class PlanificacionController extends Controller
             $contenedoresUtilizados = $this->generarViajes($pedidoPrincipal, $pedidosCercanos, $contenedoresDisponibles);
 
             //agregamos los nombres de los vehiculos, el numero de clientes, y los montos:
+            $viajes = array();
             foreach ($contenedoresUtilizados as &$contenedorUtilizado){
+                //obtengo el vehiculo usado:
                 $vehiculoUtilizado = TipoVehiculo::findOrFail ($contenedorUtilizado['idTipoVehiculo']);
-                $contenedorUtilizado['tipoVehiculo']= $vehiculoUtilizado;
+                
+                //obtengo los datos de los articulos:
+                $detallesLineas = array();
 
-                //veo cuentos pedidos hay:
-                $idPedidos = array();
+                $idPedidos= array();
+                $pedidosUtilizados = array();
                 foreach ($contenedorUtilizado['articulos'] as $articulo){
+                    $pedidoUtilizado = Pedido::findOrFail ($articulo['idPedido']);
+                    $articuloUtilizado = Articulo::findOrFail ($articulo['idArticulo']);
+                    $cantidadUtilizado = $articulo['cantidad'];
 
+                    $detallesLineas [] = array('pedido'=>$pedidoUtilizado, 'articulo'=>$articuloUtilizado, 'cantidad'=>$cantidadUtilizado);
+
+                    //de paso analizo los pedidos unicos:
                     if ( !in_array($articulo['idPedido'], $idPedidos) ){
                         $idPedidos[]= $articulo['idPedido'];
-                    }
+                        $pedidosUtilizados[] = $pedidoUtilizado;
+                    }                    
+
                 }
-
-                //obtengo los datos de los pedidos:
-                $pedidos= array();
-                foreach ($idPedidos as $idPedido){
-                    $pedidos[] = Pedido::findOrFail($idPedido);
-                }
-
-                $contenedorUtilizado['pedidos']= $pedidos;
-
+                
+                $viajes[]= array('tipoVehiculo'=>$vehiculoUtilizado, 'detallesLineas'=>$detallesLineas, 'pedidos'=>$pedidosUtilizados);
             }
-            
-            return view('planificacion.mostrarViajes', ['contenedores'=> $contenedoresUtilizados, 'pedidoPrincipal'=>$pedidoPrincipal]);
+
+            //dd($viajes);
+            return view('planificacion.mostrarViajes', ['viajes'=> $viajes, 'pedidoPrincipal'=>$pedidoPrincipal]);
             
             /*
             //borramos los valores de la session
