@@ -9,6 +9,7 @@ use PlanificaMYPE\Pedido;
 use PlanificaMYPE\TipoVehiculo;
 use PlanificaMYPE\TipoCarga;
 use PlanificaMYPE\Articulo;
+use PlanificaMYPE\Viaje;
 use PlanificaMYPE\Http\Requests\SeleccionarPedidoRequest;
 use PlanificaMYPE\Http\Requests\VehiculosUtilizadosRequest;
 use Illuminate\Http\RedirectResponse; //para el redirect
@@ -97,9 +98,72 @@ class PlanificacionController extends Controller
     }
 
 
+    public function viajes_procesar (Request $request, $id){
 
+        if (session()->has('viajes') && session()->has('pedidoPrincipal') ){
+            $viajes = session('viajes');
+            $pedidoPrincipal = session ('pedidoPrincipal');
+          
+            //empezamos a guardar en la BD:
+            //inicio una transaccion
+            DB::beginTransaction();
 
-    
+            foreach ($viajes as $viaje){
+
+                //actualizamos estado de los pedidos:
+                $pedidos = $viaje['pedidos'];
+                foreach ($pedidos as $pedido){
+                    $pedido->estado = 'Planificado';
+                    $pedido->save();
+                }
+
+                //creamos los nuevos viajes:
+                $v = new Viaje();
+                $v->fechaRegistro = date("Y-m-d H:i:s");
+                $v->fechaSalida = null;
+                $v->fechaRetorno = null;
+                $v->estado = 'Planificado';
+
+                $v->idVehiculo = null;
+                $v->idEmpleado = null;
+                $v->idTipoVehiculo = $viaje['tipoVehiculo']->idTipoVehiculo;
+
+                $v->save();
+
+                //insertamos en la tabla detalleViaje:
+                $detallesLineas = $viaje['detallesLineas'];
+
+                foreach ($detallesLineas as $detalleLinea){
+                    DB::table('detalleViaje')->insert(
+                        [   'idViaje' => $v->idViaje, 
+                            'idArticulo' => $detalleLinea['articulo']->idArticulo,
+                            'idPedido'=> $detalleLinea['pedido']->idPedido,
+                            'cantidad' => $detalleLinea['cantidad'],
+                            'cantidadDescargado' => 0
+                        ]);
+
+                }                
+
+            } 
+
+            DB::commit();
+            
+            //borro todo lo que haya en session:
+            session()->forget('idPedidosCercanos');
+            session()->forget('idTiposVehiculos');
+            session()->forget('viajes');
+            session()->forget('pedidoPrincipal'); 
+
+            return redirect()->action('PlanificacionController@seleccionarPedido' );
+            
+        }
+        else{
+            //sino, vuelve al inicio del flujo
+            return redirect()->action('PlanificacionController@seleccionarPedido' )->withErrors ('Debe selecionar un pedido válido'); 
+        }
+
+    }   
+
 
     public function viajes ($id){ 
 
@@ -145,20 +209,17 @@ class PlanificacionController extends Controller
                 $viajes[]= array('tipoVehiculo'=>$vehiculoUtilizado, 'detallesLineas'=>$detallesLineas, 'pedidos'=>$pedidosUtilizados);
             }
 
-            //dd($viajes);
+            //guardamos los datos en la sesion, para usarlo despues:
+            session(['viajes' => $viajes]);
+            session(['pedidoPrincipal' => $pedidoPrincipal]);
+
             return view('planificacion.mostrarViajes', ['viajes'=> $viajes, 'pedidoPrincipal'=>$pedidoPrincipal]);
-            
-            /*
-            //borramos los valores de la session
-            session()->forget('idPedidosCercanos');
-            session()->forget('idTiposVehiculos');
-            */       
+                  
         }
         else{
             //sino, vuelve al inicio del flujo
             return redirect()->action('PlanificacionController@seleccionarPedido' )->withErrors ('Debe selecionar un pedido válido'); 
         }
-        //return 'cercanos: '. var_dump(session('idPedidosCercanos')). '. tipos de vehiculos: '. session('idTiposVehiculos');
       
     }
 

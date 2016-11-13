@@ -10,9 +10,7 @@ Pedido:
 - el trigger cuando se crea un pedido. (listo, aunque no se usara trigger, sino en el controller)
 - cambiar el estado de pedido en el doc: pre-pedido, confirmado
 - un pedido confirmado puede ser anulado?
-
-Carga * tipo vehiculo
-- al crear el tipo de vehiculo, se debe indicar la capacidad del vehiculo para cada carga
+- Al registrar un pedido, no puede haber articulos duplicados, debe sumarlo atumaticamente.
 
 
 Articulo:
@@ -21,10 +19,10 @@ Articulo:
 - al crear un articulo, el volumen puede ser mas pequeño.
 
 DetalleViaje:
-- cantidad es double no int.
+- cantidad es double no int. (listo)
 
 Viaje:
-- se debe agregar el idTipoVehiculo.
+- se debe agregar el idTipoVehiculo. (listo)
 
 TipoVehiculoXtipoCarga:
 - quitar el campo cantidad, todo sera por volumen (ver lo de articuos tmb); (listo)
