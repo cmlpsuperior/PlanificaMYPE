@@ -16,8 +16,9 @@ Carga * tipo vehiculo
 
 
 Articulo:
-- todos son medidos en volumen.
-- agregar el campo con el valor minimo divisible;
+- todos son medidos en volumen. (listo)
+- agregar el campo con el valor minimo divisible; (listo)
+- al crear un articulo, el volumen puede ser mas pequeño.
 
 DetalleViaje:
 - cantidad es double no int.
@@ -28,3 +29,6 @@ Viaje:
 TipoVehiculoXtipoCarga:
 - quitar el campo cantidad, todo sera por volumen (ver lo de articuos tmb); (listo)
 - esta table debe tener todos las combinacion entre tipoVehoiculo y TipoCarga SIEMPRE.
+
+
+

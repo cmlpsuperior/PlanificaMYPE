@@ -65,23 +65,28 @@
 	        <tbody>
 
 	        	@foreach ($viajes as $key => $viaje)
+
 		            <tr>		            	
 		            	<td hidden>{{ $viaje['tipoVehiculo']->idTipoVehiculo }} </td>
 		            	<td>{{ $key +1 }} </td>	
 		            	<td>{{ $pedidoPrincipal->zona->nombre }} </td>
 		            	<td>{{ $viaje['tipoVehiculo']->nombre }}</td>
 		            	<td>{{ count($viaje['detallesLineas']) }}</td>
-			            <td>{{ count($viaje['pedidos']) }}</td>			           
-	
+			            <td>{{ count($viaje['pedidos']) }}</td>	
+						<td>
+							<a class="modal-trigger" href="#modalDetalle-{{$key}}" title="ver detalle"><i class="material-icons">visibility</i></a>
+						</td>
 			        </tr>
+					
+			        
 
 		        @endforeach
 
 	        </tbody>
 	    </table>
-		
-		
-
+		@foreach ($viajes as $key => $viaje)
+			@include('planificacion.modalDetalle')
+		@endforeach
 	</div>
 	
 	<div class="row">
@@ -101,3 +106,19 @@
 </div>
 <br>
 @endsection
+
+@section ('scriptcontenido')
+<script>  
+    
+
+    $(document).ready(function() {        
+
+     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-trigger').leanModal();  
+
+  	});
+  
+  
+</script>
+
+@stop
