@@ -3,148 +3,150 @@
 @section ('contenido')
 
 
-        <!-- Estos linea es para las migajas-->
-        <nav class="teal">
-          <div class="nav-wrapper container">
-            <div class="col s12">
-              <a href="#!" class="breadcrumb">Mant.</a>
-              <a href="{{ url('pedido')}}" class="breadcrumb">Pedido</a>
-              <a href="{{ action('PedidoController@confirmar') }}" class="breadcrumb">confirmar</a>
-            </div>
-          </div>
-        </nav>
+<!-- Estos linea es para las migajas-->
+<nav class="teal">
+  <div class="nav-wrapper container">
+    <div class="col s12">
+      <a href="#!" class="breadcrumb">Mant.</a>
+      <a href="{{ url('pedido')}}" class="breadcrumb">Pedido</a>
+      <a href="{{ action('PedidoController@confirmar') }}" class="breadcrumb">confirmar</a>
+    </div>
+  </div>
+</nav>
 
 
 
-        <!--Contenido del cuerpo-->
-        <br>
-        <div class="container">
-          <!--Mostrara los errores que se hayan cometido:-->
-          @if (count($errors)>0)
-          <div class="alert">
-            <ul>
-                @foreach ($errors -> all() as $error)
-                  <li>{{$error}}</li>
-                @endforeach
-            </ul>
-          </div>
-          @endif
-          
-          <!--
-          <meta name="csrf-token" content="{{ csrf_token() }}" />
-          -->
-          {{Form::open ( array('action' => array('PedidoController@confirmar_update'), 'method'=>'put')) }}
+<!--Contenido del cuerpo-->
+<br>
+<div class="container">
+  <!--Mostrara los errores que se hayan cometido:-->
+  @if (count($errors)>0)
+  <div class="alert">
+    <ul>
+        @foreach ($errors -> all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+    </ul>
+  </div>
+  @endif
+  
+  {{Form::open ( array('action' => array('PedidoController@confirmar_update'), 'method'=>'put')) }}
+  
+  <div class="row">
+    <div class="col s12 center">
+      <h5>Confirmar pedido</h5>
+    </div>
+  </div>
+  
+
+  <div class="row">
+
+    <div class="col s12 m5 l4">
+
+      <div class="card">
+
+        <div class="card-content teal white-text">
+          <i class="material-icons prefix">account_circle</i>
+          <span class="card-title">Cliente</span>               
+        </div>
+
+        <div class="card-content">
           
           <div class="row">
-            <div class="col s12 center">
-              <h5>Confirmar pedido</h5>
-              <div class="divider"></div>
-            </div>
-          </div>
-          
+            <!--codigo del cliente esta oculto pero sera actualizado por JS-->
+            <input id="idCliente" type="hidden" value="" name="idCliente">
+
+
+            <div class="input-field col s6">                      
+              <input id="numeroDocumento" type="text" class="validate"  readonly value="" name="numeroDocumento">
+              <label for="numeroDocumento">Documento</label>
+            </div>                    
+                        
+          </div> 
 
           <div class="row">
 
+            <div class="input-field col s12">
+              <input id="nombreCompleto" type="text" class="validate"  readonly value="" name="nombreCompleto">
+              <label for="nombreCompleto">Nombre completo</label>
+            </div>
+                        
+          </div>
+
+          <br>
+        </div>
+
+
+        <div class="card-action right-align">                  
+            <a href="#modalConfirmar" class="modal-trigger waves-effect waves-teal btn-flat blue-text">Buscar</a>
+        
+        </div>
+      
+      </div><!--fin de la tarjeta-->
+    </div>
+
+    <div class="col s12 m7 l8">
+
+      <div class="card">
+
+        <div class="card-content teal white-text">
+
+          <i class="material-icons prefix">location_on</i>
+          <span class="card-title">Pago del pedido</span> 
+
+        </div>
+
+        <div class="card-content">
+
+          <div class="row">
+
+            <div class="input-field col s6">
+              <input id="idPedido" type="text" value="{{ old('idPedido') }}" name="idPedido" readonly>
+              <label for="idPedido">Código pedido</label>
+            </div> 
+
+            <div class="input-field col s6">
+              <i class="material-icons prefix">today</i>
+              <input id="fechaRegistro" type="text"  value="{{ old('fechaRegistro') }}" name="fechaRegistro" readonly>
+              <label for="fechaRegistro">Fecha registro</label>
+            </div>
+
+          </div>
+          
+
+          <div class="row">  
+
+            <div class="input-field col s6">
+              <input id="montoOriginal" type="number" min="0" step="0.01" class="" value="{{ old('montoOriginal') }}" name="montoOriginal" readonly>
+              <label for="montoOriginal" data-error="wrong" data-success="right">Monto original (S/.)</label>
+            </div>   
+
+          </div>
+
+
+          <div class="row">
             
-
-            <div class="col s12 m12 l6">
-              <div class="card">
-
-                <div class="card-content">
-                  <i class="material-icons prefix">account_circle</i>
-                  <span class="card-title">Cliente</span>
-                  <br><br>
-                  <div class="row">
-                    <!--codigo del cliente esta oculto pero sera actualizado por JS-->
-                    <input id="idCliente" type="hidden" value="" name="idCliente">
-
-
-                    <div class="input-field col s6">                      
-                      <input id="numeroDocumento" type="text" class="validate"  readonly value="" name="numeroDocumento">
-                      <label for="numeroDocumento">Documento</label>
-                    </div>                    
-                                
-                  </div> 
-
-                  <div class="row">
-    
-                    <div class="input-field col s12">
-                      <input id="nombreCompleto" type="text" class="validate"  readonly value="" name="nombreCompleto">
-                      <label for="nombreCompleto">Nombre completo</label>
-                    </div>
-                                
-                  </div>
-
-                  <br><br>
-                </div>
-
-
-                <div class="card-action ">                  
-                    <a href="#modalConfirmar" class="teal-text modal-trigger">Buscar</a>
-                
-                </div>
-              
-              </div><!--fin de la tarjeta-->
+            <div class="input-field col s6">
+              <input id="montoPagado" type="number" min="0" step="0.01" class="" value="{{ old('montoPagado') }}" name="montoPagado">
+              <label for="montoPagado" data-error="wrong" data-success="right">Monto pagado (S/.)</label>
             </div>
 
-            <div class="col s12 m12 l6">
-              <div class="card">
-                <div class="card-content">
-                  <i class="material-icons prefix">location_on</i>
-                  <span class="card-title">Pago del pedido</span>
-                  <br><br>
-
-                  
-
-                  <div class="row">
-
-                    <div class="input-field col s6">
-                      <input id="idPedido" type="text" value="{{ old('idPedido') }}" name="idPedido" readonly>
-                      <label for="idPedido">Código pedido</label>
-                    </div> 
-
-                    <div class="input-field col s6">
-                      <i class="material-icons prefix">today</i>
-                      <input id="fechaRegistro" type="text"  value="{{ old('fechaRegistro') }}" name="fechaRegistro" readonly>
-                      <label for="fechaRegistro">Fecha registro</label>
-                    </div>
-
-                  </div>
-                  
-
-                  <div class="row">  
-
-                    <div class="input-field col s6">
-                      <input id="montoOriginal" type="number" min="0" step="0.01" class="" value="{{ old('montoOriginal') }}" name="montoOriginal" readonly>
-                      <label for="montoOriginal" data-error="wrong" data-success="right">Monto original (S/.)</label>
-                    </div>   
-
-                  </div>
-
-
-                  <div class="row">
-                    
-                    <div class="input-field col s6">
-                      <input id="montoPagado" type="number" min="0" step="0.01" class="" value="{{ old('montoPagado') }}" name="montoPagado">
-                      <label for="montoPagado" data-error="wrong" data-success="right">Monto pagado (S/.)</label>
-                    </div>
-
-                    <div class="input-field col s6">
-                      <input id="montoPendiente" type="number" min="0" step="0.01"  value="{{ old('montoPendiente') }}" name="montoPendiente" readonly>
-                      <label for="montoPendiente" data-error="wrong" data-success="right">Monto pendiente (S/.)</label>
-                    </div>
-
-                  </div>
-
-                  
-          
-                    
-                </div>
-              </div>
+            <div class="input-field col s6">
+              <input id="montoPendiente" type="number" min="0" step="0.01"  value="{{ old('montoPendiente') }}" name="montoPendiente" readonly>
+              <label for="montoPendiente" data-error="wrong" data-success="right">Monto pendiente (S/.)</label>
             </div>
-
 
           </div>
+
+          
+  
+            
+        </div>
+      </div>
+    </div>
+
+
+  </div>
          
 
           <!--Los botones del formulario-->
