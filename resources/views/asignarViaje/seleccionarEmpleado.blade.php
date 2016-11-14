@@ -5,6 +5,7 @@
 <nav class="teal">
   <div class="nav-wrapper container">
     <div class="col s12">      
+      <a  class="breadcrumb">Gestión</a>
       <a  class="breadcrumb">Asignar viaje</a>
     </div>
   </div>
@@ -91,7 +92,7 @@
 	</div>
 	<div class="row">
 	    <div class="col s12 right-align">
-	      <button class="btn waves-effect waves-light" type="submit" name="action">Siguiente</button> 	      
+	      <button class="btn waves-effect waves-light" type="submit" name="action">Confirmar</button> 	      
 	    </div>
 	</div>
 	{{ Form::close()}}

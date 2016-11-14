@@ -5,7 +5,8 @@
 <nav class="teal">
   <div class="nav-wrapper container">
     <div class="col s12">      
-      <a  class="breadcrumb">Planificacion</a>
+       	<a  class="breadcrumb">Gestión</a>
+      	<a  class="breadcrumb">Planificación</a>
     </div>
   </div>
 </nav>
