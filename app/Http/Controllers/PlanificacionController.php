@@ -281,6 +281,7 @@ class PlanificacionController extends Controller
     }
 
 
+    /**Algoritmo de planificacion**/
     public function generarViajes ($pedidoPrincipal, $pedidosCercanos, $maestraContenedores){
 
         /*Primer paso: solucion inicial: */
@@ -291,13 +292,146 @@ class PlanificacionController extends Controller
         $this->cambiarAVehiculosMasPequenios ($contenedoresUtilizados, $maestraContenedores);
 
         /*Tercer paso: Agregar otros pedidos a los vehiculos*/
-        //$viajes= agregarOtrosPedidos ($contenedoresUtilizados, $pedidosCercanos);
-
-        //return $viajes;
+        $this->agregarOtrosPedidos ($contenedoresUtilizados, $pedidosCercanos);
         
         return $contenedoresUtilizados;
 
     }
+
+
+    /**PARTE 3**/
+    public function agregarOtrosPedidos (&$contenedoresUtilizados, $pedidosCercanos){
+
+        foreach ( $pedidosCercanos as $pedidoCercano){
+
+            $siCabePedidoCompleto = 0;
+            $siCabePedidoCompleto = $this->cabePedidoEnContenedores ($contenedoresUtilizados, $pedidoCercano); //aqui pruebo con una copia de los contenedores
+
+            if ($siCabePedidoCompleto ==1){
+                $this->distribuirPedidoCercanoEnContenedores ($contenedoresUtilizados, $pedidoCercano); //aqui actualizo los verdaderos contenedores
+            }
+        }
+    }
+
+    public function cabePedidoEnContenedores ($copiaContenedoresUtilizados, $pedidoCercano){ //trabajo con una copia de los contenedores
+        $idPedido = $pedidoCercano->idPedido;
+
+        foreach ( $pedidoCercano->articulos as $articulo){
+            $siCabeArticulo=0;
+            $siCabeArticulo= $this->insertarAContenedoresSinAgregarMas($copiaContenedoresUtilizados, $articulo, $idPedido);
+
+            if ($siCabeArticulo ==0){ // uno de los articulos no cabe en los contenedores, asi que no continuo con este pedido.
+                return 0;
+            }
+        }
+        //si completo todo el for, quiere decir que todos los articulos de ese pedido si caben en los contnedores
+        return 1;
+
+    }
+
+    public function distribuirPedidoCercanoEnContenedores (&$contenedoresUtilizados, $pedidoCercano){ //trabajo con una copia de los contenedores
+        //si entro a esta funcion quiere decir que Si o Si todos los articulos caben en los contenedores
+        $idPedido = $pedidoCercano->idPedido;
+
+        foreach ( $pedidoCercano->articulos as $articulo){
+            $this->insertarAContenedoresSinAgregarMas($contenedoresUtilizados, $articulo, $idPedido);
+        }
+
+    }
+
+    public function insertarAContenedoresSinAgregarMas (&$contenedoresUtilizados, $articulo, $idPedido){
+        $arIdArticulo = $articulo->idArticulo;
+        $arIdTipoCarga = $articulo->idTipoCarga;
+        $arMinimoDivisible = $articulo->minimoDivisible; //cantidad
+        $arCombinable = $articulo->combinable; //1: si        0: no;
+
+        $arCantidad = round($articulo->pivot->cantidad, 2); // redondeo a 2 decimales
+        $arVolumen = $articulo->pivot->cantidad * $articulo->volumen;
+        
+        //1: vemos si entra de manera completa
+        for ($i=0; $i<count($contenedoresUtilizados); $i++ ){
+            $contenedor = &$contenedoresUtilizados[$i];
+            $cargas = &$contenedoresUtilizados[$i]['cargas'];
+
+            if ($arCombinable ==0 && $cargas[$arIdTipoCarga]['haynocombinable']==1 ){ // es un articulo no combinable, y ya hay en el contenedor un no combinable
+                continue; // no puede ingresar 
+            }
+            else{
+                if ($cargas[$arIdTipoCarga]['disponible']>= $arVolumen ){ // sí cabe
+                    
+                    $cargas[$arIdTipoCarga]['disponible'] = $cargas[$arIdTipoCarga]['disponible'] - $arVolumen;
+                    $cargas[$arIdTipoCarga]['ocupado'] = $cargas[$arIdTipoCarga]['ocupado'] + $arVolumen;
+
+                    $contenedor['articulos'][]= array('idArticulo'=>$arIdArticulo, 'idPedido'=> $idPedido, 'cantidad'=> $arCantidad);
+                    if ($arCombinable == 0) //el articulo no es combinable
+                        $cargas[$arIdTipoCarga]['haynocombinable']=1; //indico que ahora ya tiene un no combinable;
+
+                    return 1; //1: todo ok, salgo de la funcion. se llego a ingresar por completo el articulo en un contenedor;
+
+                }
+                
+
+            }
+
+
+        }
+
+        //si llego aqui, es porque no cabe el articulo completamnete en algun contenedor:
+        //2: intentamos ingresarlo por partes:
+        $VolumenMinimoDivisible = $arMinimoDivisible * $articulo->volumen;  
+
+        for ($i=0; $i<count($contenedoresUtilizados); $i++ ){
+            $contenedor = &$contenedoresUtilizados[$i];
+            $cargas = &$contenedoresUtilizados[$i]['cargas'];
+
+            $arVolumen = $arCantidad * $articulo->volumen;
+
+            if ($arCombinable ==0 && $cargas[$arIdTipoCarga]['haynocombinable']==1 ){ // es un articulo no combinable, y ya hay en el contenedor un no combinable
+                continue; // no puede ingresar 
+            }
+            else{
+                if ($cargas[$arIdTipoCarga]['disponible']>= $arVolumen ){ //la primera iteracion nunca entrara aca, pero las que siguen quisas si
+
+                    $cargas[$arIdTipoCarga]['disponible'] = $cargas[$arIdTipoCarga]['disponible'] - $arVolumen;
+                    $cargas[$arIdTipoCarga]['ocupado'] = $cargas[$arIdTipoCarga]['ocupado'] + $arVolumen;
+
+                    $contenedor['articulos'][]= array('idArticulo'=>$arIdArticulo, 'idPedido'=> $idPedido, 'cantidad'=> $arCantidad);
+                    if ($arCombinable == 0) //el articulo no es combinable
+                        $cargas[$arIdTipoCarga]['haynocombinable']=1; //indico que ahora ya tiene un no combinable;
+
+                    return 2; //se llego a ingresar por completo, salgo de la funcion
+
+                }
+                else if ($cargas[$arIdTipoCarga]['disponible'] >= $VolumenMinimoDivisible){ //almenos puede entrar uno
+
+                    $vecesMinimoPosible =  floor( $cargas[$arIdTipoCarga]['disponible'] / $VolumenMinimoDivisible ); //redondeado hacia abajo, nunca sera 0;
+                    $cantidadPosible = round ($vecesMinimoPosible* $arMinimoDivisible, 2);
+
+                    //actualizo la cantidad del articulo:
+                    $arCantidad = round ($arCantidad - $cantidadPosible, 2); //disminuye cantidad
+
+                    //actualizo los contenedores:
+                    $cargas[$arIdTipoCarga]['disponible'] = $cargas[$arIdTipoCarga]['disponible'] - $articulo->volumen*$cantidadPosible;
+                    $cargas[$arIdTipoCarga]['ocupado'] = $cargas[$arIdTipoCarga]['ocupado'] + $articulo->volumen*$cantidadPosible;
+
+                    $contenedor['articulos'][]= array('idArticulo'=>$arIdArticulo, 'idPedido'=> $idPedido, 'cantidad'=> $cantidadPosible);
+                    if ($arCombinable == 0) //el articulo no es combinable
+                        $cargas[$arIdTipoCarga]['haynocombinable']=1; //indico que ahora ya tiene un no combinable;
+
+
+                }
+            }
+
+
+        }
+        
+
+        //si llego aqui es porque aun tengo cantidades que no pudieron ser ingresados en ningun contenedor.
+        // como no debo agregar mas contenedores de los que ya tengo, salgo con valor falso:
+        return 0;
+
+    }
+    /**FIN PARTE 3**/
 
 
     /**PARTE2 **/
