@@ -3,222 +3,222 @@
 @section ('contenido')
 
 
-<!-- Estos linea es para las migajas-->
-<nav class="teal">
-  <div class="nav-wrapper container">
-    <div class="col s12">
-      <a href="#!" class="breadcrumb">Mant.</a>
-      <a href="{{ url('pedido')}}" class="breadcrumb">Pedido</a>
-      <a href="{{ url('pedido/create')}}" class="breadcrumb">Registrar</a>
-    </div>
-  </div>
-</nav>
-
-
-
-<!--Contenido del cuerpo-->
-<br>
-<div class="container">
-  <!--Mostrara los errores que se hayan cometido:-->
-  @if (count($errors)>0)
-  <div class="alert">
-    <ul>
-        @foreach ($errors -> all() as $error)
-          <li>{{$error}}</li>
-        @endforeach
-    </ul>
-  </div>
-  @endif
-  
-  <div class="row">
-    <div class="col s12 center">
-      <h5>Registrar nuevo pedido</h5>
-    </div>
-  </div>  
-
-  {{Form::open (array('url' => 'pedido', 'method'=>'POST'))}} <!--para llamar al store, se le llama igual que al index, pero con metodo post-->
-  
-  <div class="row">
-    <!--Panel de la izquierda-->
-    <div class="col s12 m4 l3 center">
-      <div class="card">
-                
-        <div class="card-content teal white-text">
-          <i class="material-icons prefix">account_circle</i>
-          <span class="card-title">Datos del cliente</span>                             
-        </div>
-
-        <div class="card-content">
-          
-          <div class="row">
-            <!--codigo del cliente esta oculto pero sera actualizado por JS-->
-            <input id="idCliente" type="hidden" value="" name="idCliente">
-
-            <div class="input-field col s12">                      
-              <input id="numeroDocumento" type="number" readonly value="" name="numeroDocumento">
-              <label for="numeroDocumento">Documento</label>
-            </div> 
-            
-            <div class="input-field col s12">
-              <input id="nombreCompleto" type="text" readonly value="" name="nombreCompleto">
-              <label for="nombreCompleto">Nombre completo</label>
+        <!-- Estos linea es para las migajas-->
+        <nav class="teal">
+          <div class="nav-wrapper container">
+            <div class="col s12">
+              <a href="#!" class="breadcrumb">Mant.</a>
+              <a href="{{ url('pedido')}}" class="breadcrumb">Pedido</a>
+              <a href="{{ url('pedido/create')}}" class="breadcrumb">Registrar</a>
             </div>
-
-                        
-          </div> 
-
-          <div class="row">
-
-            <div class="input-field col s12">
-              <input id="credito" type="text"  readonly value="" name="credito">
-              <label for="credito">Crédito</label>
-            </div>
-                        
           </div>
-
-        </div>
-
-        <div class="card-action right-align">                  
-            <a href="#modalCliente" class="modal-trigger waves-effect waves-teal btn-flat blue-text">Buscar</a>
-        
-        </div>
-      
-      </div><!--fin de la tarjeta-->
+        </nav>
 
 
-      <div class="card">
 
-        <div class="card-content teal white-text">
-          <i class="material-icons prefix">location_on</i>
-          <span class="card-title">Datos de envío</span>                           
-        </div>
-
-        <div class="card-content">
-          
-
-          <div class="row">  
-
-            <div class="input-field col s12">
-              <input id="fechaEnvio" type="date" class="datepicker" value="{{ old('fechaEnvio') }}" name="fechaEnvio">
-              <label for="fechaEnvio">Envío *</label>
-            </div>
-            
-            <div class="input-field col s12">
-              <input id="telefono" type="number" min="0" class="validate" value="{{ old('telefono') }}" name="telefono">
-              <label for="telefono" data-error="wrong" data-success="right">Teléfono</label>
-            </div>
-
-
-          </div>
-
-
-          <div class="row">
-            
-            <div class="input-field col s12">
-
-              <select name="idZona" id="idZona">                          
-                <option value="">Seleccionar</option>
-                @foreach ($zonas as $zona)
-                  <option value="{{$zona->idZona}}" @if ( $zona->idZona == old('idZona') ) selected @endif >{{$zona->nombre}}</option>
+        <!--Contenido del cuerpo-->
+        <br>
+        <div class="container">
+          <!--Mostrara los errores que se hayan cometido:-->
+          @if (count($errors)>0)
+          <div class="alert">
+            <ul>
+                @foreach ($errors -> all() as $error)
+                  <li>{{$error}}</li>
                 @endforeach
-              </select>
-              <label for ="idZona">Zona *</label>
-            </div> 
+            </ul>
+          </div>
+          @endif
+          
 
-            <div class="input-field col s12">
-              <input id="direccion" type="text" class="validate" required value="{{ old('direccion') }}" name="direccion">
-              <label for="direccion">Dirección *</label>
-            </div>  
+          <meta name="csrf-token" content="{{ csrf_token() }}" />
+
+          {{Form::open (array('url' => 'pedido', 'method'=>'POST'))}} <!--para llamar al store, se le llama igual que al index, pero con metodo post-->
+          
+          <div class="row">
+            <div class="col s12 center">
+              <h5>Datos generales</h5>
+            </div>
+          </div>
+          
+
+          <div class="row">
+
+            
+
+            <div class="col s12 m12 l6">
+              <div class="card">
+                
+                <div class="card-content teal white-text">
+                  <i class="material-icons prefix">account_circle</i>
+                  <span class="card-title">Datos del cliente</span>                             
+                </div>
+
+                <div class="card-content">
+                  
+                  <div class="row">
+                    <!--codigo del cliente esta oculto pero sera actualizado por JS-->
+                    <input id="idCliente" type="hidden" value="" name="idCliente">
+
+                    <div class="input-field col s6">                      
+                      <input id="numeroDocumento" type="text" class="validate"  readonly value="" name="numeroDocumento">
+                      <label for="numeroDocumento">Documento</label>
+                    </div> 
+
+                    <div class="input-field col s6">
+                      <input id="credito" type="text" class="validate"  readonly value="" name="credito">
+                      <label for="credito">Crédito</label>
+                    </div>
+                                
+                  </div> 
+
+                  <div class="row">
+    
+                    <div class="input-field col s12">
+                      <input id="nombreCompleto" type="text" class="validate"  readonly value="" name="nombreCompleto">
+                      <label for="nombreCompleto">Nombre completo</label>
+                    </div>
+                                
+                  </div>
+
+                  <br><br><br><br>
+                </div>
+
+
+                <div class="card-action ">                  
+                    <a href="#modalCliente" class="teal-text modal-trigger">Buscar</a>
+                
+                </div>
+              
+              </div><!--fin de la tarjeta-->
+            </div>
+
+            <div class="col s12 m12 l6">
+              <div class="card">
+
+                <div class="card-content teal white-text">
+                  <i class="material-icons prefix">location_on</i>
+                  <span class="card-title">Datos de envío</span>                           
+                </div>
+
+                <div class="card-content">
+                  
+
+                  <div class="row">  
+
+                    <div class="input-field col s6">
+                      <i class="material-icons prefix">today</i>
+                      <input id="fechaEnvio" type="date" class="datepicker" value="{{ old('fechaEnvio') }}" name="fechaEnvio">
+                      <label for="fechaEnvio">Envío *</label>
+                    </div>
+                    
+                    <div class="input-field col s6">
+                      <i class="material-icons prefix">phone</i>
+                      <input id="telefono" type="number" min="0" class="validate" value="{{ old('telefono') }}" name="telefono">
+                      <label for="telefono" data-error="wrong" data-success="right">Teléfono</label>
+                    </div>
+
+
+                  </div>
+
+
+                  <div class="row">
+                    
+                    <div class="input-field col s6">
+
+                      <select name="idZona" id="idZona">                          
+                        <option value="">Seleccionar</option>
+                        @foreach ($zonas as $zona)
+                          <option value="{{$zona->idZona}}" @if ( $zona->idZona == old('idZona') ) selected @endif >{{$zona->nombre}}</option>
+                        @endforeach
+                      </select>
+                      <label for ="idZona">Zona *</label>
+                    </div> 
+
+                    <div class="input-field col s6">
+                      <input id="direccion" type="text" class="validate" required value="{{ old('direccion') }}" name="direccion">
+                      <label for="direccion">Dirección *</label>
+                    </div>  
+
+                  </div>
+
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <textarea id="referencia" class="materialize-textarea" name="referencia">{{ old('referencia') }}</textarea>
+                      <label for="referencia">Referencia</label>
+                    </div> 
+                  </div>
+          
+                    
+                </div>
+              </div>
+            </div>
+
 
           </div>
 
           <div class="row">
-            <div class="input-field col s12">
-              <textarea id="referencia" class="materialize-textarea" name="referencia">{{ old('referencia') }}</textarea>
-              <label for="referencia">Referencia</label>
-            </div> 
-          </div>
-  
-            
-        </div>
-      </div>
+            <div class="col s12 center">
+              <h5>Lista de articulos</h5>
+              <div class="divider"></div>
+            </div>
+          </div>   
 
-    </div>
-    
-
-    <!--panel de la derecha-->
-    <div class="col s12 m8 l9 center">
-      
-      <div class="card">
-        
-        <div class="card-content teal white-text">
-          <i class="material-icons prefix">location_on</i>
-          <span class="card-title">Lista de materiales</span>                           
-        </div>
-
-        <div class="right-align">
-               
-        </div>
-
-
-        <div class="card-content">
-          <table class="bordered highlight responsive-table" id="detalles">
-            <thead>
-              <tr>
-                  <th data-field="cantidad">Cantidad</th>
-                  <th data-field="descripcion">Descripción</th>
-                  <th data-field="precio">P.U. (S/.)</th>
-                  <th data-field="subtotal">Subtotal (S/.)</th>
-                  <th data-field="acciones">Acciones</th>
-              </tr>
-            </thead>
-
-            <tbody>
+          <div class= "row">
+            <div class="col s12 right-align">
+              <a class="modal-trigger waves-effect waves-light btn" href="#modalAgregar" id="btnAbrirModalArticulos">Agregar articulos</a>
               
-            </tbody>
-            <tfoot>
-              <tr>
-                <th>Total</th>
-                <th></th>
-                <th></th>
-                <th><h5 id="montoTotalH" >S/. 0.00</h5></th>
-                <th><input type="hidden" name="montoTotal" id="montoTotal" value=""></th>
+            </div>
+            
+          </div>
+
+          <div class="row">
+            
+            <table class="bordered highlight responsive-table" id="detalles">
+              <thead>
+                <tr>
+                    <th data-field="cantidad">Cantidad</th>
+                    <th data-field="descripcion">Descripción</th>
+                    <th data-field="precio">P.U. (S/.)</th>
+                    <th data-field="subtotal">Subtotal (S/.)</th>
+                    <th data-field="acciones">Acciones</th>
+                </tr>
+              </thead>
+
+              <tbody>
                 
-              </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Total</th>
+                  <th></th>
+                  <th></th>
+                  <th><h5 id="montoTotalH" >S/. 0.00</h5></th>
+                  <th><input type="hidden" name="montoTotal" id="montoTotal" value=""></th>
+                  
+                </tr>
 
-            </tfoot>
-          </table>
+              </tfoot>
+            </table>    
+                       
+          </div>
+
+          <!--Los botones del formulario-->
+          <div class="row" id="guardar">
+
+            <div class="input-field col s12 right-align">
+              <a class="waves-effect waves-light btn" href="{{ url('pedido')}}">Cancelar</a>
+              <button class="btn waves-effect waves-light" type="submit" name="action" id="btnGuardar">Registrar
+                <i class="material-icons right">send</i>
+              </button>                
+            </div>              
+          </div>
+          
+        {{ Form::close()}}
         </div>
 
-        <div class="card-action right-align">                  
-            <a class="modal-trigger waves-effect waves-teal btn-flat blue-text" href="#modalAgregar" id="btnAbrirModalArticulos">Agregar artículos</a>        
-        </div>
-      
-      </div>
-
-    </div>
-
-  </div>
-  
-  <!--Los botones del formulario-->
-  <div class="row"  id="guardar">
-    
-      <div class="col s12 right-align">        
-          <a class="waves-effect waves-light btn" href="{{ url('pedido')}}">Cancelar</a>
-          <button class="btn waves-effect waves-light" type="submit" name="action" id="btnGuardar">Registrar
-            <i class="material-icons right">send</i>
-          </button> 
-      </div>
-
-  </div>
-  
-  {{ Form::close()}}
-
-</div>
-
-@include('pedido.modalAgregar')
-@include('pedido.modalCliente')       
-      
+        @include('pedido.modalAgregar')
+        @include('pedido.modalCliente')
 
 @stop
 

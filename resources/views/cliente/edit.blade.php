@@ -36,7 +36,6 @@
           <div class="row">
             <div class="col s12 center">
               <h5>Editar cliente</h5>
-              <div class="divider"></div>
             </div>
           </div>
 
@@ -45,11 +44,14 @@
 
             <div class="col s12 m12 l6">
               <div class="card">
+                
+                <div class="card-content teal white-text">
+                  <i class="material-icons prefix">account_circle</i>
+                  <span class="card-title">Datos personales</span>                                
+                </div>
 
                 <div class="card-content">
-                  <i class="material-icons prefix">account_circle</i>
-                  <span class="card-title">Datos personales</span>
-                  <br><br> 
+                  
 
                   <div class="row">
                     <div class="input-field col s6">
@@ -102,12 +104,13 @@
 
             <div class="col s12 m12 l6">
               <div class="card">
+                
+                <div class="card-content teal white-text">
+                  <i class="material-icons prefix">place</i>
+                  <span class="card-title">Datos de contacto</span>    
+                </div>
 
                 <div class="card-content">
-                  <i class="material-icons prefix">account_circle</i>
-                  <span class="card-title">Datos de contacto</span>
-                  <br><br> 
-
                   
                   <div class="row">
                     <div class="input-field col s6">
@@ -157,12 +160,13 @@
 
             <div class="col s12 m12 l6 offset-l3">
               <div class="card">
+                
+                <div class="card-content teal white-text">
+                  <i class="material-icons prefix">credit_card</i>
+                  <span class="card-title">Habilitado para crédito</span>
+                </div>
 
                 <div class="card-content">
-
-                  <i class="material-icons prefix">account_circle</i>
-                  <span class="card-title">Habilitado para crédito</span>
-                  <br><br>
 
                   <div class="row">
                     <div class="input-field col s12">

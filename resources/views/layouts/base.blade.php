@@ -15,10 +15,21 @@
     </head>
   
     <body>
-
-        <!--La barra superior principal-->
+        <!-- boton flotante-->
+        <div class="fixed-action-btn horizontal click-to-toggle ">
+          <a class="btn-floating btn-large blue">
+            <i class="material-icons">menu</i>
+          </a>
+          <ul>
+            <li><a class="btn-floating red" href="{{ action('PedidoController@create')  }}" title="Nuevo pedido"><i class="material-icons">store</i></a></li>
+            <li><a class="btn-floating yellow darken-1" href="{{ action('PlanificacionController@seleccionarPedido')  }}" title="Planificar"><i class="material-icons">assessment</i></a></li>
+          </ul>
+        </div>
+        
+      <header>
+          <!--La barra superior principal-->
         <nav class="teal">
-          <div class="nav-wrapper container ">
+          <div class="nav-wrapper container">
 
             <!--Menu de barra de haburguesa-->
             <ul id="slide-out" class="side-nav">
@@ -93,31 +104,31 @@
               </li>
             </ul> 
             
+            
             <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
-            <!--Fin barra de hamburgauesa-->            
+            <!--Fin barra de hamburgauesa-->
 
             <a href="#" class="brand-logo center">PlanificaMYPE</a>
 
+            <!--Botones de la derecha-->
+            <ul class="right hide-on-med-and-down">
+              <li><a href="badges.html"><i class="material-icons">view_module</i></a></li>
+            </ul>
+            
+            
+
           </div>
+
+
         </nav>
+      </header>
         
-
         
-
-
-
-
-
-
+      <main>
 
         @yield('contenido')
-      
 
-
-
-
-
-
+      </main>
 
       <footer class="page-footer grey darken-2">
         <div class="container">
@@ -139,11 +150,14 @@
             </div>
 
           </div>
-        </div>
+        
+          <div class ="row">
+            <div class="footer-copyright">          
+              Desarrollado por 
+              <a class="orange-text text-lighten-3" href="https://www.facebook.com/henry.espinozatorres">Henry A. Espinoza</a>
+              
+            </div>
 
-        <div class="footer-copyright">
-          <div class="container">
-          Desarrollado por <a class="orange-text text-lighten-3" href="https://www.facebook.com/henry.espinozatorres">Henry A. Espinoza</a>
           </div>
         </div>
 

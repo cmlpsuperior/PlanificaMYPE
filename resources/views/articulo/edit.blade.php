@@ -8,19 +8,11 @@
           <div class="nav-wrapper container">
             <div class="col s12">
               <a href="#!" class="breadcrumb">Mant.</a>
-              <a href="{{ url('articulo')}}" class="breadcrumb">Articulo</a>
+              <a href="{{ url('articulo')}}" class="breadcrumb">Artículo</a>
               <a href="{{ action('ArticuloController@edit', $articulo->idArticulo) }}" class="breadcrumb">Editar</a>
             </div>
           </div>
         </nav>
-
-
-
-
-
-
-        
-
 
         <!--Contenido del cuerpo-->
         <br>
@@ -42,8 +34,7 @@
           
           <div class="row">
             <div class="col s12 center">
-              <h5>Editar articulo</h5>
-              <div class="divider"></div>
+              <h5>Editar artículo</h5>
             </div>
           </div>
 
@@ -53,10 +44,12 @@
             <div class="col s12 m12 l6">
               <div class="card">
 
+                <div class="card-content teal white-text">
+                  <i class="material-icons prefix">shopping_basket</i>
+                  <span class="card-title">Datos del artículo</span>                                   
+                </div>
+
                 <div class="card-content">
-                  <i class="material-icons prefix">account_circle</i>
-                  <span class="card-title">Datos del articulo</span>
-                  <br><br>                   
 
                   <div class="row">
 
@@ -69,8 +62,12 @@
                       </select>
                       <label>Unidad *</label>
                     </div> 
+                                
+                  </div>
 
-                    <div class="input-field col s6">
+                  <div class="row">
+
+                    <div class="input-field col s12">
                       <input id="Nombre" type="text" class="validate"  required value="{{ $articulo->nombre }}" name="nombre">
                       <label for="Nombre">Nombre *</label>
                     </div>
@@ -102,10 +99,13 @@
             <div class="col s12 m12 l6">
               <div class="card">
 
+                <div class="card-content teal white-text">
+                  <i class="material-icons prefix">airport_shuttle</i>
+                  <span class="card-title">Datos de carga</span>                                  
+                </div>
+
                 <div class="card-content">
-                  <i class="material-icons prefix">account_circle</i>
-                  <span class="card-title">Datos de carga</span>
-                  <br><br>  
+                  
 
                   <div class="row">  
 

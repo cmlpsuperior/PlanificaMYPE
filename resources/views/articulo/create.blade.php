@@ -8,7 +8,7 @@
           <div class="nav-wrapper container">
             <div class="col s12">
               <a href="#!" class="breadcrumb">Mant.</a>
-              <a href="{{ url('articulo')}}" class="breadcrumb">Articulo</a>
+              <a href="{{ url('articulo')}}" class="breadcrumb">Artículo</a>
               <a href="{{ url('articulo/create')}}" class="breadcrumb">Registrar</a>
             </div>
           </div>
@@ -40,9 +40,9 @@
           @endif
 
           <div class="row">
-            <div class="col s12 center">
-              <h5>Registrar articulo</h5>
-              <div class="divider"></div>
+            <div class="col s12 center ">
+              <h5>Registrar artículo</h5>
+              
             </div>
           </div>
           
@@ -50,12 +50,14 @@
           <div class="row">
 
             <div class="col s12 m12 l6">
-              <div class="card">
+              <div class="card ">
 
-                <div class="card-content">
-                  <i class="material-icons prefix">account_circle</i>
-                  <span class="card-title">Datos del articulo</span>
-                  <br><br>   
+                <div class="card-content teal white-text">
+                    <i class="material-icons prefix">shopping_basket</i>
+                    <span class="card-title ">Datos del artículo</span>                  
+                </div>
+
+                <div class="card-content ">
 
                   <div class="row">
 
@@ -69,11 +71,16 @@
                       <label>Unidad *</label>
                     </div> 
 
-                    <div class="input-field col s6">
+                                
+                  </div>
+
+                  <div class="row">   
+
+                    <div class="input-field col s12">
                       <input id="Nombre" type="text" class="validate"  required value="{{ old('nombre') }}" name="nombre">
                       <label for="Nombre">Nombre *</label>
                     </div>
-                                
+
                   </div>
 
                   <div class="row">   
@@ -94,18 +101,22 @@
                     </div>
 
                   </div>
+
                 </div>
+                
               </div>
             </div> <!--Acaba la tarjeta 1-->
             
             <!--inicia la tarjeta 2-->
             <div class="col s12 m12 l6">
               <div class="card">
+                
+                <div class="card-content teal white-text">
+                    <i class="material-icons prefix">airport_shuttle</i>
+                  <span class="card-title">Datos de carga</span>                
+                </div>
 
                 <div class="card-content">
-                  <i class="material-icons prefix">account_circle</i>
-                  <span class="card-title">Datos de carga</span>
-                  <br><br> 
 
                   <div class="row">  
 

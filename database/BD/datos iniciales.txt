@@ -11,7 +11,7 @@ Pedido:
 - cambiar el estado de pedido en el doc: pre-pedido, confirmado
 - un pedido confirmado puede ser anulado?
 - Al registrar un pedido, no puede haber articulos duplicados, debe sumarlo atumaticamente.
-
+- al registrar pedido, verificar que los valores sean mayores a 0.
 
 Articulo:
 - todos son medidos en volumen. (listo)
