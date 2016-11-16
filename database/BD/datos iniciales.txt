@@ -30,11 +30,12 @@ TipoVehiculoXtipoCarga:
 
 
 empleado:
-- agregar el campo Licencia.
+- agregar el campo Licencia. (listo)
+- mantenimiento, y con ello crear el usuario con el dni.
 
 
 Planificacion controller:
-- no tomar la relacion pedidoxviaje, solo tomar detalleViaje
+- no tomar la relacion pedidoxviaje, solo tomar detalleViaje (listo)
 
 DOCUMENTOS
 

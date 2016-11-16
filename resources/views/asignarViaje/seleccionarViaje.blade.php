@@ -64,18 +64,14 @@
 	        	@foreach ($viajes as $viaje)
 		            <tr>
 		            	
-		            	<td><input type="radio" name="seleccionarViaje" id="id{{$viaje->idViaje}}" value="{{$viaje->idViaje}}" ><label for="id{{$viaje->idViaje}}">{{$viaje->idViaje}}</label></td>
-		            	<td>@if ( count($viaje->pedidos)==0 ) 
-		            		Desconocido
-		            		@else 
-		            		{{ $viaje->pedidos[0]->zona->nombre }}
-		            		@endif </td>		            
-			            <td>{{ $viaje->tipoVehiculo->nombre }}</td>
-			            <td>{{ count( $viaje->pedidos) }}</td>
-			            <td>{{ $viaje->fechaRegistro }}</td>
-			            <td>{{ $viaje->estado }}</td>
+		            	<td><input type="radio" name="seleccionarViaje" id="id{{$viaje['viaje']->idViaje}}" value="{{$viaje['viaje']->idViaje}}" ><label for="id{{$viaje['viaje']->idViaje}}">{{$viaje['viaje']->idViaje}}</label></td>
+		            	<td>{{ $viaje['zona']->nombre}}</td>		            
+			            <td>{{ $viaje['viaje']->tipoVehiculo->nombre }}</td>
+			            <td>{{ $viaje['cantidadDestinos']}}</td>
+			            <td>{{ $viaje['viaje']->fechaRegistro }}</td>
+			            <td>{{ $viaje['viaje']->estado }}</td>
 			            <td>			            	
-			            	<a class="modal-trigger" href="#modalDetalle-{{$viaje->idViaje}}" title="Ver"><i class="material-icons">visibility</i></a>
+			            	<a class="modal-trigger" href="#modalDetalle-{{$viaje['viaje']->idViaje}}" title="Ver"><i class="material-icons">visibility</i></a>
 			            </td>
 
 			        </tr>  

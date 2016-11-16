@@ -12,7 +12,7 @@ use PlanificaMYPE\Pedido;
 use DB;
 use PlanificaMYPE\Http\Requests\SeleccionarViajeRequest;
 use PlanificaMYPE\Http\Requests\SeleccionarEmpleadoRequest;
-
+use Illuminate\Pagination\Paginator;
 
 class AsignarViajeController extends Controller
 {
@@ -24,10 +24,22 @@ class AsignarViajeController extends Controller
         
     		$viajes = Viaje::orderBy('fechaRegistro', 'asc')
                         ->where('estado','=', 'Planificado')
-                        //->get();
-                        ->simplePaginate(8); 
+                        ->get();
+                       
 
-            return view('asignarViaje.seleccionarViaje', ['viajes'=>$viajes]);    	           
+            $viajesPlus = array();
+            foreach ($viajes as $viaje ){
+                $detalleViaje = DB::table('detalleviaje')->select('idPedido')->where('idViaje','=', $viaje->idViaje)->first();
+                $nViaje['zona'] =  Pedido::findOrFail($detalleViaje->idPedido)->zona;
+                $nViaje['viaje'] = $viaje;
+                $nViaje['cantidadDestinos'] = count (   DB::table('detalleviaje')->distinct()->select('idPedido')->where('idViaje','=', $viaje->idViaje)   );
+                
+                $viajesPlus []= $nViaje;                
+            }
+            $pViajesPlus = new Paginator ($viajesPlus, 8);
+            
+            
+            return view('asignarViaje.seleccionarViaje', ['viajes'=>$pViajesPlus]);    	           
 
     }
 

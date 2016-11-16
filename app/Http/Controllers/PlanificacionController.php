@@ -144,6 +144,7 @@ class PlanificacionController extends Controller
 
                 }
 
+                /*
                 //insertamos en la tabla pedidoxviaje
                 $pedidos = $viaje['pedidos'];
 
@@ -151,6 +152,7 @@ class PlanificacionController extends Controller
                     
                     $v->pedidos()->attach($pedido->idPedido);
                 }
+                */
 
             } 
 

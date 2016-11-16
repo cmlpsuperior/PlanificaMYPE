@@ -56,3 +56,6 @@ Route::post('asignarViaje/seleccionarViaje', 'AsignarViajeController@seleccionar
 
 Route::get('asignarViaje/{id}/seleccionarEmpleado', 'AsignarViajeController@seleccionarEmpleado' )->name('asignarViaje.seleccionarEmpleado');
 Route::post('asignarViaje/{id}/seleccionarEmpleado', 'AsignarViajeController@seleccionarEmpleado_procesar' )->name('asignarViaje.seleccionarEmpleado_procesar');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');

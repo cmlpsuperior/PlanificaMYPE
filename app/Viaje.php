@@ -41,16 +41,10 @@ class Viaje extends Model
     }
 
 
-
-    
+    //muchos a muchos
     public function articulos (){
         return $this->belongsToMany('PlanificaMYPE\Articulo', 'detalleviaje', 'idViaje', 'idArticulo')
                     ->withPivot('idPedido','cantidad', 'cantidadDescargado');
     }
-
-    //relacion muchos a muchos con pedido
-    public function pedidos (){
-        return $this->belongsToMany('PlanificaMYPE\Pedido', 'pedidoxviaje', 'idViaje', 'idPedido');
-                    //->withPivot('idPedido','cantidad', 'cantidadDescargado');
-    }
+    
 }
