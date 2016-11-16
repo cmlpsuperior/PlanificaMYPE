@@ -78,8 +78,12 @@
 
         </div>
 
-        <div class="card-action right-align">                  
-            <a href="#modalCliente" class="modal-trigger waves-effect waves-teal btn-flat blue-text">Buscar</a>
+        <div class="card-action right-align">
+
+            <a href="#modalCliente" class="modal-trigger waves-effect waves-teal btn-flat blue-text">
+              Buscar
+               <i class="material-icons right">search</i>
+            </a>
         
         </div>
       
@@ -89,7 +93,7 @@
       <div class="card">
 
         <div class="card-content teal white-text">
-          <i class="material-icons prefix">location_on</i>
+          <i class="material-icons prefix">local_shipping</i>
           <span class="card-title">Datos de envío</span>                           
         </div>
 
@@ -152,7 +156,7 @@
       <div class="card">
         
         <div class="card-content teal white-text">
-          <i class="material-icons prefix">location_on</i>
+          <i class="material-icons prefix">shopping_cart</i>
           <span class="card-title">Lista de materiales</span>                           
         </div>
 
@@ -191,7 +195,10 @@
         </div>
 
         <div class="card-action right-align">                  
-            <a class="modal-trigger waves-effect waves-teal btn-flat blue-text" href="#modalAgregar" id="btnAbrirModalArticulos">Agregar artículos</a>        
+            <a class="modal-trigger waves-effect waves-teal btn-flat blue-text" href="#modalAgregar" id="btnAbrirModalArticulos">
+              Agregar artículos
+              <i class="material-icons right">add</i>
+            </a>        
         </div>
       
       </div>

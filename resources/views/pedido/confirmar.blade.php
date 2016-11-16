@@ -78,7 +78,11 @@
 
 
         <div class="card-action right-align">                  
-            <a href="#modalConfirmar" class="modal-trigger waves-effect waves-teal btn-flat blue-text">Buscar</a>
+            <a href="#modalConfirmar" class="modal-trigger waves-effect waves-teal btn-flat blue-text">
+              Buscar
+              <i class="material-icons right">search</i>
+            </a>
+
         
         </div>
       
@@ -91,7 +95,7 @@
 
         <div class="card-content teal white-text">
 
-          <i class="material-icons prefix">location_on</i>
+          <i class="material-icons prefix">attach_money</i>
           <span class="card-title">Pago del pedido</span> 
 
         </div>
