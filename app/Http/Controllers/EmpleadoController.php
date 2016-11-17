@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use PlanificaMYPE\Http\Requests;
 use PlanificaMYPE\Http\Requests\EmpleadoRequest;
+use PlanificaMYPE\Http\Requests\EmpleadoEditRequest;
 use Illuminate\Support\Facades\Hash;
 
 use PlanificaMYPE\Empleado;
@@ -91,7 +92,7 @@ class EmpleadoController extends Controller
     	return view('empleado.edit', [ 'tiposDocumentos'=>$tiposDocumentos, 'cargos'=> $cargos, 'empleado'=> Empleado::findOrFail($id) ]);
     }
 
-    public function update (EmpleadoRequest $request, $id){
+    public function update (EmpleadoEditRequest $request, $id){
     	$empleado = Empleado::findOrFail($id);
 
         $empleado->nombres=$request->get('nombres');
@@ -107,9 +108,8 @@ class EmpleadoController extends Controller
         //$empleado->fechaIngreso= $request->get('fechaIngreso');
         //$empleado->fechaSalida = null;
     	$empleado->idCargo=$request->get('idCargo');
-    	$empleado->idTipoDocumento=$request->get('idTipoDocumento');
 
-        $articulo->save();
+        $empleado->save();
 
         return Redirect('empleado'); //es una URL
 
