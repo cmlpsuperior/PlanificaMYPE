@@ -47,7 +47,6 @@
 
 	        	@foreach ($articulos as $articulo)
 		            <tr>
-			            <td hidden="true">{{ $articulo->idAticulo}}</td>
 			            <td>{{ $articulo->unidadMedida->nombre}}</td>
 			            <td>{{ $articulo->nombre.' - '.$articulo->marca->nombre}}</td>
 			            <td>{{ $articulo->tipoCarga->nombre}} - 		          

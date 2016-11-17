@@ -17,6 +17,7 @@ Route::get('/', function () {
 
 Route::resource ('cliente','ClienteController' );
 Route::resource ('articulo','ArticuloController' );
+Route::resource ('empleado','EmpleadoController' );
 
 //Route::resource ('pedido','PedidoController' );
 Route::post('pedido', 'PedidoController@store' )->name('pedido.store');
@@ -56,6 +57,8 @@ Route::post('asignarViaje/seleccionarViaje', 'AsignarViajeController@seleccionar
 
 Route::get('asignarViaje/{id}/seleccionarEmpleado', 'AsignarViajeController@seleccionarEmpleado' )->name('asignarViaje.seleccionarEmpleado');
 Route::post('asignarViaje/{id}/seleccionarEmpleado', 'AsignarViajeController@seleccionarEmpleado_procesar' )->name('asignarViaje.seleccionarEmpleado_procesar');
-Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+
+//Empleado:
+
+

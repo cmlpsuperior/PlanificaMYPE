@@ -28,7 +28,7 @@ class ClienteFormRequest extends FormRequest
             'nombres' => 'regex:/^[\pL\s\-]+$/u|max:50',
             'apellidoPaterno' => 'regex:/^[\pL\s\-]+$/u|max:100',
             'apellidoMaterno' => 'regex:/^[\pL\s\-]+$/u|max:100',
-            'numeroDocumento' => 'required|digits:8|numeric|unique:cliente,numeroDocumento',
+            'numeroDocumento' => 'required|digits_between:8,20|numeric|unique:cliente,numeroDocumento',
             'fechaNacimiento' => 'required|date',
             'genero' => 'required|numeric',
 

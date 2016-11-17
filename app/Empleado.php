@@ -17,8 +17,10 @@ class Empleado extends Model
     	'apellidoPaterno',
     	'apellidoMaterno',
     	'numeroDocumento',
+        'correo',
         'estado',
         'sueldo',
+        'licencia',
         'fechaIngreso',
         'fechaSalida',
         
@@ -43,5 +45,13 @@ class Empleado extends Model
     public function viajes()
     {
         return $this->hasMany ('PlanificaMYPE\Viaje', 'idEmpleado', 'idEmpleado');
+    }
+
+    public function pedidos (){
+        return $this->hasMany ('PlanificaMYPE\Pedido', 'idPedido', 'idPedido');
+    }
+
+    public function usuario (){
+        return $this->hasOne ('PlanificaMYPE\Usuario', 'idEmpleado', 'idEmpleado');
     }
 }

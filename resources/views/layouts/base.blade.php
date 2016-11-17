@@ -93,7 +93,7 @@
                         <li><a href="{{ url('cliente') }}">Clientes</a></li>                        
                         <li><a href="{{ url('articulo') }}">Artículos</a></li>          
                         <li><a href="#!">Zonas</a></li>          
-                        <li><a href="#!">Empleados</a></li>
+                        <li><a href="{{ url('empleado') }}">Empleados</a></li>
                         <li><a href="#!">Vehículos</a></li>
                       </ul>
                     </div>
@@ -179,7 +179,7 @@
           $('.datepicker').pickadate({ /*es para que funcione e datepicker*/
             selectMonths: true, // Creates a dropdown to control month
             selectYears: 200, // Creates a dropdown of 15 years to control year
-            format: 'yyyy/mm/dd'
+            format: 'yyyy-mm-dd'
           });
         
           
