@@ -46,7 +46,7 @@
       <div class="card ">
 
         <div class="card-content teal white-text">
-            <i class="material-icons prefix">shopping_basket</i>
+            <i class="material-icons prefix">account_circle</i>
             <span class="card-title ">Datos personales</span>                  
         </div>
 
@@ -97,7 +97,7 @@
       <div class="card">
         
         <div class="card-content teal white-text">
-          <i class="material-icons prefix">airport_shuttle</i>
+          <i class="material-icons prefix">info</i>
           <span class="card-title">Datos adicionales</span>                
         </div>
 

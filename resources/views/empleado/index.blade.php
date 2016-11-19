@@ -30,8 +30,9 @@
 	</div>
 
 	<div class= "row">
+		{{Form::open (array('url' => 'empleado', 'method'=>'GET'))}}
 		<!--Panel de la izquierda-->
-	    <div class="col s12 m3 l3 center">
+	    <div class="col s12 m3 l2 center">
 	      	<div class="card">
 				
 				<!--header de la tarjeta-->
@@ -73,15 +74,16 @@
 				
 				<!--foot de la tarjeta-->
 				<div class="card-action right-align">
-		            <a href="#!" class="waves-effect waves-teal btn-flat blue-text">
-		              	filtrar
-		            </a>		        
+					<button class="waves-effect waves-teal btn-flat blue-text" type="submit" name="action">
+						Filtrar
+				    </button>      
 		        </div>
 
 			</div>
 		</div>
-		
-		<div class="col s12 m9 l9 center">
+		{{ Form::close()}}
+
+		<div class="col s12 m9 l10 center">
 
 	      	<div class="card">
 

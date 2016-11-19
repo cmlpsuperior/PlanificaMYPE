@@ -20,16 +20,52 @@ use DB;
 class EmpleadoController extends Controller
 {
     
-    public function index(){ //Request $request
+    public function index(Request $request){ //Request $request
         
-    	
+        $bIdCargo ="";
+        $cargos= Cargo::orderBy('nombre', 'asc')->get();
+
+        if ($request->get('bNombre') != '' || 
+            $request->get('bNumeroDocumento') != '' || 
+            $request->get('bIdCargo') != '' ){
+
+            if ($request->get('bNumeroDocumento') != ''){ //si hay cargo
+                $empleados = Empleado::where('numeroDocumento','like','%'.$request->get('bNumeroDocumento').'%')
+                                    
+                                    ->orderBy('apellidoPaterno', 'asc')
+                                    ->orderBy('apellidoMaterno', 'asc')
+                                    ->orderBy('Nombres', 'asc')                     
+                                    ->simplePaginate(8);
+            }
+            else if ($request->get('bNombre') != ''){
+                $empleados = Empleado::where('nombres','like', '%'.$request->get('bNombre').'%' )
+                                    ->orWhere('apellidoPaterno','like', '%'.$request->get('bNombre').'%' )
+                                    ->orWhere('apellidoMaterno','like', '%'.$request->get('bNombre').'%' )
+
+                                    ->orderBy('apellidoPaterno', 'asc')
+                                    ->orderBy('apellidoMaterno', 'asc')
+                                    ->orderBy('Nombres', 'asc')                     
+                                    ->simplePaginate(8);
+            }
+            else{ //no hay cargo seleciondo
+                $empleados = Empleado::where('idCargo','=', $request->get('bIdCargo') )
+
+                                    ->orderBy('apellidoPaterno', 'asc')
+                                    ->orderBy('apellidoMaterno', 'asc')
+                                    ->orderBy('Nombres', 'asc')                     
+                                    ->simplePaginate(8);
+            }            
+        }
+    	else{ // no se llenó ningun filtro
     		$empleados = Empleado::orderBy('apellidoPaterno', 'asc')->orderBy('apellidoMaterno', 'asc')->orderBy('Nombres', 'asc')                     
                         ->simplePaginate(8);
-            $cargos= Cargo::orderBy('nombre', 'asc')->get();
-            $bIdCargo ="";
             
-            return view('empleado.index', ['empleados'=>$empleados, 'cargos'=> $cargos, 'bIdCargo'=>$bIdCargo]);    	           
+            
+            
+               	           
+        }
 
+        return view('empleado.index', ['empleados'=>$empleados, 'cargos'=> $cargos, 'bIdCargo'=>$bIdCargo]); 
     }
 
     public function create (){
