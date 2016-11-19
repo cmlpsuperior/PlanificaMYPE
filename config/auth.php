@@ -70,10 +70,10 @@ return [
             'model' => PlanificaMYPE\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+         //'users' => [
+         //    'driver' => 'database',
+         //    'table' => 'usuario',
+         //],
     ],
 
     /*

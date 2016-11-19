@@ -45,3 +45,26 @@ diagrama de estados de pedido:
 
 
 
+____________________________________
+MarcaVehiculo
+	- Almenos debe tener el tipo OTRO
+Unidad de medida
+	- Agregar algunas unidades de medida.
+TipoCarga
+	- El primero DEBE ser el NORMAL.
+	- El segundo es el pequeño.
+	- El tercero es el grande.
+
+TipoVehiculo
+	- Todos los tipos de vehiculo DEBEN tener una relacion con TODOS los TIPOSCARGA (en TipoVehiucloxTipoCarga)
+Marca
+	- Debe exitir la marca Otro.
+TipoDocumento
+	- El primero debe ser DNI
+tipoCargo
+	- El primero debe ser el Admi del sistema.
+Empleado
+	- Debe existir el adm de sistema
+Usuario
+	- usuario ligado al admin del sistema
+

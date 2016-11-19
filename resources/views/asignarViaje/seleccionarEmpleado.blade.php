@@ -67,9 +67,9 @@
 		            		<label for="id{{$empleado->idEmpleado}}">{{$empleado->idEmpleado}}</label>
 		            	</td>
 		            	<td>{{ $empleado->numeroDocumento }} </td>		            
-			            <td>{{ $empleado->nombres }} {{ $empleado->apellidosPaterno }} {{ $empleado->apellidoMaterno }}</td>
+			            <td>{{ $empleado->apellidoPaterno }} {{ $empleado->apellidoMaterno }}, {{ $empleado->nombres }}</td>
 			            <td>{{ count( $empleado->viajes->where('fechaSalida', '>=', date("Y-m-d"))   ) }}</td>
-			            <td> </td>
+			            <td>{{ $empleado->licencia }} </td>
 			            <td>{{ $empleado->cargo->nombre }}</td>			            
 
 			        </tr>  

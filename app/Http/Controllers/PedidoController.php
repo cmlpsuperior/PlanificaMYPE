@@ -12,6 +12,7 @@ use PlanificaMYPE\Cliente;
 use PlanificaMYPE\Empleado;
 use PlanificaMYPE\Zona;
 use PlanificaMYPE\Marca;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\DB;
 
@@ -63,7 +64,8 @@ class PedidoController extends Controller
 	    	$pedido->montoPagado=0;
 	        $pedido->estado= 'Pre-pedido';
 	    	$pedido->idCliente= $request->get('idCliente');
-	    	$pedido->idEmpleado= 1; //$request->get('idEmpleado');
+	    	//$pedido->idEmpleado= 1; //$request->get('idEmpleado');
+            $pedido->idEmpleado= Auth::User()->idEmpleado;
 	    	$pedido->idZona= $request->get('idZona');
 
 	    	$pedido->save();

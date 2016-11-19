@@ -36,8 +36,8 @@
               <li><div class="userView">
                 <img class="background" width= "100%" src="{{ asset('img/md_noche.png')}}">
                 <i class="material-icons center">account_circle</i>
-                <a href="#!"><span class="white-text name">Henry Espinoza</span></a>
-                <a href="#!"><span class="white-text email">henryEspinozat@gmail.com</span></a>
+                <a href="#!"><span class="white-text name">{{ Auth::User()->empleado->nombres}}</span></a>
+                <a href="#!"><span class="white-text email">{{ Auth::User()->empleado->cargo->nombre}}</span></a>
               </div></li>             
               
               <li><a class="subheader">Menu</a></li>
@@ -111,8 +111,8 @@
             <a href="#" class="brand-logo center">PlanificaMYPE</a>
 
             <!--Botones de la derecha-->
-            <ul class="right hide-on-med-and-down">
-              <li><a href="badges.html"><i class="material-icons">view_module</i></a></li>
+            <ul class="right ">
+              <li><a href="{{ url('login/logout') }}"><i class="material-icons">exit_to_app</i></a></li>
             </ul>
             
             
@@ -130,7 +130,7 @@
 
       </main>
 
-      <footer class="page-footer grey darken-2">
+      <footer class="page-footer grey darken-3">
         <div class="container">
           <div class="row">
 
@@ -145,7 +145,6 @@
                 <li><a class="white-text" href="#!">henryespinozat@gmail.com</a></li>
                 <li><a class="white-text" href="#!">(01) 606-3477</a></li>
                 <li><a class="white-text" href="#!">Facebook</a></li>
-                <li><a class="white-text" href="#!">PUCP</a></li>
               </ul>
             </div>
 

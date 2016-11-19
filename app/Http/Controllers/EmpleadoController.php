@@ -13,6 +13,7 @@ use PlanificaMYPE\Empleado;
 use PlanificaMYPE\Usuario;
 use PlanificaMYPE\TipoDocumento;
 use PlanificaMYPE\Cargo;
+
 use DB;
 
 
@@ -66,13 +67,23 @@ class EmpleadoController extends Controller
 
 	    	$empleado->save();
 
+            /*
 	    	//creamos el usuario del sistema:
 	    	$usuario = new Usuario();
 	    	$usuario->usuario = $request->get('numeroDocumento');
 	    	$usuario->contrasenia = Hash::make( $request->get('numeroDocumento') ); //la clave pre-definida es el dni
 	    	$usuario->idEmpleado = $empleado->idEmpleado;
 
-	    	$usuario->save();
+            $usuario->save();
+*/
+            //creo para la tabal USERs
+            DB::table('users')->insert(
+                        [   'name' =>  $request->get('numeroDocumento'),
+                            'usuario' => $request->get('numeroDocumento'),
+                            'password'=> Hash::make( $request->get('numeroDocumento') ),
+                            'idEmpleado' => $empleado->idEmpleado
+                        ]);
+
     	DB::commit();
 
     	return Redirect('empleado'); //es una URL
