@@ -115,7 +115,7 @@
 					            <td>{{ $empleado->estado}}</td>
 					            <td>
 					            	<a href="{{action('EmpleadoController@edit', ['id'=>$empleado->idEmpleado])}}" title="Editar"><i class="material-icons">edit</i></a>
-					            	<a class="modal-trigger" href="#modal-delete-{{$empleado->idEmpleado}}" title="Eliminar"><i class="material-icons">delete</i></a>
+					            	<!--<a class="modal-trigger" href="#modal-delete-{{$empleado->idEmpleado}}" title="Eliminar"><i class="material-icons">delete</i></a>-->
 					            </td>
 					        </tr> 
 

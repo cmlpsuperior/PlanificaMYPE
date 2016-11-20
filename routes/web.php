@@ -61,6 +61,14 @@ Route::get('login', 'LoginController@index' )->name('login.index');
 Route::post('login', 'LoginController@autenticar' )->name('login.autenticar');
 Route::get('login/logout', 'LoginController@logout' )->name('login.logout');
 
+
+//viaje
+Route::get('envio/seleccionarViaje', 'EnvioController@seleccionarViaje' )->name('envio.seleccionarViaje');
+Route::post('envio/seleccionarViaje', 'EnvioController@seleccionarViaje_procesar' )->name('envio.seleccionarViaje_procesar');
+
+Route::get('envio/{id}/cargarMateriales', 'EnvioController@cargarMateriales' )->name('envio.cargarMateriales');
+Route::post('envio/{id}/cargarMateriales', 'EnvioController@cargarMateriales_procesar' )->name('envio.cargarMateriales_procesar');
+
 /*
 Auth::routes();
 

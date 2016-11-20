@@ -77,7 +77,7 @@
 
                     <div class="collapsible-body">
                       <ul>
-                        <li><a href="#!">Pendientes</a></li>
+                        <li><a href="{{ action('EnvioController@seleccionarViaje')  }}">Pendientes</a></li>
                         <li><a href="#!">Historial</a></li>
                       </ul>
                     </div>

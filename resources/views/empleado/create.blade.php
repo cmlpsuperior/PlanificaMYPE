@@ -73,7 +73,7 @@
           <div class="row">
             <div class="input-field col s6">
               <select name="idTipoDocumento" id="idTipoDocumento">                          
-                  
+                  <option value="" >Seleccione</option>
                 @foreach ($tiposDocumentos as $tipoDocumento)
                   <option value="{{$tipoDocumento->idTipoDocumento}}" @if ($tipoDocumento->idTipoDocumento == old('idTipoDocumento') ) selected  @endif>{{$tipoDocumento->nombre}}</option>
                 @endforeach
