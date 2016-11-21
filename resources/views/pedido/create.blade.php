@@ -80,7 +80,7 @@
 
         <div class="card-action right-align">
 
-            <a href="#modalCliente" class="modal-trigger waves-effect waves-teal btn-flat blue-text">
+            <a href="#modalCliente" class="modal-trigger btn-flat blue-text">
               Buscar
                <i class="material-icons right">search</i>
             </a>

@@ -85,10 +85,48 @@ class EnvioController extends Controller
         $viaje->estado='En almacén';
         $viaje->save();
 
-        return "hasta aqui llegue por ahora :)";
+        return redirect()->action('EnvioController@seleccionarDestino', ['id' => $id] ); 
         //return redirect()->action('EnvioController@destinos', ['id' => $idViaje] ); 
     }
 
+
+    public function seleccionarDestino ($id){
+        $viaje= Viaje::findOrFail($id);
+      
+        $detallesViajes = DB::table('detalleviaje') //obtengo los idArticulos y sus cantidades, sin importar a quien va.
+                     ->select('idPedido')
+                     ->distinct()
+                     ->where('idViaje', '=', $id)
+                     ->get();
+
+        $pedidos = array();
+        foreach ($detallesViajes as $detalleViaje){
+            $pedidos[] = Pedido::findOrFail($detalleViaje->idPedido);
+        }
+        
+        return view('envio.seleccionarDestino', ['pedidos'=>$pedidos, 'viaje'=> $viaje]); 
+    }
+
+
+    public function entregarMateriales ($idViaje, $idPedido){
+        $pedido = Pedido::findOrFail($idPedido);
+        $viaje = Viaje::findOrFail($idViaje);
+
+        $detallesViajes = DB::table('detalleviaje') //obtengo los idArticulos y sus cantidades, sin importar a quien va.                    
+                     ->where('idViaje', '=', $idViaje)
+                     ->where('idPedido', '=', $idPedido)
+                     ->get();
+
+        $articulosPlus = array();
+        foreach ($detallesViajes as $detalleViaje){
+            $articulo['articulo'] = Articulo::findOrFail($detalleViaje->idArticulo);
+            $articulo['cantidad'] = $detalleViaje->cantidad;
+
+            $articulosPlus[] = $articulo;
+        }
+
+        return view('envio.entregarMateriales', ['articulos'=>$articulosPlus, 'viaje'=> $viaje, 'pedido' =>$pedido]); 
+    }
   
 
 

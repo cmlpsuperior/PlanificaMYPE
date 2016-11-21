@@ -69,6 +69,11 @@ Route::post('envio/seleccionarViaje', 'EnvioController@seleccionarViaje_procesar
 Route::get('envio/{id}/cargarMateriales', 'EnvioController@cargarMateriales' )->name('envio.cargarMateriales');
 Route::post('envio/{id}/cargarMateriales', 'EnvioController@cargarMateriales_procesar' )->name('envio.cargarMateriales_procesar');
 
+Route::get('envio/{id}/seleccionarDestino', 'EnvioController@seleccionarDestino' )->name('envio.seleccionarDestino');
+	Route::get('envio/{id}/{idPedido}/entregarMateriales', 'EnvioController@entregarMateriales' )->name('envio.entregarMateriales');
+	Route::post('envio/{id}/{idPedido}/entregarMateriales', 'EnvioController@entregarMateriales_procesar' )->name('envio.entregarMateriales_procesar');
+Route::post('envio/{id}/seleccionarDestino', 'EnvioController@seleccionarDestino_procesar' )->name('envio.seleccionarDestino_procesar');
+
 /*
 Auth::routes();
 
