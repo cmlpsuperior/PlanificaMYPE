@@ -74,9 +74,6 @@ Route::get('envio/{id}/seleccionarDestino', 'EnvioController@seleccionarDestino'
 	Route::post('envio/{id}/{idPedido}/entregarMateriales', 'EnvioController@entregarMateriales_procesar' )->name('envio.entregarMateriales_procesar');
 Route::post('envio/{id}/seleccionarDestino', 'EnvioController@seleccionarDestino_procesar' )->name('envio.seleccionarDestino_procesar');
 
-/*
-Auth::routes();
-
-Route::get('/home', 'HomeController@index');
-*/
-
+//Control
+Route::get('control', 'ControlController@monitorearPedidos' )->name('envio.monitorearPedidos');
+Route::post('control', 'ControlController@monitorearPedidos_procesar' )->name('envio.monitorearPedidos_procesar');
