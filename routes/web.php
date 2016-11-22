@@ -77,3 +77,6 @@ Route::post('envio/{id}/seleccionarDestino', 'EnvioController@seleccionarDestino
 //Control
 Route::get('control', 'ControlController@monitorearPedidos' )->name('envio.monitorearPedidos');
 Route::post('control', 'ControlController@monitorearPedidos_procesar' )->name('envio.monitorearPedidos_procesar');
+
+Route::get('control/{id}/verMateriales', 'ControlController@verMateriales' )->name('envio.verMateriales');
+Route::get('control/{id}/verViajes', 'ControlController@verViajes' )->name('envio.verViajes');

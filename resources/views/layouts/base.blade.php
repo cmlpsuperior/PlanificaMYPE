@@ -66,7 +66,7 @@
                       <ul>
                         <li><a href="{{ action('PlanificacionController@seleccionarPedido')  }}">Planificación</a></li>
                         <li><a href="{{ action('AsignarViajeController@seleccionarViaje')  }}">Asignar viajes</a></li>
-                        <li><a href="#!">Control</a></li>
+                        <li><a href="{{ action('ControlController@monitorearPedidos')  }}">Control</a></li>
                       </ul>
                     </div>
 

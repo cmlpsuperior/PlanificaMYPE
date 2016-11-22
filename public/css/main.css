@@ -17,6 +17,14 @@ body {
      
  }
 
+.tabs .indicator {
+    background-color: #b2dfdb !important;
+}
+
+ul.tabs > li.tab > a {
+	color: white !important;
+}
+
 
 
 

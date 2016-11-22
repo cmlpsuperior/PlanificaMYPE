@@ -6,11 +6,34 @@ use Illuminate\Http\Request;
 
 use PlanificaMYPE\Http\Requests;
 
+use PlanificaMYPE\Pedido;
+
+
 class ControlController extends Controller
 {
     public function monitorearPedidos (){
-    	$pedidos = Pedido::where('estado', '<>', 'Finalizado')->get();
+    	$hoy = date("Y-m-d") ;
+    	$hoyHora= $hoy.' '.'23:59:59';
 
-    	return view('control.monitorearPedidos', ['pedidos'=>$pedidos]);
+    	$hoyHoraInicio = $hoy.' '.'00:00:00';
+    
+    	$pedidosPendientes = Pedido::where('estado', '<>', 'Finalizado')
+    								->where('fechaEnvio', '<=', $hoyHora)
+    								->get();
+
+    	$pedidosFinalizados = Pedido::where('estado', '=', 'Finalizado')
+    								->where('fechaEnvio', '<=', $hoyHora)
+    								->where('fechaEnvio', '>=', $hoyHoraInicio)
+    								->get();
+
+    	return view('control.monitorearPedidos', ['pedidosPendientes'=>$pedidosPendientes, 'pedidosFinalizados'=>$pedidosFinalizados]);
+    }
+
+    public function verMateriales (){
+
+    }
+
+    public function verViajes (){
+
     }
 }
