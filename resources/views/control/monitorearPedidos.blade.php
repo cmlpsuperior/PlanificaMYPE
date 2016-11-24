@@ -45,7 +45,7 @@
 							
 							<p><strong>Saldo: S/. {{ $pedido->montoTotal - $pedido->montoPagado }}</strong></p>
 					</div>
-					
+					<br>
 					<p><strong>Cliente:</strong> {{ $pedido->cliente->apellidoPaterno}} {{ $pedido->cliente->apellidoMaterno}}, {{ $pedido->cliente->nombres}}</p>
 		            <p><strong>Zona:</strong> {{ $pedido->zona->nombre}}</p>
 		            <p><strong>Dirección:</strong> {{ $pedido->cliente->direccion }}</p>
