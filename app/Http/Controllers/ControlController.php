@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use PlanificaMYPE\Http\Requests;
 
 use PlanificaMYPE\Pedido;
-
+use DB;
+use PlanificaMYPE\Viaje;
 
 class ControlController extends Controller
 {
@@ -33,7 +34,15 @@ class ControlController extends Controller
 
     }
 
-    public function verViajes (){
+    public function verViajes ($id){
 
+        $detallesViajes = DB::table('detalleviaje')->select('idViaje')->distinct()->where('idPedido','=', $id)->get();
+        
+        $viajes= array();
+        foreach ($detallesViajes as $detalleviaje){
+            $viajes[] = Viaje::findOrFail($detalleviaje->idViaje);
+        }
+
+        return view('control.monitorearViajes', [ 'viajes'=>$viajes, 'idPedido'=>$id ]);
     }
 }

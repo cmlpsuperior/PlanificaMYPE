@@ -83,6 +83,7 @@ class EnvioController extends Controller
 
         //actualizamos la   su estado:
         $viaje->estado='En almacén';
+        $viaje->idVehiculo = $request->get ('idVehiculo');
         $viaje->save();
 
         return redirect()->action('EnvioController@seleccionarDestino', ['id' => $id] ); 
