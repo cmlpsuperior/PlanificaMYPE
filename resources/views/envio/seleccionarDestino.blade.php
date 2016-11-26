@@ -15,7 +15,7 @@
 	<br>
 	<div class="row">
 	    <div class="col s12 center">
-	      <h5>2. Destinos</h5>
+	      <h5>3. Destinos</h5>
 	    </div>
 	</div>
 	<!--Mostrara los errores que se hayan cometido:-->
@@ -51,7 +51,7 @@
 
 				<div class="card-action right-align">
 	              <a href="  #!  " class="blue-text">Ver detalle</a>
-	              <a href=" {{ action('EnvioController@entregarMateriales', ['id'=>$viaje->idViaje, 'idPedido'=>$pedido->idPedido]) }}  " class="blue-text">Iniciar</a>
+	              <a href=" {{ action('EnvioController@buscarCliente', ['id'=>$viaje->idViaje, 'idPedido'=>$pedido->idPedido]) }}  " class="blue-text">Iniciar</a>
 	            </div>
 
 			</div>

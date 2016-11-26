@@ -74,7 +74,8 @@
 
 			<div class="card">
 
-	      		<div class="card-content teal white-text">
+	      		<div class="card-content blue white-text">
+	      			<i class="material-icons prefix">check</i>
 		          <span class="card-title">Registrar llegada</span>                             
 		        </div>
 				
@@ -86,7 +87,7 @@
 						</div>
 						<div class="col s12">
 							<h6 id="hHoraAlmacen">Hora Almacen</h6>
-							<input type="text" value="" id="horaAlmacen" name="horaAlmacen">
+							<input type="hidden" value="" id="horaAlmacen" name="horaAlmacen">
 						</div>
 					</div>
 
@@ -151,7 +152,7 @@
 	    var m = addZero(today.getMinutes());
 	    var s = addZero(today.getSeconds());
 
-		return yyyy+'-'+dd+'-'+mm + ' ' +h+':'+m+':'+s;
+		return yyyy+'-'+mm+'-'+ dd+ ' ' +h+':'+m+':'+s;
     }
 
     function addZero(i) {

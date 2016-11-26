@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Auth;
 use PlanificaMYPE\Http\Requests\SeleccionarViajeRequest;
 use PlanificaMYPE\Http\Requests\SeleccionarVehiculoRequest;
 use PlanificaMYPE\Http\Requests\LlegadaAlmacenRequest;
+use PlanificaMYPE\Http\Requests\BuscarClienteRequest;
+use PlanificaMYPE\Http\Requests\EntregarMaterialesRequest;
 
 class EnvioController extends Controller
 {    
@@ -95,7 +97,6 @@ class EnvioController extends Controller
 
     }
 
-
     public function llegadaAlmacen_procesar (LlegadaAlmacenRequest $request, $id){
         
         $viaje= Viaje::findOrFail($id);
@@ -106,10 +107,12 @@ class EnvioController extends Controller
 
     }
 
+
+
     public function seleccionarDestino ($id){
         $viaje= Viaje::findOrFail($id);
       
-        $detallesViajes = DB::table('detalleviaje') //obtengo los idArticulos y sus cantidades, sin importar a quien va.
+        $detallesViajes = DB::table('detalleviaje')
                      ->select('idPedido')
                      ->distinct()
                      ->where('idViaje', '=', $id)
@@ -123,12 +126,26 @@ class EnvioController extends Controller
         return view('envio.seleccionarDestino', ['pedidos'=>$pedidos, 'viaje'=> $viaje]); 
     }
 
+    public function buscarCliente ($idViaje, $idPedido){
+        $pedido = Pedido::findOrFail($idPedido);
+        $viaje= Viaje::findOrFail($idViaje);
+
+        return view('envio.buscarCliente', [ 'pedido' => $pedido, 'viaje' => $viaje]); 
+    }
+
+    public function buscarCliente_procesar (BuscarClienteRequest $request, $idViaje, $idPedido){
+        $viaje= Viaje::findOrFail($idViaje);
+        $viaje->estado ='En el cliente';
+        $viaje->save();
+
+        return redirect()->action('EnvioController@entregarMateriales', ['id' => $idViaje, 'idPedido' => $idPedido] ); 
+    }
 
     public function entregarMateriales ($idViaje, $idPedido){
         $pedido = Pedido::findOrFail($idPedido);
         $viaje = Viaje::findOrFail($idViaje);
 
-        $detallesViajes = DB::table('detalleviaje') //obtengo los idArticulos y sus cantidades, sin importar a quien va.                    
+        $detallesViajes = DB::table('detalleviaje')                     
                      ->where('idViaje', '=', $idViaje)
                      ->where('idPedido', '=', $idPedido)
                      ->get();
@@ -142,6 +159,15 @@ class EnvioController extends Controller
         }
 
         return view('envio.entregarMateriales', ['articulos'=>$articulosPlus, 'viaje'=> $viaje, 'pedido' =>$pedido]); 
+    }
+
+    public function entregarMateriales_procesar (EntregarMaterialesRequest $request, $idViaje, $idPedido){
+        $montoCobrado = $requets->get('cobrado');
+        $cantidadDescargado = $request->get('cantidadDescargado');
+
+        $viaje = Viaje::findOrFail($idViaje);
+        $viaje->estado = '';
+
     }
   
 
