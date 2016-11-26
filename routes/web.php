@@ -66,6 +66,14 @@ Route::get('login/logout', 'LoginController@logout' )->name('login.logout');
 Route::get('envio/seleccionarViaje', 'EnvioController@seleccionarViaje' )->name('envio.seleccionarViaje');
 Route::post('envio/seleccionarViaje', 'EnvioController@seleccionarViaje_procesar' )->name('envio.seleccionarViaje_procesar');
 
+	//Seleccionar Vehiculo
+	Route::get('envio/{id}/seleccionarVehiculo', 'EnvioController@seleccionarVehiculo' )->name('envio.seleccionarVehiculo');
+	Route::post('envio/{id}/seleccionarVehiculo', 'EnvioController@seleccionarVehiculo_procesar' )->name('envio.seleccionarVehiculo_procesar');
+
+	//Llegada a almacen
+	Route::get('envio/{id}/llegadaAlmacen', 'EnvioController@llegadaAlmacen' )->name('envio.llegadaAlmacen');
+	Route::post('envio/{id}/llegadaAlmacen', 'EnvioController@llegadaAlmacen_procesar' )->name('envio.llegadaAlmacen_procesar');
+
 Route::get('envio/{id}/cargarMateriales', 'EnvioController@cargarMateriales' )->name('envio.cargarMateriales');
 Route::post('envio/{id}/cargarMateriales', 'EnvioController@cargarMateriales_procesar' )->name('envio.cargarMateriales_procesar');
 

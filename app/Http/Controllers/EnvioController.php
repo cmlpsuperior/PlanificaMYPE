@@ -15,7 +15,8 @@ use DB;
 use Illuminate\Support\Facades\Auth;
 
 use PlanificaMYPE\Http\Requests\SeleccionarViajeRequest;
-use PlanificaMYPE\Http\Requests\CargarMaterialesRequest;
+use PlanificaMYPE\Http\Requests\SeleccionarVehiculoRequest;
+use PlanificaMYPE\Http\Requests\LlegadaAlmacenRequest;
 
 class EnvioController extends Controller
 {    
@@ -47,49 +48,63 @@ class EnvioController extends Controller
 
     	$idViaje = $request->get('seleccionarViaje');   
 
-    	return redirect()->action('EnvioController@cargarMateriales', ['id' => $idViaje] ); 
+    	return redirect()->action('EnvioController@seleccionarVehiculo', ['id' => $idViaje] ); 
     }
 
-    public function cargarMateriales ($id){
+    public function seleccionarVehiculo ($id){
         $viaje= Viaje::findOrFail($id);
 
-        //actualizamos la hora de salida y su estado:
-        $viaje->estado='Enviando';
+        //obtenemos los vehiculos:
+        $vehiculos = Vehiculo::where('idTipoVehiculo','=', $viaje->idTipoVehiculo )->get();
+          
+
+        return view('envio.seleccionarVehiculo', ['vehiculos' => $vehiculos, 'viaje'=> $viaje] ); 
+    }
+
+    public function seleccionarVehiculo_procesar (SeleccionarVehiculoRequest $request, $id){
+        $idVehiculo = $request->get('idVehiculo');
+
+        $viaje= Viaje::findOrFail($id);
+        $viaje->idVehiculo = $idVehiculo;
         $viaje->fechaSalida = date("Y-m-d H:i:s");
+        $viaje->estado='Enviando';
         $viaje->save();
 
-    	$detallesViajes = DB::table('detalleviaje') //obtengo los idArticulos y sus cantidades, sin importar a quien va.
+        return redirect()->action('EnvioController@llegadaAlmacen', ['id' => $id] ); 
+
+    }
+
+    public function llegadaAlmacen ($id){
+        $viaje= Viaje::findOrFail($id);
+
+        //obtengo los idArticulos y sus cantidades, sin importar a quien va.
+        $detallesViajes = DB::table('detalleviaje') 
                      ->select(DB::raw('idArticulo, sum(cantidad) as cantidadTotal'))
                      ->where('idViaje', '=', $id)
                      ->groupBy('idArticulo')
                      ->get();
-       	$detallesPlus = array();
+        $detallesPlus = array();
         foreach ($detallesViajes as $detalleViaje){
-        	$nArticulo['articulo'] = Articulo::findOrFail($detalleViaje->idArticulo);
-        	$nArticulo['cantidad'] = $detalleViaje->cantidadTotal;
+            $nArticulo['articulo'] = Articulo::findOrFail($detalleViaje->idArticulo);
+            $nArticulo['cantidad'] = $detalleViaje->cantidadTotal;
 
-        	$detallePlus[] = $nArticulo;
+            $detallePlus[] = $nArticulo;
         }
-
-        //obtenemos los vehiculos:
-        $vehiculos = Vehiculo::where('idTipoVehiculo','=', $viaje->idTipoVehiculo )->get();
        
-    	return view('envio.cargarMateriales', ['articulos'=>$detallePlus, 'viaje'=> $viaje, 'vehiculos'=> $vehiculos]);  
-        
+        return view('envio.llegadaAlmacen', ['articulos'=>$detallePlus, 'viaje'=> $viaje]); 
+
     }
 
-    public function cargarMateriales_procesar (CargarMaterialesRequest $request, $id){
-        $viaje= Viaje::findOrFail($id);
 
-        //actualizamos la   su estado:
-        $viaje->estado='En almacén';
-        $viaje->idVehiculo = $request->get ('idVehiculo');
+    public function llegadaAlmacen_procesar (LlegadaAlmacenRequest $request, $id){
+        
+        $viaje= Viaje::findOrFail($id);
+        $viaje->estado='En almacen';
         $viaje->save();
 
         return redirect()->action('EnvioController@seleccionarDestino', ['id' => $id] ); 
-        //return redirect()->action('EnvioController@destinos', ['id' => $idViaje] ); 
-    }
 
+    }
 
     public function seleccionarDestino ($id){
         $viaje= Viaje::findOrFail($id);

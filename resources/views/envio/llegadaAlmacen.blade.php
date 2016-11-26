@@ -15,10 +15,9 @@
 	<br>
 	<div class="row">
 	    <div class="col s12 center">
-	      <h5>1. Cargar materiales</h5>
+	      <h5>2. Ir al almacén</h5>
 	    </div>
 	</div>
-	<br><br>
 	<!--Mostrara los errores que se hayan cometido:-->
 	  @if (count($errors)>0)
 	  <div class="row">
@@ -31,17 +30,15 @@
 	    </div>            
 	  </div>
 	  @endif
-	{{Form::open(array('action' => array('EnvioController@cargarMateriales_procesar', $viaje->idViaje ), 'method' => 'POST')) }}
+	{{Form::open(array('action' => array('EnvioController@llegadaAlmacen_procesar', $viaje->idViaje ), 'method' => 'POST')) }}
 	
-
 	<div class= "row">
 
-		<div class="col s12 m10 l8 center offset-m1 offset-l2">
+		<div class="col s12 l8 center">
 
 	      	<div class="card">
 
 	      		<div class="card-content teal white-text">
-		          <i class="material-icons prefix">local_convenience_store</i>
 		          <span class="card-title">Lista de materiales</span>                             
 		        </div>
 				
@@ -71,42 +68,40 @@
 				</div>
 
 			</div>
-
 		</div>
+
+		<div class="col s12 l4 center">
+
+			<div class="card">
+
+	      		<div class="card-content teal white-text">
+		          <span class="card-title">Registrar llegada</span>                             
+		        </div>
+				
+				<div class="card-content">
+
+					<div class= "row">
+						<div class="col s12 ">
+							<a class="waves-effect waves-blue btn blue" id="btnAlmacen" >En almacén</a>
+						</div>
+						<div class="col s12">
+							<h6 id="hHoraAlmacen">Hora Almacen</h6>
+							<input type="text" value="" id="horaAlmacen" name="horaAlmacen">
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+		
 
 
 	</div>
-	
-	<div class="row">
-	    <div class="col s8 offset-s2">	    
-	      <div class="divider"></div>	      
-	    </div>
-	</div>
-	
-	<div class= "row">
-		<div class="col s8 m6 l4 offset-s2 offset-m3 offset-l4 center">
-			<button class="waves-effect waves-teal btn" type="text" disabled>Salida</button>
-		</div>
-		<div class="col s8 m6 l4 offset-s2 offset-m3 offset-l4 center">
-			<h6 id ="hHoraSalida">{{$viaje->fechaSalida}}</h6>
-			<input type="hidden" value="" id="horaSalida">
-		</div>
-	</div>
-
-	<div class= "row">
-		<div class="col s8 m6 l4 offset-s2 offset-m3 offset-l4 center">
-			<a class="waves-effect waves-teal btn" id="btnAlmacen" >En almacén</a>
-		</div>
-		<div class="col s8 m6 l4 offset-s2 offset-m3 offset-l4 center">
-			<h6 id="hHoraAlmacen">Hora Almacen</h6>
-			<input type="hidden" value="" id="horaAlmacen">
-		</div>
-	</div>
-	
 
 	<div class="row">
 	    <div class="col s12">
-	      <br><br><br>
+	      
 	      <div class="divider"></div>
 	      
 	    </div>
