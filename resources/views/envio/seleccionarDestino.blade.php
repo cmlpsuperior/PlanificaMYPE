@@ -33,30 +33,59 @@
 		
 	<div class= "row ">
 		@foreach($pedidos as $key => $pedido)	
+		@if ($pedido->pivot->fechaEntrega == null)
+			<input type="text" value="{{$pedido->viajes[0]->pivot->fechaEntrega}}">
+			<div class="col s12 m6 l4 ">
 	
-		<div class="col s12 m6 l4 ">
-	
-	      	<div class="card">
-								
-				<div class="card-content">
-					<div class="center">
-						<span class="card-title ">Destino {{ $key+1 }}</span>
+		      	<div class="card">
+									
+					<div class="card-content">
+						<div class="center">
+							<span class="card-title ">Destino {{ $key+1 }}</span>
+						</div>
+						
+			            <p><strong>Cliente:</strong> {{ $pedido->cliente->apellidoPaterno}} {{ $pedido->cliente->apellidoMaterno}}, {{ $pedido->cliente->nombres}}</p>
+			            <p><strong>Zona:</strong> {{ $pedido->zona->nombre}}</p>
+			            <p><strong>Dirección:</strong> {{ $pedido->cliente->direccion }}</p>
+
 					</div>
-					
-		            <p><strong>Cliente:</strong> {{ $pedido->cliente->apellidoPaterno}} {{ $pedido->cliente->apellidoMaterno}}, {{ $pedido->cliente->nombres}}</p>
-		            <p><strong>Zona:</strong> {{ $pedido->zona->nombre}}</p>
-		            <p><strong>Dirección:</strong> {{ $pedido->cliente->direccion }}</p>
+
+					<div class="card-action right-align">
+		              <a href="  #!  " class="blue-text">Ver detalle</a>
+		              <a href=" {{ action('EnvioController@buscarCliente', ['id'=>$viaje->idViaje, 'idPedido'=>$pedido->idPedido]) }}  " class="blue-text">Iniciar</a>
+		            </div>
 
 				</div>
 
-				<div class="card-action right-align">
-	              <a href="  #!  " class="blue-text">Ver detalle</a>
-	              <a href=" {{ action('EnvioController@buscarCliente', ['id'=>$viaje->idViaje, 'idPedido'=>$pedido->idPedido]) }}  " class="blue-text">Iniciar</a>
-	            </div>
+			</div>
+		@else
+			<div class="col s12 m6 l4 ">
+	
+		      	<div class="card">
+									
+					<div class="card-content">
+						<div class="center teal-text">
+							<i class="material-icons prefix">check</i>
+							<span class="card-title ">Destino {{ $key+1 }}</span>
+						</div>
+						
+			            <p><strong>Cliente:</strong> {{ $pedido->cliente->apellidoPaterno}} {{ $pedido->cliente->apellidoMaterno}}, {{ $pedido->cliente->nombres}}</p>
+			            <p><strong>Zona:</strong> {{ $pedido->zona->nombre}}</p>
+			            <p><strong>Dirección:</strong> {{ $pedido->cliente->direccion }}</p>
+
+					</div>
+
+					<div class="card-action right-align">
+		              <a href="  #!  " class="blue-text">Ver detalle</a>
+		              <button class="btn-flat" disabled>Iniciar</button>
+		            </div>
+
+				</div>
 
 			</div>
 
-		</div>
+		@endif
+		
 
 		@endforeach
 	</div>

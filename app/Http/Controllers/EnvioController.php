@@ -110,9 +110,8 @@ class EnvioController extends Controller
 
 
     public function seleccionarDestino ($id){
-        $viaje= Viaje::findOrFail($id);
+        $viaje= Viaje::findOrFail($id); 
         
-        $pedidos = $viaje->pedidos;
         /*
         $detallesViajes = DB::table('detalleviaje')
                      ->select('idPedido')
@@ -125,6 +124,8 @@ class EnvioController extends Controller
             $pedidos[] = Pedido::findOrFail($detalleViaje->idPedido);
         }
         */
+        $pedidos = $viaje->pedidos;
+        //dd($pedidos[0]->pivot);
         
         return view('envio.seleccionarDestino', ['pedidos'=>$pedidos, 'viaje'=> $viaje]); 
     }
