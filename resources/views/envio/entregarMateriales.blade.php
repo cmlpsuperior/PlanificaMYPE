@@ -15,7 +15,7 @@
 	<br>
 	<div class="row">
 	    <div class="col s12 center">
-	      <h5>5. Entregar y cobrar al cliente</h5>
+	      <h5>3.2. Entregar y cobrar al cliente</h5>
 	    </div>
 	</div>
 	<!--Mostrara los errores que se hayan cometido:-->
@@ -87,13 +87,13 @@
 					
 					<div class="row">
 						<div class="col s12 center">
-			              <h5>Cobrar: S/. {{ $pedido->montoTotal - $pedido->montoPagado }}</h5>
+			              <h5>Cobrar: S/. {{ $pedido->montoTotal - $pedido->montoPagado - $totalPagadoViaje}}</h5>
 			            </div>
 					</div>
 
 					<div class="row">
 						<div class="input-field col s6 offset-s3">
-			              <input id="cobrado"  type="number" min="0" step ="0.01" max="{{$pedido->montoTotal - $pedido->montoPagado}}"   class="validate"  required  name="cobrado">
+			              <input id="cobrado"  type="number" min="0" step ="0.01" max="{{$pedido->montoTotal - $pedido->montoPagado - $totalPagadoViaje}}"   class="validate"  required  name="cobrado">
 			              <label for="cobrado" >Cobrado <span class="red-text">*</span></label>
 			            </div>
 					</div>

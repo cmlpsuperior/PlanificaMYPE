@@ -21,7 +21,7 @@ class ControlController extends Controller
     	$pedidosPendientes = Pedido::where('estado', '<>', 'Finalizado')
     								->where('fechaEnvio', '<=', $hoyHora)
     								->get();
-
+                                    
     	$pedidosFinalizados = Pedido::where('estado', '=', 'Finalizado')
     								->where('fechaEnvio', '<=', $hoyHora)
     								->where('fechaEnvio', '>=', $hoyHoraInicio)
@@ -36,13 +36,17 @@ class ControlController extends Controller
 
     public function verViajes ($id){
 
+        $pedido = Pedido::findOrFail($id);
+
+        /*
         $detallesViajes = DB::table('detalleviaje')->select('idViaje')->distinct()->where('idPedido','=', $id)->get();
         
         $viajes= array();
         foreach ($detallesViajes as $detalleviaje){
             $viajes[] = Viaje::findOrFail($detalleviaje->idViaje);
-        }        
+        }
+        */
 
-        return view('control.monitorearViajes', [ 'viajes'=>$viajes, 'idPedido'=>$id ]);
+        return view('control.monitorearViajes', [ 'viajes'=>$pedido->viajes, 'idPedido'=>$id ]);
     }
 }

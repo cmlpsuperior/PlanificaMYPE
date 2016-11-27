@@ -89,22 +89,22 @@
 	      	<div class="card">
 				
 				<div class="card-content teal white-text center">
-					<i class="material-icons prefix">check</i>
 		            <span class="card-title ">Pedido N° {{$pedido->idPedido}}</span>
-					          
 		        </div>
 
 				<div class="card-content">
 
-					<div class="right-align ">						
-							<h5>Saldo: S/. {{ $pedido->montoTotal - $pedido->montoPagado }}</h5>
+					<div class="right-align ">
+							<p><strong>Saldo: S/. {{ $pedido->montoTotal - $pedido->montoPagado }}</strong></p>
 					</div>
-					
+					<br>
 					<p><strong>Cliente:</strong> {{ $pedido->cliente->apellidoPaterno}} {{ $pedido->cliente->apellidoMaterno}}, {{ $pedido->cliente->nombres}}</p>
 		            <p><strong>Zona:</strong> {{ $pedido->zona->nombre}}</p>
 		            <p><strong>Dirección:</strong> {{ $pedido->cliente->direccion }}</p>
+		            <p><strong>N° viajes:</strong> {{ count( $pedido->viajes ) }}</p>
+					
 		            
-					<div class="center teal.text">
+					<div class="center teal-text">
 						<h5>{{ $pedido->estado }}</h5>
 					</div>
 
@@ -118,8 +118,9 @@
 			</div>
 
 		</div>
-		
+
 		@include('control.modalMaterialesPedido')
+
 		@endforeach
 	</div>
 	

@@ -34,7 +34,6 @@
 	<div class= "row ">
 		@foreach($pedidos as $key => $pedido)	
 		@if ($pedido->pivot->fechaEntrega == null)
-			<input type="text" value="{{$pedido->viajes[0]->pivot->fechaEntrega}}">
 			<div class="col s12 m6 l4 ">
 	
 		      	<div class="card">
@@ -99,7 +98,7 @@
 	</div>
 	<div class="row">
 	    <div class="col s12 right-align">
-	      <a href=" " class="btn waves-effect waves-light">Siguiente</a> 	      
+	      <a href=" {{action('EnvioController@seleccionarDestino_procesar', ['id'=>$viaje->idViaje]) }}" class="btn waves-effect waves-light">Siguiente</a> 	      
 	    </div>
 	</div>
 

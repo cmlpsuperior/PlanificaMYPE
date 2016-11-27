@@ -19,6 +19,7 @@ use PlanificaMYPE\Http\Requests\SeleccionarVehiculoRequest;
 use PlanificaMYPE\Http\Requests\LlegadaAlmacenRequest;
 use PlanificaMYPE\Http\Requests\BuscarClienteRequest;
 use PlanificaMYPE\Http\Requests\EntregarMaterialesRequest;
+use PlanificaMYPE\Http\Requests\RegresarEmpresaRequest;
 
 class EnvioController extends Controller
 {    
@@ -111,24 +112,23 @@ class EnvioController extends Controller
 
     public function seleccionarDestino ($id){
         $viaje= Viaje::findOrFail($id); 
-        
-        /*
-        $detallesViajes = DB::table('detalleviaje')
-                     ->select('idPedido')
-                     ->distinct()
-                     ->where('idViaje', '=', $id)
-                     ->get();
-
-        $pedidos = array();
-        foreach ($detallesViajes as $detalleViaje){
-            $pedidos[] = Pedido::findOrFail($detalleViaje->idPedido);
-        }
-        */
+   
         $pedidos = $viaje->pedidos;
-        //dd($pedidos[0]->pivot);
         
         return view('envio.seleccionarDestino', ['pedidos'=>$pedidos, 'viaje'=> $viaje]); 
     }
+
+    public function seleccionarDestino_procesar ($id){
+        //se termino de enviar a todos los destinos
+        $viaje= Viaje::findOrFail ($id);
+        $viaje->estado= 'Retornando';
+        $viaje->save();
+
+        //finalizo el estado de los pedidos:
+
+        return redirect()->action('EnvioController@regresarEmpresa', ['id' => $id] ); 
+
+    } 
 
     public function buscarCliente ($idViaje, $idPedido){
 
@@ -169,7 +169,14 @@ class EnvioController extends Controller
             $articulosPlus[] = $articulo;
         }
 
-        return view('envio.entregarMateriales', ['articulos'=>$articulosPlus, 'viaje'=> $viaje, 'pedido' =>$pedido]); 
+        //calculamos los montos pagados en los otros viajes:
+        $totalPagadoViaje = 0;
+        foreach($pedido->viajes as $viaje){
+            if ($viaje->pivot->montoCobrado != null)
+                $totalPagadoViaje = $totalPagadoViaje + $viaje->pivot->montoCobrado;
+        }
+
+        return view('envio.entregarMateriales', ['articulos'=>$articulosPlus, 'viaje'=> $viaje, 'pedido' =>$pedido, 'totalPagadoViaje'=>$totalPagadoViaje]); 
     }
 
     public function entregarMateriales_procesar (EntregarMaterialesRequest $request, $idViaje, $idPedido){
@@ -177,6 +184,8 @@ class EnvioController extends Controller
 
         $cantidadesDescargados = $request->get('cantidadesDescargados');
         $idArticulos = $request->get('idArticulos');
+
+        $pedido = Pedido::findOrFail($idPedido);
 
         DB::beginTransaction();
 
@@ -207,13 +216,67 @@ class EnvioController extends Controller
                     ->first();
 
                 $nuevaCantidad = $detallePedido->cantidadAtendida + $cantidadDescargado;
-                $pedido = Pedido::findOrFail($idPedido);
+                
                 $pedido->articulos()->updateExistingPivot($idArticulos[$key], ['cantidadAtendida'=> $nuevaCantidad]);
             }
+
+            //finalizo el pedido si ya no tiene mas viajes que enviar:
+            $finalizo=1;
+            foreach($pedido->viajes as $viaje){
+                if ($viaje->pivot->fechaEntrega ==null && $viaje->idViaje != $idViaje ){
+                    $finalizo=0; // aun tiene viajes sin finalizar
+                    break;
+                }
+            }
+
+            if($finalizo ==1){
+                $pedido->estado ='Finalizado';
+                $pedido->save();
+            }
+
 
         DB::commit();
 
         return redirect()->action('EnvioController@seleccionarDestino', ['id' => $idViaje] ); 
+
+    }
+
+    public function regresarEmpresa ($idViaje){
+        $viaje = Viaje::findOrFail ($idViaje);
+
+        return view('envio.regresarEmpresa', ['viaje'=> $viaje]); 
+    }
+
+    public function regresarEmpresa_procesar (RegresarEmpresaRequest $request, $idViaje){
+
+        $fechaEmpresa = $request->get('horaEmpresa');
+
+        DB::beginTransaction();
+            $viaje = Viaje::findOrFail ($idViaje);
+            $viaje->estado ='Finalizado';
+            $viaje->fechaRetorno = $fechaEmpresa;
+            $viaje->save();
+
+            //verifico si los pedidos de ese viaje ya finalizaron:
+            foreach ($viaje->pedidos as $key => $pedido) {
+                $finalizo=1;
+                foreach($pedido->viajes as $viaje){
+                    if ($viaje->pivot->fechaEntrega ==null ){
+                        $finalizo=0; // aun tiene viajes sin finalizar
+                        break;
+                    }
+                }
+
+                if($finalizo ==1){
+                    $pedido->estado ='Finalizado';
+                    $pedido->save();
+                }
+            }
+
+            
+        DB::commit();
+        return redirect()->action('EnvioController@seleccionarViaje' );
+
 
     }
   

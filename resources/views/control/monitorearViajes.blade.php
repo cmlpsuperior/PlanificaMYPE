@@ -33,7 +33,7 @@
 				<div class="card-content">
 
 					<div class="right-align ">
-						<p><strong>Cobrado: S/. </strong></p>
+						<p><strong>Cobrado: S/. {{$viaje->pivot->montoCobrado}}</strong></p>
 					</div>
 					<br>
 					@if ($viaje->empleado!=null)

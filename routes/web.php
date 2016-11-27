@@ -84,7 +84,11 @@ Route::post('envio/seleccionarViaje', 'EnvioController@seleccionarViaje_procesar
 		Route::post('envio/{id}/{idPedido}/entregarMateriales', 'EnvioController@entregarMateriales_procesar' )->name('envio.entregarMateriales_procesar');
 
 
-	Route::post('envio/{id}/seleccionarDestino', 'EnvioController@seleccionarDestino_procesar' )->name('envio.seleccionarDestino_procesar');
+	Route::get('envio/{id}/seleccionarDestino_procesar', 'EnvioController@seleccionarDestino_procesar' )->name('envio.seleccionarDestino_procesar');
+
+	//retornar a la empresa
+	Route::get('envio/{id}/regresarEmpresa', 'EnvioController@regresarEmpresa' )->name('envio.regresarEmpresa');
+	Route::post('envio/{id}/regresarEmpresa', 'EnvioController@regresarEmpresa_procesar' )->name('envio.regresarEmpresa_procesar');
 
 
 

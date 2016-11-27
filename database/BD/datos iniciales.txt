@@ -36,7 +36,11 @@ empleado:
 - agregar el campo Licencia. (listo)
 - mantenimiento, y con ello crear el usuario con el dni.
 
+Detalle pedido:
+- se podria quitar el campo cantidad atendida, ya que eso se puede calcular de detalleviaje
 
+pedidoxviaje:
+- el campo fechaAlmacen no se usa, se debe borrar
 
 DOCUMENTOS
 
