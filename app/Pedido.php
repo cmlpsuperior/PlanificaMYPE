@@ -18,6 +18,9 @@ class Pedido extends Model
     	'montoTotal',
     	'montoPagado',
         'estado',
+        'direccion',
+        'telefono',
+        'referencia',
 
         'idCliente',
         'idEmpleado',        
@@ -43,10 +46,18 @@ class Pedido extends Model
         return $this->belongsTo('PlanificaMYPE\Zona', 'idZona', 'idZona');
     }
 
+    //relacion muchos a muchos con viaje:
+    public function viajes (){
+        return $this->belongsToMany('PlanificaMYPE\Viaje', 'pedidoxviaje', 'idPedido', 'idViaje')
+                    ->withPivot('montoCobrado',  'fechaUbicado', 'fechaEntrega', 'observaciones');
+    }
+    
     //relaciond e muchos a muchos con articulo:
     public function articulos (){
         return $this->belongsToMany('PlanificaMYPE\Articulo', 'detallepedido', 'idPedido', 'idArticulo')
         			->withPivot('cantidad', 'cantidadAtendida', 'precioUnitario', 'monto');
     }
+
+    
 
 }

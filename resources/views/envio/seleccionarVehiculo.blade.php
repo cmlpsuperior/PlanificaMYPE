@@ -18,7 +18,6 @@
 	      <h5>1. Seleccionar vehículo</h5>
 	    </div>
 	</div>
-	<br><br>
 	<!--Mostrara los errores que se hayan cometido:-->
 	  @if (count($errors)>0)
 	  <div class="row">

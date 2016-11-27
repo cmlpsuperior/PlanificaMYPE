@@ -25,7 +25,8 @@ class EntregarMaterialesRequest extends FormRequest
     {
         return [
             'cobrado' =>'required|numeric',
-            'cantidadDescargado' => 'required|numeric'
+            'cantidadesDescargados' => 'required',
+            'idArticulos' => 'required'
         ];
     }
 }

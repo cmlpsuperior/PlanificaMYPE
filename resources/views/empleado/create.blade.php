@@ -55,18 +55,18 @@
           <div class="row">
             <div class="input-field col s6">
               <input id="nombres" type="text" class="validate"  required value="{{ old('nombres') }}" name="nombres">
-              <label for="nombres">Nombres *</label>
+              <label for="nombres">Nombres <span class="red-text">*</span></label>
             </div>
           </div>
 
           <div class="row">
             <div class="input-field col s6">
               <input id="apellidoPaterno" type="text" class="validate"  required value="{{ old('apellidoPaterno') }}" name="apellidoPaterno">
-              <label for="apellidoPaterno">Apellido Pat. *</label>
+              <label for="apellidoPaterno">Apellido Pat. <span class="red-text">*</span></label>
             </div>
             <div class="input-field col s6">
               <input id="apellidoMaterno" type="text" class="validate"  required value="{{ old('apellidoMaterno') }}" name="apellidoMaterno">
-              <label for="apellidoMaterno">Apellido Mat. *</label>
+              <label for="apellidoMaterno">Apellido Mat. <span class="red-text">*</span></label>
             </div>
           </div>
 
@@ -78,11 +78,11 @@
                   <option value="{{$tipoDocumento->idTipoDocumento}}" @if ($tipoDocumento->idTipoDocumento == old('idTipoDocumento') ) selected  @endif>{{$tipoDocumento->nombre}}</option>
                 @endforeach
               </select>
-              <label for="idTipoDocumento">Tipo doc. *</label>
+              <label for="idTipoDocumento">Tipo doc. <span class="red-text">*</span></label>
             </div>
             <div class="input-field col s6">
               <input id="numeroDocumento" type="number" class="validate"  required value="{{ old('numeroDocumento') }}" name="numeroDocumento">
-              <label for="numeroDocumento">N° Documento *</label>
+              <label for="numeroDocumento">N° Documento <span class="red-text">*</span></label>
             </div>
           </div>
 
@@ -107,7 +107,7 @@
             <div class="input-field col s6">
               <i class="material-icons prefix" for="fechaIngreso">today</i>
               <input id="fechaIngreso" type="date" class="datepicker" value="{{ old('fechaIngreso') }}" name="fechaIngreso">
-              <label for="fechaIngreso">Ingreso *</label>
+              <label for="fechaIngreso">Ingreso <span class="red-text">*</span></label>
             </div>
           </div>
 
@@ -119,12 +119,12 @@
                   <option value="{{$cargo->idCargo}}" @if ( $cargo->idCargo == old('idCargo') ) selected @endif >{{$cargo->nombre}}</option>
                 @endforeach
               </select>
-              <label>Cargo *</label>
+              <label>Cargo <span class="red-text">*</span></label>
             </div> 
 
             <div class="input-field col s6">
               <input id="sueldo" type="number" min="0" step="0.01" class="validate" required value="{{ old('sueldo') }}" name="sueldo">
-              <label for="sueldo" data-error="wrong" data-success="right">sueldo (S/.) *</label>
+              <label for="sueldo" data-error="wrong" data-success="right">sueldo (S/.) <span class="red-text">*</span></label>
             </div>
           </div>
 

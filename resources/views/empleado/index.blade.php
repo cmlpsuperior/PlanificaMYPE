@@ -37,7 +37,6 @@
 				
 				<!--header de la tarjeta-->
 	      		<div class="card-content teal white-text">
-		          <i class="material-icons prefix">filter_list</i>
 		          <span class="card-title">Filtros</span>                             
 		        </div>
 				

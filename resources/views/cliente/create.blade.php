@@ -56,31 +56,31 @@
                   <div class="row">
                     <div class="input-field col s6">
                       <input id="Nombres" type="text" class="validate"  required value="{{ old('nombres') }}" name="nombres">
-                      <label for="Nombres">Nombres *</label>
+                      <label for="Nombres">Nombres <span class="red-text">*</span></label>
                     </div>
                     
                     <div class="input-field col s6">
                       <input id="ApellidoPaterno" type="text" class="validate" required value="{{ old('apellidoPaterno') }}" name="apellidoPaterno">
-                      <label for="ApellidoPaterno">Apellido paterno *</label>
+                      <label for="ApellidoPaterno">Apellido paterno <span class="red-text">*</span></label>
                     </div>              
                   </div>
 
                   <div class="row">              
                     <div class="input-field col s6">
                       <input id="ApellidoMaterno" type="text" class="validate" required value="{{ old('apellidoMaterno') }}" name="apellidoMaterno">
-                      <label for="ApellidoMaterno">Apellido materno *</label>
+                      <label for="ApellidoMaterno">Apellido materno <span class="red-text">*</span></label>
                     </div>
 
                     <div class="input-field col s6">
                       <input id="dni" type="number" class="validate" required value="{{ old('numeroDocumento') }}" name="numeroDocumento">
-                      <label for="dni">DNI *</label>
+                      <label for="dni">DNI <span class="red-text">*</span></label>
                     </div>
                   </div>
 
                   <div class="row">              
                     <div class="input-field col s6">
                       <input id="fechaNacimiento" type="date" class="datepicker" value="{{ old('fechaNacimiento') }}" name="fechaNacimiento">
-                      <label for="fechaNacimiento">Fecha nacimiento *</label>
+                      <label for="fechaNacimiento">Fecha nacimiento <span class="red-text">*</span></label>
                     </div>
 
                     <div class="input-field col s6">
@@ -135,12 +135,12 @@
                         <option value="{{$zona->idZona}}" @if ($zona->idZona = old('idZona') ) selected @endif>{{$zona->nombre}}</option>
                         @endforeach
                       </select>
-                      <label>Zona *</label>
+                      <label>Zona <span class="red-text">*</span></label>
                     </div>    
 
                     <div class="input-field col s6">
                       <input id="direccion" type="text" class="validate" required value="{{ old('direccion') }}" name="direccion">
-                      <label for="direccion">Dirección *</label>
+                      <label for="direccion">Dirección <span class="red-text">*</span></label>
                     </div>          
                   </div>
                 

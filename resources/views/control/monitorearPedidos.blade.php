@@ -41,14 +41,14 @@
 
 				<div class="card-content">
 
-					<div class="right-align ">						
-							
+					<div class="right-align ">
 							<p><strong>Saldo: S/. {{ $pedido->montoTotal - $pedido->montoPagado }}</strong></p>
 					</div>
 					<br>
 					<p><strong>Cliente:</strong> {{ $pedido->cliente->apellidoPaterno}} {{ $pedido->cliente->apellidoMaterno}}, {{ $pedido->cliente->nombres}}</p>
 		            <p><strong>Zona:</strong> {{ $pedido->zona->nombre}}</p>
 		            <p><strong>Dirección:</strong> {{ $pedido->cliente->direccion }}</p>
+		            <p><strong>N° viajes:</strong> {{ count( $pedido->viajes ) }}</p>
 					
 		            
 					<div class="center teal-text">

@@ -62,8 +62,8 @@
 					            	<td>{{ $articulo['cantidad'] }}</td>         
 						            <td>{{ $articulo['articulo']->unidadMedida->nombre }}</td>
 						            <td>{{ $articulo['articulo']->nombre }} - {{ $articulo['articulo']->marca->nombre }}</td>
-						            <td><input class="blue-text" type="number" min ="0" step="0.5" max="{{  $articulo['cantidad']  }}" value ="{{ $articulo['cantidad'] }}" name="cantidadDescargado"></td>
-						            <td hidden><input type="hidden" value ="{{ $articulo['articulo']->idArticulo }}"></td>					            
+						            <td><input class="blue-text" type="number" min ="0" step="0.5" max="{{  $articulo['cantidad']  }}" value ="{{ $articulo['cantidad'] }}" name="cantidadesDescargados[]"></td>
+						            <td hidden><input type="hidden" value ="{{ $articulo['articulo']->idArticulo }}" name ="idArticulos[]"></td>					            
 						        </tr>
 					        @endforeach
 				        </tbody>

@@ -68,7 +68,12 @@ class PedidoController extends Controller
             $pedido->idEmpleado= Auth::User()->idEmpleado;
 	    	$pedido->idZona= $request->get('idZona');
 
+            $pedido->direccion = $request->get('direccion');
+            $pedido->referencia = $request->get('referencia');
+            $pedido->telefono = $request->get('telefono');
+
 	    	$pedido->save();
+
 
 	    	//obtengo todos los arreglos de mi vista:
 	    	$idArticulos= $request->get('idArticulos');
@@ -98,51 +103,13 @@ class PedidoController extends Controller
 
 		 DB::commit();
         
-        //return "llegue al store ". $request->get('montoTotal');;
     	return Redirect('pedido'); //es una URL
     }
 
     public function show ($id){
         return 'Legue al show porque?'.$id;
-    	//return view('cliente.show', ["cliente"=>Cliente::findOrFail($id)]);
-    }
-/*
-    public function edit($id){
-        //obtengo todas las zonas registradas:
-        $unidadesMedida= UnidadMedida::orderBy('nombre', 'asc')->get();
-        $marcas= Marca::orderBy('nombre', 'asc')->get();
-        $tiposCarga= TipoCarga::orderBy('nombre', 'asc')->get();
-
-    	return view('articulo.edit', [ 'articulo'=>Articulo::findOrFail($id), 
-                                       'unidadesMedida'=>$unidadesMedida, 
-                                       'marcas'=>$marcas, 
-                                       'tiposCarga'=>$tiposCarga]);
     }
 
-    public function update (ArticuloFormRequest $request, $id){
-    	$articulo = Articulo::find($id);
-
-        $articulo->nombre=$request->get('nombre');
-        $articulo->precioBase=$request->get('precioBase');
-        $articulo->stock=$request->get('stock');
-        $articulo->volumen=$request->get('volumen');
-        //$articulo->tiempoHorasAbastecer= null;
-
-        if ($request->idTipoCarga!=  1 || $request->combinable=='check')  // solo pueden ser no combinables los tipo 1, si no son tipo 1, entonces siempre son combinables
-            $articulo->combinable= 1; 
-        else 
-            $articulo->combinable= 0; //todos inician sin credito asignado (0)
-
-        $articulo->idMarca= $request->get('idMarca');
-        $articulo->idTipoCarga= $request->get('idTipoCarga');
-        $articulo->idUnidadMedida=$request->get('idUnidadMedida');
-
-        $articulo->save();
-
-        return Redirect('articulo'); //es una URL
-
-    }
-*/
     public function destroy ($id){
     	$pedido = Pedido::find($id);
         if ($pedido->estado== 'Pre-pedido'){

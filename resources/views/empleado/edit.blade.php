@@ -55,18 +55,18 @@
           <div class="row">
             <div class="input-field col s6">
               <input id="nombres" type="text" class="validate"  required value="{{ $empleado->nombres }}" name="nombres">
-              <label for="nombres">Nombres *</label>
+              <label for="nombres">Nombres <span class="red-text">*</span></label>
             </div>
           </div>
 
           <div class="row">
             <div class="input-field col s6">
               <input id="apellidoPaterno" type="text" class="validate"  required value="{{ $empleado->apellidoPaterno }}" name="apellidoPaterno">
-              <label for="apellidoPaterno">Apellido Pat. *</label>
+              <label for="apellidoPaterno">Apellido Pat. <span class="red-text">*</span></label>
             </div>
             <div class="input-field col s6">
               <input id="apellidoMaterno" type="text" class="validate"  required value="{{ $empleado->apellidoMaterno }}" name="apellidoMaterno">
-              <label for="apellidoMaterno">Apellido Mat. *</label>
+              <label for="apellidoMaterno">Apellido Mat. <span class="red-text">*</span></label>
             </div>
           </div>
 
@@ -96,12 +96,12 @@
                   <option value="{{$cargo->idCargo}}" @if ( $cargo->idCargo == $empleado->idCargo ) selected @endif >{{$cargo->nombre}}</option>
                 @endforeach
               </select>
-              <label>Cargo *</label>
+              <label>Cargo <span class="red-text">*</span></label>
             </div> 
 
             <div class="input-field col s6">
               <input id="sueldo" type="number" min="0" step="0.01" class="validate" required value="{{ $empleado->sueldo }}" name="sueldo">
-              <label for="sueldo" data-error="wrong" data-success="right">sueldo (S/.) *</label>
+              <label for="sueldo" data-error="wrong" data-success="right">sueldo (S/.) <span class="red-text">*</span></label>
             </div>
           </div>
 

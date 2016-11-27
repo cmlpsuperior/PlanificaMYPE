@@ -111,7 +111,9 @@ class EnvioController extends Controller
 
     public function seleccionarDestino ($id){
         $viaje= Viaje::findOrFail($id);
-      
+        
+        $pedidos = $viaje->pedidos;
+        /*
         $detallesViajes = DB::table('detalleviaje')
                      ->select('idPedido')
                      ->distinct()
@@ -122,11 +124,13 @@ class EnvioController extends Controller
         foreach ($detallesViajes as $detalleViaje){
             $pedidos[] = Pedido::findOrFail($detalleViaje->idPedido);
         }
+        */
         
         return view('envio.seleccionarDestino', ['pedidos'=>$pedidos, 'viaje'=> $viaje]); 
     }
 
     public function buscarCliente ($idViaje, $idPedido){
+
         $pedido = Pedido::findOrFail($idPedido);
         $viaje= Viaje::findOrFail($idViaje);
 
@@ -134,9 +138,15 @@ class EnvioController extends Controller
     }
 
     public function buscarCliente_procesar (BuscarClienteRequest $request, $idViaje, $idPedido){
-        $viaje= Viaje::findOrFail($idViaje);
-        $viaje->estado ='En el cliente';
-        $viaje->save();
+
+        DB::beginTransaction();
+            $viaje= Viaje::findOrFail($idViaje);
+            $viaje->estado ='En el cliente';
+            $viaje->save();
+
+            //actualizo la tabla pedidoxviaje
+            $viaje->pedidos()->updateExistingPivot($idPedido, ['fechaUbicado'=>date("Y-m-d H:i:s")]);
+        DB::commit();
 
         return redirect()->action('EnvioController@entregarMateriales', ['id' => $idViaje, 'idPedido' => $idPedido] ); 
     }
@@ -162,11 +172,47 @@ class EnvioController extends Controller
     }
 
     public function entregarMateriales_procesar (EntregarMaterialesRequest $request, $idViaje, $idPedido){
-        $montoCobrado = $requets->get('cobrado');
-        $cantidadDescargado = $request->get('cantidadDescargado');
+        $montoCobrado = $request->get('cobrado');
 
-        $viaje = Viaje::findOrFail($idViaje);
-        $viaje->estado = '';
+        $cantidadesDescargados = $request->get('cantidadesDescargados');
+        $idArticulos = $request->get('idArticulos');
+
+        DB::beginTransaction();
+
+            //actualizamos el estado del viaje
+            $viaje = Viaje::findOrFail($idViaje);
+            $viaje->estado = 'Continuando';
+            $viaje->save();
+
+            //actualizo la tabla pedidoxviaje
+            $viaje->pedidos()->updateExistingPivot($idPedido, ['fechaEntrega'=>date("Y-m-d H:i:s"),
+                                                                'montoCobrado'=> $montoCobrado]
+                                                    );
+
+
+            foreach($cantidadesDescargados as $key=>$cantidadDescargado){
+                //ahora actualizamos el monto descargado en detalleviaje:
+                DB::table('detalleviaje')
+                    ->where('idViaje', $idViaje)
+                    ->where('idPedido', $idPedido)
+                    ->where('idArticulo', $idArticulos[$key])
+                    ->update(['cantidadDescargado' => $cantidadDescargado ]);
+
+
+                //ahora sumamos lo descargado en detallepedido:
+                $detallePedido= DB::table('detallepedido')->select('cantidadAtendida')
+                    ->where('idPedido', $idPedido)
+                    ->where('idArticulo', $idArticulos[$key])
+                    ->first();
+
+                $nuevaCantidad = $detallePedido->cantidadAtendida + $cantidadDescargado;
+                $pedido = Pedido::findOrFail($idPedido);
+                $pedido->articulos()->updateExistingPivot($idArticulos[$key], ['cantidadAtendida'=> $nuevaCantidad]);
+            }
+
+        DB::commit();
+
+        return redirect()->action('EnvioController@seleccionarDestino', ['id' => $idViaje] ); 
 
     }
   

@@ -6,13 +6,15 @@ en crear usuario: agregar un select de dni o pasaporte
 validar campos (select), al registrar pedido, con js.
 
 Pedido:
-- por ahora solo carga los pedidos con el empleado 1. 
+- por ahora solo carga los pedidos con el empleado 1. (ya esta corregido para todos los empledos)
 - el trigger cuando se crea un pedido. (listo, aunque no se usara trigger, sino en el controller)
 - cambiar el estado de pedido en el doc: pre-pedido, confirmado
 - un pedido confirmado puede ser anulado?
 - Al registrar un pedido, no puede haber articulos duplicados, debe sumarlo atumaticamente.
 - al registrar pedido, verificar que los valores sean mayores a 0.
-- Debe guardar la direccion, la referencia, y demas que falten al reg pedido
+- Debe guardar la direccion, la referencia, y demas que falten al reg pedido.
+
+- hacer el Requets en el create pedido.
 
 Articulo:
 - todos son medidos en volumen. (listo)
@@ -35,8 +37,6 @@ empleado:
 - mantenimiento, y con ello crear el usuario con el dni.
 
 
-Planificacion controller:
-- no tomar la relacion pedidoxviaje, solo tomar detalleViaje (listo)
 
 DOCUMENTOS
 

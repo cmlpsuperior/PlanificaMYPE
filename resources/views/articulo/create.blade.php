@@ -15,13 +15,6 @@
         </nav>
 
 
-
-
-
-
-        
-
-
         <!--Contenido del cuerpo-->
         <br>
         <div class="container">
@@ -68,7 +61,7 @@
                           <option value="{{$unidadMedida->idUnidadMedida}}" @if ($unidadMedida->idUnidadMedida == old('idUnidadMedida') ) selected @endif>{{$unidadMedida->nombre}}</option>
                         @endforeach
                       </select>
-                      <label>Unidad *</label>
+                      <label>Unidad <span class="red-text">*</span></label>
                     </div> 
 
                                 
@@ -78,7 +71,7 @@
 
                     <div class="input-field col s12">
                       <input id="Nombre" type="text" class="validate"  required value="{{ old('nombre') }}" name="nombre">
-                      <label for="Nombre">Nombre *</label>
+                      <label for="Nombre">Nombre <span class="red-text">*</span></label>
                     </div>
 
                   </div>
@@ -92,12 +85,12 @@
                           <option value="{{$marca->idMarca}}" @if ( $marca->idMarca == old('idMarca') ) selected @endif >{{$marca->nombre}}</option>
                         @endforeach
                       </select>
-                      <label>Marca *</label>
+                      <label>Marca <span class="red-text">*</span></label>
                     </div> 
 
                     <div class="input-field col s6">
                       <input id="precioBase" type="number" step="0.01" min="0.01" class="validate" required value="{{ old('precioBase') }}" name="precioBase">
-                      <label for="precioBase">Precio *</label>
+                      <label for="precioBase">Precio <span class="red-text">*</span></label>
                     </div>
 
                   </div>
@@ -127,7 +120,7 @@
                           <option value="{{$tipoCarga->idTipoCarga}}" @if ( $tipoCarga->idTipoCarga == old('idTipoCarga') ) selected @endif >{{$tipoCarga->nombre}}</option>
                         @endforeach
                       </select>
-                      <label>Tipo de carga *</label>
+                      <label>Tipo de carga <span class="red-text">*</span></label>
                     </div> 
 
                     <div class="input-field col s6">
@@ -148,19 +141,19 @@
                   <div class="row">
                     <div class="input-field col s6">
                       <input id="stock" type="number" min="0" step="0.5" class="validate" value="{{ old('stock') }}" name="stock" required>
-                      <label for="stock" data-error="wrong" data-success="right">Stock *</label>
+                      <label for="stock" data-error="wrong" data-success="right">Stock <span class="red-text">*</span></label>
                     </div>
 
                     <div class="input-field col s6">
                       <input id="volumen" type="number" step="0.001" min="0" class="validate" value="{{ old('volumen') }}" name="volumen" required>
-                      <label for="volumen" data-error="wrong" data-success="right">Volumen (m3) *</label>
+                      <label for="volumen" data-error="wrong" data-success="right">Volumen (m3) <span class="red-text">*</span></label>
                     </div>
                   </div>
                   
                   <div class="row">
                     <div class="input-field col s6">
                       <input id="minimoDivisible" type="number" min="0.5" step="0.5" class="validate" value="{{ old('minimoDivisible') }}" name="minimoDivisible" required>
-                      <label for="minimoDivisible" data-error="wrong" data-success="right">Cantidad mínima *</label>
+                      <label for="minimoDivisible" data-error="wrong" data-success="right">Cantidad mínima <span class="red-text">*</span></label>
                     </div>
 
                     

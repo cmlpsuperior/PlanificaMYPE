@@ -40,10 +40,10 @@
   
   <div class="row">
     <!--Panel de la izquierda-->
-    <div class="col s12 m4 l3 center">
+    <div class="col s12 m4 l3">
       <div class="card">
                 
-        <div class="card-content teal white-text">
+        <div class="card-content teal white-text center">
           <i class="material-icons prefix">account_circle</i>
           <span class="card-title">Datos del cliente</span>                             
         </div>
@@ -92,7 +92,7 @@
 
       <div class="card">
 
-        <div class="card-content teal white-text">
+        <div class="card-content teal white-text center">
           <i class="material-icons prefix">local_shipping</i>
           <span class="card-title">Datos de envío</span>                           
         </div>
@@ -104,7 +104,7 @@
 
             <div class="input-field col s12">
               <input id="fechaEnvio" type="date" class="datepicker" value="{{ old('fechaEnvio') }}" name="fechaEnvio">
-              <label for="fechaEnvio">Envío *</label>
+              <label for="fechaEnvio">Envío <span class="red-text">*</span></label>
             </div>
             
             <div class="input-field col s12">
@@ -126,12 +126,12 @@
                   <option value="{{$zona->idZona}}" @if ( $zona->idZona == old('idZona') ) selected @endif >{{$zona->nombre}}</option>
                 @endforeach
               </select>
-              <label for ="idZona">Zona *</label>
+              <label for ="idZona">Zona <span class="red-text">*</span></label>
             </div> 
 
             <div class="input-field col s12">
               <input id="direccion" type="text" class="validate" required value="{{ old('direccion') }}" name="direccion">
-              <label for="direccion">Dirección *</label>
+              <label for="direccion">Dirección <span class="red-text">*</span></label>
             </div>  
 
           </div>

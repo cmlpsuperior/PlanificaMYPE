@@ -41,7 +41,7 @@ class ControlController extends Controller
         $viajes= array();
         foreach ($detallesViajes as $detalleviaje){
             $viajes[] = Viaje::findOrFail($detalleviaje->idViaje);
-        }
+        }        
 
         return view('control.monitorearViajes', [ 'viajes'=>$viajes, 'idPedido'=>$id ]);
     }

@@ -56,19 +56,19 @@
                   <div class="row">
                     <div class="input-field col s6">
                       <input id="Nombres" type="text" class="validate" required value="{{$cliente->nombres}}"  name="nombres">
-                      <label for="Nombres">Nombres *</label>
+                      <label for="Nombres">Nombres <span class="red-text">*</span></label>
                     </div>
                     
                     <div class="input-field col s6">
                       <input id="ApellidoPaterno" type="text" class="validate" required value="{{$cliente->apellidoPaterno}}" name="apellidoPaterno">
-                      <label for="ApellidoPaterno">Apellido paterno *</label>
+                      <label for="ApellidoPaterno">Apellido paterno <span class="red-text">*</span></label>
                     </div>              
                   </div>
 
                   <div class="row">              
                     <div class="input-field col s6">
                       <input id="ApellidoMaterno" type="text" class="validate" required value="{{$cliente->apellidoMaterno}}" name="apellidoMaterno">
-                      <label for="ApellidoMaterno">Apellido materno *</label>
+                      <label for="ApellidoMaterno">Apellido materno <span class="red-text">*</span></label>
                     </div>
 
                   </div>
@@ -76,7 +76,7 @@
                   <div class="row">              
                     <div class="input-field col s6">
                       <input id="fechaNacimiento" type="date" class="datepicker" value="{{$cliente->fechaNacimiento}}" name="fechaNacimiento">
-                      <label for="fechaNacimiento">Fecha nacimiento *</label>
+                      <label for="fechaNacimiento">Fecha nacimiento <span class="red-text">*</span></label>
                     </div>
 
                     <div class="input-field col s6">
@@ -135,12 +135,12 @@
                         @endforeach
 
                       </select>
-                      <label>Zona *</label>
+                      <label>Zona <span class="red-text">*</span></label>
                     </div>    
 
                     <div class="input-field col s6">
                       <input id="direccion" type="text" class="validate" required  value="{{$cliente->direccion}}" name="direccion">
-                      <label for="direccion">Dirección *</label>
+                      <label for="direccion">Dirección <span class="red-text">*</span></label>
                     </div>          
                   </div>
                   

@@ -52,7 +52,7 @@
 			              <label for="nombre">Nombre</label>
 			            </div>
 			            <div class="input-field col s6">
-			              <input id="telefono" type="text"    value="{{ $pedido->cliente->telefono }}" name="telefono" readonly>
+			              <input id="telefono" type="text"    value="{{ $pedido->telefono }}" name="telefono" readonly>
 			              <label for="telefono">Teléfono</label>
 			            </div>
 			        </div>
@@ -66,14 +66,14 @@
 			              <label for="zona">Zona</label>
 			            </div>
 			            <div class="input-field col s6">
-			              <input id="direccion" type="text"   value="{{ $pedido->cliente->direccion }}" name="direccion" readonly>
+			              <input id="direccion" type="text"   value="{{ $pedido->direccion }}" name="direccion" readonly>
 			              <label for="direccion">Dirección</label>
 			            </div>
 			        </div>
 
 			        <div class="row">
 			            <div class="input-field col s12">
-			              	<textarea id="referencia" class="materialize-textarea" name="referencia" readonly>{{ $pedido->cliente->referencia }}</textarea>
+			              	<textarea id="referencia" class="materialize-textarea" name="referencia" readonly>{{ $pedido->referencia }}</textarea>
                       		<label for="referencia">Referencia</label>
 			            </div>
 			        </div>

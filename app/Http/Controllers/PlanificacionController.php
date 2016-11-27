@@ -130,29 +130,32 @@ class PlanificacionController extends Controller
 
                 $v->save();
 
+
+          
+                //insertamos en la tabla PedidoXViaje
+                $pedidos = $viaje['pedidos'];
+                foreach ($pedidos as $pedido){
+                    
+                    $v->pedidos()->attach($pedido->idPedido); //los demas campos estaran en nulo por defecto
+                }
+
+
                 //insertamos en la tabla detalleViaje:
                 $detallesLineas = $viaje['detallesLineas'];
 
                 foreach ($detallesLineas as $detalleLinea){
+
                     DB::table('detalleViaje')->insert(
-                        [   'idViaje' => $v->idViaje, 
-                            'idArticulo' => $detalleLinea['articulo']->idArticulo,
+                        [   
                             'idPedido'=> $detalleLinea['pedido']->idPedido,
+                            'idViaje' => $v->idViaje, 
+                            'idArticulo' => $detalleLinea['articulo']->idArticulo,
+                            
                             'cantidad' => $detalleLinea['cantidad'],
                             'cantidadDescargado' => 0
                         ]);
 
                 }
-
-                /*
-                //insertamos en la tabla pedidoxviaje
-                $pedidos = $viaje['pedidos'];
-
-                foreach ($pedidos as $pedido){
-                    
-                    $v->pedidos()->attach($pedido->idPedido);
-                }
-                */
 
             } 
 
