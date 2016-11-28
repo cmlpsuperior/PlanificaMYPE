@@ -49,7 +49,7 @@ class LoginController extends Controller
     }*/
 
     
-    public function autenticar(LoginRequest $request){
+    public function autenticar(Request $request){
 
         $usuario = $request->get('usuario');
         $contrasenia =  $request->get('contrasenia') ;
