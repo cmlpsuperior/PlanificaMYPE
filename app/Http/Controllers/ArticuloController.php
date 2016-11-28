@@ -62,10 +62,10 @@ class ArticuloController extends Controller
     	$articulo->tiempoHorasAbastecer= null;
         $articulo->minimoDivisible = $request->get('minimoDivisible');
         
-        if ($request->idTipoCarga!=  1 || $request->combinable=='check')  // solo pueden ser no combinables los tipo 1, si no son tipo 1, entonces siempre son combinables
+        if ($request->has('combinable')==true)  // 
             $articulo->combinable= 1; 
         else 
-            $articulo->combinable= 0; //todos inician sin credito asignado (0)
+            $articulo->combinable= 0; //
 
         $articulo->activo= 1; //cuando creo siempre esta activo
         $articulo->idMarca= $request->get('idMarca');
@@ -103,10 +103,10 @@ class ArticuloController extends Controller
         $articulo->volumen=$request->get('volumen');
         //$articulo->tiempoHorasAbastecer= null;
 
-        if ($request->idTipoCarga!=  1 || $request->combinable=='check')  // solo pueden ser no combinables los tipo 1, si no son tipo 1, entonces siempre son combinables
+        if ($request->has('combinable')==true)  // 
             $articulo->combinable= 1; 
         else 
-            $articulo->combinable= 0; //todos inician sin credito asignado (0)
+            $articulo->combinable= 0; 
 
         $articulo->idMarca= $request->get('idMarca');
         $articulo->idTipoCarga= $request->get('idTipoCarga');

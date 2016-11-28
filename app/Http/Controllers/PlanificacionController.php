@@ -240,10 +240,12 @@ class PlanificacionController extends Controller
     public function obtenerTodosContenedores ($idTiposVehiculos){
         $contenedores = array();
         
+        $tipoCarga = TipoCarga::orderby('idTipoCarga','asc')->first();//obtengo uno de los tipos de carga (el primero deberia ser el NORMAL)
+        
         //obtengo los tipos de vehiculos existentes y los ordeno de grande a pequeño.
-        $tipoVehiculosOrdenados = DB::table('tipoVehiculoxtipocarga')
+        $tipoVehiculosOrdenados = DB::table('tipovehiculoxtipocarga')
                                     ->whereIn('idTipoVehiculo', $idTiposVehiculos)
-                                    ->where('idTipoCarga','=',1) //solo veo el 1 que el la carga normal
+                                    ->where('idTipoCarga','=',$tipoCarga->idTipoCarga) //solo veo el  normal--------------------------------------->>TIPO DE CARGA 
                                     ->orderBy('volumen', 'desc')
                                     ->get(); 
 

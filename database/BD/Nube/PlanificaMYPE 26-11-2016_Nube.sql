@@ -608,14 +608,14 @@ COMMIT;
 START TRANSACTION;
 USE `BDPlanificaMYPE`;
 INSERT INTO `BDPlanificaMYPE`.`TipoVehiculoXTipoCarga` (`idTipoVehiculo`, `idTipoCarga`, `volumen`) VALUES (1, 1, 2);
-INSERT INTO `BDPlanificaMYPE`.`TipoVehiculoXTipoCarga` (`idTipoVehiculo`, `idTipoCarga`, `volumen`) VALUES (1, 2, 0.01);
-INSERT INTO `BDPlanificaMYPE`.`TipoVehiculoXTipoCarga` (`idTipoVehiculo`, `idTipoCarga`, `volumen`) VALUES (1, 3, 1);
-INSERT INTO `BDPlanificaMYPE`.`TipoVehiculoXTipoCarga` (`idTipoVehiculo`, `idTipoCarga`, `volumen`) VALUES (2, 1, 3);
-INSERT INTO `BDPlanificaMYPE`.`TipoVehiculoXTipoCarga` (`idTipoVehiculo`, `idTipoCarga`, `volumen`) VALUES (2, 2, 0.01);
-INSERT INTO `BDPlanificaMYPE`.`TipoVehiculoXTipoCarga` (`idTipoVehiculo`, `idTipoCarga`, `volumen`) VALUES (2, 3, 1.5);
-INSERT INTO `BDPlanificaMYPE`.`TipoVehiculoXTipoCarga` (`idTipoVehiculo`, `idTipoCarga`, `volumen`) VALUES (3, 1, 4);
-INSERT INTO `BDPlanificaMYPE`.`TipoVehiculoXTipoCarga` (`idTipoVehiculo`, `idTipoCarga`, `volumen`) VALUES (3, 2, 0.01);
-INSERT INTO `BDPlanificaMYPE`.`TipoVehiculoXTipoCarga` (`idTipoVehiculo`, `idTipoCarga`, `volumen`) VALUES (3, 3, 1.7);
+INSERT INTO `BDPlanificaMYPE`.`TipoVehiculoXTipoCarga` (`idTipoVehiculo`, `idTipoCarga`, `volumen`) VALUES (1, 11, 0.01);
+INSERT INTO `BDPlanificaMYPE`.`TipoVehiculoXTipoCarga` (`idTipoVehiculo`, `idTipoCarga`, `volumen`) VALUES (1, 21, 1);
+INSERT INTO `BDPlanificaMYPE`.`TipoVehiculoXTipoCarga` (`idTipoVehiculo`, `idTipoCarga`, `volumen`) VALUES (11, 1, 3);
+INSERT INTO `BDPlanificaMYPE`.`TipoVehiculoXTipoCarga` (`idTipoVehiculo`, `idTipoCarga`, `volumen`) VALUES (11, 11, 0.01);
+INSERT INTO `BDPlanificaMYPE`.`TipoVehiculoXTipoCarga` (`idTipoVehiculo`, `idTipoCarga`, `volumen`) VALUES (11, 21, 1.5);
+INSERT INTO `BDPlanificaMYPE`.`TipoVehiculoXTipoCarga` (`idTipoVehiculo`, `idTipoCarga`, `volumen`) VALUES (21, 1, 4);
+INSERT INTO `BDPlanificaMYPE`.`TipoVehiculoXTipoCarga` (`idTipoVehiculo`, `idTipoCarga`, `volumen`) VALUES (21, 11, 0.01);
+INSERT INTO `BDPlanificaMYPE`.`TipoVehiculoXTipoCarga` (`idTipoVehiculo`, `idTipoCarga`, `volumen`) VALUES (21, 21, 1.7);
 
 COMMIT;
 
