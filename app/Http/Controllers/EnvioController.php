@@ -180,6 +180,8 @@ class EnvioController extends Controller
     }
 
     public function entregarMateriales_procesar (EntregarMaterialesRequest $request, $idViaje, $idPedido){
+
+        dd($idViaje + ' ' + $idPedido);
         $montoCobrado = $request->get('cobrado');
 
         $cantidadesDescargados = $request->get('cantidadesDescargados');
