@@ -156,7 +156,7 @@ class EnvioController extends Controller
 
         $pedido = Pedido::findOrFail($idPedido);
         $viaje = Viaje::findOrFail($idViaje);
-        dd($viaje);
+        
         $detallesViajes = DB::table('detalleviaje')                     
                      ->where('idViaje', '=', $idViaje)
                      ->where('idPedido', '=', $idPedido)
@@ -172,9 +172,9 @@ class EnvioController extends Controller
 
         //calculamos los montos pagados en los otros viajes:
         $totalPagadoViaje = 0;
-        foreach($pedido->viajes as $viaje){
-            if ($viaje->pivot->montoCobrado != null)
-                $totalPagadoViaje = $totalPagadoViaje + $viaje->pivot->montoCobrado;
+        foreach($pedido->viajes as $viajePedido){
+            if ($viajePedido->pivot->montoCobrado != null)
+                $totalPagadoViaje = $totalPagadoViaje + $viajePedido->pivot->montoCobrado;
         }
 
         return view('envio.entregarMateriales', ['articulos'=>$articulosPlus, 'viaje'=> $viaje, 'pedido' =>$pedido, 'totalPagadoViaje'=>$totalPagadoViaje]); 
@@ -182,7 +182,7 @@ class EnvioController extends Controller
 
     public function entregarMateriales_procesar (EntregarMaterialesRequest $request, $idViaje, $idPedido){
 
-        dd($idViaje . ' ' . $idPedido);
+        
         $montoCobrado = $request->get('cobrado');
 
         $cantidadesDescargados = $request->get('cantidadesDescargados');
@@ -225,8 +225,8 @@ class EnvioController extends Controller
 
             //finalizo el pedido si ya no tiene mas viajes que enviar:
             $finalizo=1;
-            foreach($pedido->viajes as $viaje){
-                if ($viaje->pivot->fechaEntrega ==null && $viaje->idViaje != $idViaje ){
+            foreach($pedido->viajes as $viajePedido){
+                if ($viajePedido->pivot->fechaEntrega ==null && $viajePedido->idViaje != $idViaje ){
                     $finalizo=0; // aun tiene viajes sin finalizar
                     break;
                 }
