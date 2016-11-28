@@ -31,7 +31,7 @@
 	    </div>            
 	  </div>
 	  @endif
-	{{Form::open(array('action' => array('EnvioController@cargarMateriales_procesar', $viaje->idViaje ), 'method' => 'POST')) }}
+	{{Form::open(array('action' => array('EnvioController@cargarMateriales_procesar', $viaje->idViaje , $pedido->idPedido), 'method' => 'POST')) }}
 	
 
 	<div class= "row">

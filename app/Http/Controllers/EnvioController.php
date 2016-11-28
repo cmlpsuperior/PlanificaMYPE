@@ -153,7 +153,7 @@ class EnvioController extends Controller
     }
 
     public function entregarMateriales ($idViaje, $idPedido){
-        dd($idViaje . ' - ' . $idPedido);
+
         $pedido = Pedido::findOrFail($idPedido);
         $viaje = Viaje::findOrFail($idViaje);
 
@@ -182,7 +182,7 @@ class EnvioController extends Controller
 
     public function entregarMateriales_procesar (EntregarMaterialesRequest $request, $idViaje, $idPedido){
 
-        dd($idViaje + ' ' + $idPedido);
+        dd($idViaje . ' ' . $idPedido);
         $montoCobrado = $request->get('cobrado');
 
         $cantidadesDescargados = $request->get('cantidadesDescargados');
