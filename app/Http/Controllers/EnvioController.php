@@ -156,7 +156,7 @@ class EnvioController extends Controller
 
         $pedido = Pedido::findOrFail($idPedido);
         $viaje = Viaje::findOrFail($idViaje);
-
+        dd($viaje);
         $detallesViajes = DB::table('detalleviaje')                     
                      ->where('idViaje', '=', $idViaje)
                      ->where('idPedido', '=', $idPedido)
