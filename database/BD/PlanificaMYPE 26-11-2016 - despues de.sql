@@ -23,7 +23,7 @@ USE `BDPlanificaMYPE` ;
 CREATE TABLE IF NOT EXISTS `BDPlanificaMYPE`.`TipoDocumento` (
   `idTipoDocumento` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
-  `descripcion` VARCHAR(45) NOT NULL,
+  `descripcion` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`idTipoDocumento`))
 ENGINE = InnoDB;
 
