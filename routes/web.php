@@ -98,3 +98,7 @@ Route::post('control', 'ControlController@monitorearPedidos_procesar' )->name('e
 
 Route::get('control/{id}/verMateriales', 'ControlController@verMateriales' )->name('envio.verMateriales');
 Route::get('control/{id}/verViajes', 'ControlController@verViajes' )->name('envio.verViajes');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
