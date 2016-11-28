@@ -42,6 +42,10 @@ Detalle pedido:
 pedidoxviaje:
 - el campo fechaAlmacen no se usa, se debe borrar
 
+
+confirmarPedido:
+- cuando no se coloca ningun filtro, esta fallando.
+
 DOCUMENTOS
 
 diagrama de estados de pedido:
