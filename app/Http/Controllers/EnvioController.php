@@ -153,6 +153,7 @@ class EnvioController extends Controller
     }
 
     public function entregarMateriales ($idViaje, $idPedido){
+        dd($idViaje . ' - ' . $idPedido);
         $pedido = Pedido::findOrFail($idPedido);
         $viaje = Viaje::findOrFail($idViaje);
 
