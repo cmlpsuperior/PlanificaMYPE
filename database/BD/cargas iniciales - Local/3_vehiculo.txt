@@ -1,0 +1,14 @@
+use bdplanificamype;
+
+insert into vehiculo (nombre, anio, modelo, placa, idMarcaVehiculo, idTipoVehiculo) 
+				values ('Azul pequeño 1', '2016', 'PEQ','PEQ101', 1, 1);
+insert into vehiculo (nombre, anio, modelo, placa, idMarcaVehiculo, idTipoVehiculo) 
+				values ('Azul pequeño 2', '2016', 'PEQ','PEQ102', 1, 1);
+
+insert into vehiculo (nombre, anio, modelo, placa, idMarcaVehiculo, idTipoVehiculo) 
+				values ('Azul mediano 1', '2015', 'MED' ,'MED201', 1, 2);
+insert into vehiculo (nombre, anio, modelo, placa, idMarcaVehiculo, idTipoVehiculo) 
+				values ('Azul mediano 2', '2015', 'MED' ,'MED202', 1, 2);
+
+insert into vehiculo (nombre, anio, modelo, placa, idMarcaVehiculo, idTipoVehiculo) 
+				values ('Azul grande 1', '2014', 'GRA' ,'GRA301', 1, 3);
