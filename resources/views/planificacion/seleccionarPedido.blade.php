@@ -16,14 +16,14 @@
 	<br>
 	<div class="row">
 	    <div class="col s12 center">
-	      <h5>Paso 1 ------ Paso 2 ------ Paso 3</h5>
+	      <h5> <span class="teal-text">Paso 1</span> ------ Paso 2 ------ Paso 3 ------ Paso 4</h5>
 	      
 	    </div>
 	  </div>	
 
 	<div class="row">
 	    <div class="col s12 center">
-	      <h5>1. Selecionar un pedido</h5>
+	      <h5 class="teal-text">1. Selecionar un pedido</h5>
 	      <div class="divider"></div>
 	      <br>
 	    </div>

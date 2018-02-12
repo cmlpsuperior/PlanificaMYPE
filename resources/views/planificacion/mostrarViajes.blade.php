@@ -15,14 +15,14 @@
 	<br>
 	<div class="row">
 	    <div class="col s12 center">
-	      <h5>Paso 1 ------ Paso 2 ------ Paso 3 ------ Paso 4</h5>
+	      <h5> <span class="teal-text">Paso 1 ------ Paso 2 ------ Paso 3 ------ Paso 4</span> </h5>
 	      
 	    </div>
 	  </div>	
 
 	<div class="row">
 	    <div class="col s12 center">
-	      <h5>4. Viajes propuestos</h5>
+	      <h5 class="teal-text">4. Viajes propuestos</h5>
 	      <div class="divider"></div>
 	      <br>
 	    </div>
@@ -45,7 +45,7 @@
 	{{Form::open(array('action' => array('PlanificacionController@viajes_procesar', $pedidoPrincipal->idPedido ), 'method' => 'POST')) }} 	
 	<div class="row">
 	    <div class="col s12">
-	     	<input type="text" name="idPedidoPrincipal" value="{{$pedidoPrincipal->idPedido}}">	      
+	     	<input type="hidden" name="idPedidoPrincipal" value="{{$pedidoPrincipal->idPedido}}">	      
 	    </div>
 	</div>
 
