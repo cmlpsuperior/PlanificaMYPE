@@ -16,14 +16,14 @@
 	<br>
 	<div class="row">
 	    <div class="col s12 center">
-	      <h5>Paso 1 ------ Paso 2</h5>
+	      <h5> <span class="teal-text">Paso 1 ------ Paso 2</span></h5>
 	      
 	    </div>
 	  </div>	
 
 	<div class="row">
 	    <div class="col s12 center">
-	      <h5>2. Selecionar un empledo</h5>
+	      <h5 class="teal-text">2. Selecionar un empledo</h5>
 	      <div class="divider"></div>
 	      <br>
 	    </div>
